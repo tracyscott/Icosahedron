@@ -170,10 +170,18 @@ public class Icosahedron extends PApplet {
   public void onUIReady(LXStudio lx, LXStudio.UI ui) {
     pixliteConfig = (UIPixliteConfig) new UIPixliteConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
 
-    if (enableOutput) {
-      // Output.configurePixliteOutput(lx);
+    if (enableArtnetOutput) {
+      Output.configurePixliteOutput(lx);
     }
-    if (disableOutputOnStart)
+
+    if (enableUnityOutput) {
+      Output.configureUnityArtNet(lx);
+    }
+
+    // Typically, we disableOutputOnStart for development so we don't immediately start spamming our
+    // network on start up.  For installation, we should have start up enabled on output.
+    // TODO(tracy): Maybe check some properties that can be set when when java -jar start the application.
+    if (enableOutputOnStart)
       lx.engine.output.enabled.setValue(false);
   }
 
@@ -198,6 +206,7 @@ public class Icosahedron extends PApplet {
   final static float M = CM * 100;
   final static float METER = M;
 
-  public static final boolean enableOutput = true;
-  public static final boolean disableOutputOnStart = true;
+  public static final boolean enableArtnetOutput = true;
+  public static final boolean enableUnityOutput = false;
+  public static final boolean enableOutputOnStart = true;
 }

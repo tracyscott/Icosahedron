@@ -25,6 +25,9 @@ public class IcosahedronModel extends LXModel {
   public static double computedHeight= 1f;
   public static final int NUM_LIGHT_BARS = 30;
   public static Point3D[] unitIcosahedron;
+  public static IcosahedronModel model;
+
+  public List<LightBar> lightBars;
 
   public static class Point3D {
     public Point3D(float x, float y, float z) {
@@ -79,18 +82,19 @@ public class IcosahedronModel extends LXModel {
   public static IcosahedronModel createModel() {
     unitIcosahedron = createIcosahedronVertices(6.0f);
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
-    List<LightBar> allLightBars = new ArrayList<LightBar>();
+    List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_LIGHT_BARS; i++) {
       LightBar lb = new LightBar(5.0f, 150);
       lb.translate(0f, i * 0.2f, 0f);
-      allLightBars.add(lb);
+      lightBars.add(lb);
       allPoints.addAll(lb.points);
     }
 
-    return new IcosahedronModel(allPoints);
+    model = new IcosahedronModel(allPoints, lightBars);
+    return model;
   }
 
-  public IcosahedronModel(List<LXPoint> points) {
+  public IcosahedronModel(List<LXPoint> points, List<LightBar> lightBars) {
     super(points);
     // Compute some stats on our points.
     int pointCount = 0;
@@ -106,6 +110,7 @@ public class IcosahedronModel extends LXModel {
 
     computedWidth = maxX - minX;
     computedHeight = maxY - minY;
+    this.lightBars = lightBars;
 
     exportPLY(points);
   }

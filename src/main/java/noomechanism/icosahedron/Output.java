@@ -72,8 +72,7 @@ public class Output {
   }
 
   /**
-   * Each Pixlite output covers one sixteenth of the installation.  Dance floor is another 1 or 2 outputs.
-   * Probably 2.
+   * One universe per lightbar.
    * @param lx
    */
   public static void configurePixliteOutput(LX lx) {
@@ -86,6 +85,38 @@ public class Output {
     int artNetIpPort = Integer.parseInt(Icosahedron.pixliteConfig.getStringParameter(UIPixliteConfig.PIXLITE_1_PORT).getString());
     logger.log(Level.INFO, "Using ArtNet: " + artNetIpAddress + ":" + artNetIpPort);
 
+    int lightBarNum = 0;
+    for (LightBar lightBar : IcosahedronModel.model.lightBars) {
+      List<LXPoint> pointsWireOrder = lightBar.pointsInWireOrder();
+      int[] thisUniverseIndices = new int[150];  // 170f
+      int numUniversesThisWire = (int)Math.ceil((float)pointsWireOrder.size() / 170f);
+      int univStartNum = lightBarNum * numUniversesThisWire;
+      int lastUniverseCount = pointsWireOrder.size() - 150 * (numUniversesThisWire - 1);
+      int curIndex = 0;
+      int curUnivOffset = 0;
+      for (LXPoint pt : pointsWireOrder) {
+        thisUniverseIndices[curIndex] = pt.index;
+        curIndex++;
+        if (curIndex == 170 || (curUnivOffset == numUniversesThisWire - 1 && curIndex == lastUniverseCount)) {
+          logger.log(Level.INFO, "Adding datagram: universe=" + (univStartNum+curUnivOffset) + " points=" + curIndex);
+          ArtNetDatagram datagram = new ArtNetDatagram(thisUniverseIndices, curIndex*3, univStartNum + curUnivOffset);
+          try {
+            datagram.setAddress(artNetIpAddress).setPort(artNetIpPort);
+          } catch (UnknownHostException uhex) {
+            logger.log(Level.SEVERE, "Configuring ArtNet: " + artNetIpAddress + ":" + artNetIpPort, uhex);
+          }
+          datagrams.add(datagram);
+          curUnivOffset++;
+          curIndex = 0;
+          if (curUnivOffset == numUniversesThisWire - 1) {
+            thisUniverseIndices = new int[lastUniverseCount];
+          } else {
+            thisUniverseIndices = new int[150];
+          }
+        }
+      }
+      lightBarNum++;
+    }
     try {
       datagramOutput = new LXDatagramOutput(lx);
       for (ArtNetDatagram datagram : datagrams) {

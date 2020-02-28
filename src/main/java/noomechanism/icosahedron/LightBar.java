@@ -28,4 +28,14 @@ public class LightBar {
       pt.z += z;
     }
   }
+
+  /**
+   * Returns our points in wire order.  For lightbars, this is straightforward since it is the same
+   * order in which we create the points.
+   * @return Points in the order they are on the data line.
+   */
+  public List<LXPoint> pointsInWireOrder(){
+    List<LXPoint> pointsWireOrder = new ArrayList<LXPoint>(points);
+    return pointsWireOrder;
+  }
 }
