@@ -23,9 +23,12 @@ public class IcosahedronModel extends LXModel {
   public static double maxY = Float.MIN_VALUE;
   public static double computedWidth = 1f;
   public static double computedHeight= 1f;
+  public static final int NUM_ARCH_LIGHT_BARS = 15;
   public static final int NUM_LIGHT_BARS = 30;
   public static Point3D[] unitIcosahedron;
   public static IcosahedronModel model;
+  public static Point3D[] vertices;
+  public static Edge[] edges;
 
   public List<LightBar> lightBars;
 
@@ -41,14 +44,26 @@ public class IcosahedronModel extends LXModel {
     public float z;
   }
 
+  public static class Edge {
+    public Edge(Point3D a, Point3D b) {
+      this.a = a; this.b =b;
+    }
+
+    public Point3D a;
+    public Point3D b;
+  }
+
   // Icosahedron vertices via
   // http://rbwhitaker.wikidot.com/index-and-vertex-buffers
+  // This didn't work very well, leaving it for reference.  Instead
+  // we build it through spherical coordinates in another method.
+  // Will delete this soon.
   //
-
-  public static Point3D[] createIcosahedronVertices(float scale) {
+  public static Point3D[] brokenCreate(float scale) {
     // A temporary array, with 12 items in it, because
     // the icosahedron has 12 distinct vertices
-    Point3D[] vertices = new Point3D[12];
+    vertices = new Point3D[12];
+    edges = new Edge[30];
 
     // vertex position and color information for icosahedron
     vertices[0] = new Point3D(-0.26286500f, 0.0000000f, 0.42532500f);
@@ -76,16 +91,148 @@ public class IcosahedronModel extends LXModel {
     vertices[11] = new Point3D(-0.42532500f, -0.26286500f, 0.0000000f);
     vertices[11].scale(scale, scale, scale);
 
+    // Build edges
+    edges[0] = new Edge(vertices[0], vertices[6]);
+    edges[1] = new Edge(vertices[6], vertices[1]);
+    edges[2] = new Edge(vertices[0], vertices[11]);
+    edges[3] = new Edge(vertices[11], vertices[6]);
+    edges[4] = new Edge(vertices[1], vertices[4]);
+    edges[5] = new Edge(vertices[4], vertices[0]);
+    edges[6] = new Edge(vertices[1], vertices[8]);
+    edges[7] = new Edge(vertices[8], vertices[4]);
+    edges[8] = new Edge(vertices[1], vertices[10]);
+    edges[9] = new Edge(vertices[10], vertices[8]);
+    edges[10] = new Edge(vertices[2], vertices[5]);
+    edges[11] = new Edge(vertices[5], vertices[3]);
+    edges[12] = new Edge(vertices[2], vertices[9]);
+    edges[13] = new Edge(vertices[9], vertices[5]);
+    edges[14] = new Edge(vertices[2], vertices[11]);
+    edges[15] = new Edge(vertices[11], vertices[9]);
+    edges[16] = new Edge(vertices[3], vertices[7]);
+    edges[17] = new Edge(vertices[7], vertices[2]);
+    edges[18] = new Edge(vertices[3], vertices[10]);
+    edges[19] = new Edge(vertices[10], vertices[7]);
+    edges[20] = new Edge(vertices[4], vertices[8]);
+    edges[21] = new Edge(vertices[8], vertices[5]);
+    edges[22] = new Edge(vertices[4], vertices[9]);
+    edges[23] = new Edge(vertices[9], vertices[0]);
+    // already above at 21 edges[25] = new Edge(vertices[5], vertices[8]);
+    edges[24] = new Edge(vertices[8], vertices[3]);
+    // already at 13 edges[] = new Edge(vertices[5], vertices[9]);
+    // already at 22 edges[26] = new Edge(vertices[9], vertices[4]);
+    edges[25] = new Edge(vertices[6], vertices[10]);
+    edges[26] = new Edge(vertices[10], vertices[1]);
+    // 6 and 11 at 3
+    edges[27] = new Edge(vertices[11], vertices[7]);
+    // 7 and 10 at 19
+    // 10 and 6 at 25
+    // 7 and 11 at 27
+    // 2 and 11 at 14
+    // 8 and 10 at 9
+    // 10 and 3 at 18
+    edges[28] = new Edge(vertices[9], vertices[11]);
+    // 11 and 0 at 2
+    edges[29] = new Edge(vertices[0], vertices[6]);
+
+    return vertices;
+  }
+
+  /**
+   * Spherical Coordinates construction.
+   * The locations of the vertices of a regular icosahedron can be described using spherical coordinates, for instance
+   * as latitude and longitude. If two vertices are taken to be at the north and south poles (latitude ±90°), then the
+   * other ten vertices are at latitude ±arctan(1/2) ≈ ±26.57°. These ten vertices are at evenly spaced
+   * longitudes (36° apart), alternating between north and south latitudes.
+   * @return
+   */
+  public static Point3D[] createIcosahedronVerticesEdges(float radius) {
+    vertices = new Point3D[12];
+    edges = new Edge[30];
+
+    vertices[0] = new Point3D(0f, radius, 0f);
+    // top band of 5 points
+    double latitude = Math.toRadians(26.57);  // ISO inclination
+
+    // 3D graphics converted to Mathematical spherical coordinates
+    // X is is -Z, Y is X, Z is Y
+    for (int i = 0; i < 5; i++) {
+      double polarAngle = Math.toRadians(i * 36.0 * 2.0);  // ISO azimuth
+      vertices[i+1] = new Point3D(
+          (float)(radius * Math.sin(latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.sin(latitude)),
+          -(float)(radius * Math.sin(latitude) * Math.cos(polarAngle)));
+    }
+    latitude = Math.toRadians(-26.57);
+    for (int i = 0; i < 5; i++) {
+      double polarAngle = Math.toRadians(i * 36.0 * 2.0);  // ISO azimuth
+      vertices[i+6] = new Point3D(
+          (float)(radius * Math.sin(latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.sin(latitude)),
+          -(float)(radius * Math.sin(latitude) * Math.cos(polarAngle)));
+    }
+    vertices[11] = new Point3D(0f, -radius, 0f);
+
+    // Edges
+    // One edge from top to first row.
+    int edgeNum = 0;
+    for (int i = 1; i < 6; i++) {
+      edges[edgeNum++] = new Edge(vertices[0], vertices[i]);
+    }
+    // One edge between all vertices in top row
+    edges[edgeNum++] = new Edge(vertices[1], vertices[2]);
+    edges[edgeNum++] = new Edge(vertices[2], vertices[3]);
+    edges[edgeNum++] = new Edge(vertices[3], vertices[4]);
+    edges[edgeNum++] = new Edge(vertices[4], vertices[5]);
+    edges[edgeNum++] = new Edge(vertices[5], vertices[1]);
+
+    int offset = 5;
+    // Edges from top row to bottom row alternate vertices.
+    edges[edgeNum++] = new Edge(vertices[1], vertices[4+offset]);
+    edges[edgeNum++] = new Edge(vertices[offset+4], vertices[2]);
+    edges[edgeNum++] = new Edge(vertices[2], vertices[5+offset]);
+    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[3]);
+    edges[edgeNum++] = new Edge(vertices[3], vertices[1+offset]);
+    edges[edgeNum++] = new Edge(vertices[1+offset], vertices[4]);
+    edges[edgeNum++] = new Edge(vertices[4], vertices[2+offset]);
+    edges[edgeNum++] = new Edge(vertices[2+offset], vertices[5]);
+    edges[edgeNum++] = new Edge(vertices[5], vertices[3+offset]);
+    edges[edgeNum++] = new Edge(vertices[3+offset], vertices[1]);
+
+    // One edge between all vertices bottom row
+    edges[edgeNum++] = new Edge(vertices[6], vertices[7]);
+    edges[edgeNum++] = new Edge(vertices[7], vertices[8]);
+    edges[edgeNum++] = new Edge(vertices[8], vertices[9]);
+    edges[edgeNum++] = new Edge(vertices[9], vertices[10]);
+    edges[edgeNum++] = new Edge(vertices[10], vertices[6]);
+
+    // One edge from bottom to bottom row points
+    for (int i = 0; i < 5; i++) {
+      edges[edgeNum++] = new Edge(vertices[i+6], vertices[11]);
+    }
     return vertices;
   }
 
   public static IcosahedronModel createModel() {
-    unitIcosahedron = createIcosahedronVertices(6.0f);
+    unitIcosahedron = createIcosahedronVerticesEdges(6.0f);
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_LIGHT_BARS; i++) {
-      LightBar lb = new LightBar(5.0f, 150);
-      lb.translate(0f, i * 0.2f, 0f);
+      LightBar lb = new LightBar(5.0f, 150, false);
+      lb.interpolate(edges[i]);
+      lightBars.add(lb);
+      allPoints.addAll(lb.points);
+    }
+
+    model = new IcosahedronModel(allPoints, lightBars);
+    return model;
+  }
+
+  public static IcosahedronModel createArchModel() {
+    List<LXPoint> allPoints = new ArrayList<LXPoint>();
+    List<LightBar> lightBars = new ArrayList<LightBar>();
+    for (int i = 0; i < NUM_ARCH_LIGHT_BARS; i++) {
+      LightBar lb = new LightBar(5.0f, 300, true);
+      lb.translate(0f, 0f, i * 0.2f);
       lightBars.add(lb);
       allPoints.addAll(lb.points);
     }
