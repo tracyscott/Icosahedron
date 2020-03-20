@@ -1,6 +1,8 @@
 package noomechanism.icosahedron;
 
 import com.google.common.reflect.ClassPath;
+import noomechanism.icosahedron.ui.UILightBarConfig;
+import noomechanism.icosahedron.ui.UIMappingConfig;
 import noomechanism.icosahedron.ui.UIPixliteConfig;
 import heronarts.lx.LXEffect;
 import heronarts.lx.LXPattern;
@@ -75,6 +77,9 @@ public class Icosahedron extends PApplet {
   public static final int GLOBAL_FRAME_RATE = 33;
 
   public static UIPixliteConfig pixliteConfig;
+  public static UIMappingConfig mappingConfig;
+  public static UILightBarConfig lightBarConfig;
+
 
   @Override
   public void settings() {
@@ -168,6 +173,8 @@ public class Icosahedron extends PApplet {
   }
 
   public void onUIReady(LXStudio lx, LXStudio.UI ui) {
+    lightBarConfig = (UILightBarConfig) new UILightBarConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
+    mappingConfig = (UIMappingConfig) new UIMappingConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     pixliteConfig = (UIPixliteConfig) new UIPixliteConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
 
     if (enableArtnetOutput) {
