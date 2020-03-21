@@ -98,11 +98,12 @@ public class Output {
           LightBar lightBar = IcosahedronModel.lightBars.get(lightBarId);
           pointsWireOrder.addAll(lightBar.pointsInWireOrder());
         }
-
-        int[] thisUniverseIndices = new int[170];  // 170f
+        
         int numUniversesThisWire = (int) Math.ceil((float) pointsWireOrder.size() / 170f);
         int univStartNum = curUniverseNum;
         int lastUniverseCount = pointsWireOrder.size() - 170 * (numUniversesThisWire - 1);
+        int maxLedsPerUniverse = (pointsWireOrder.size()>170)?170:pointsWireOrder.size();
+        int[] thisUniverseIndices = new int[maxLedsPerUniverse];
         int curIndex = 0;
         int curUnivOffset = 0;
         for (LXPoint pt : pointsWireOrder) {
@@ -122,7 +123,7 @@ public class Output {
             if (curUnivOffset == numUniversesThisWire - 1) {
               thisUniverseIndices = new int[lastUniverseCount];
             } else {
-              thisUniverseIndices = new int[170];
+              thisUniverseIndices = new int[maxLedsPerUniverse];
             }
           }
         }
