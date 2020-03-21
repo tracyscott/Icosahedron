@@ -3,6 +3,7 @@ package noomechanism.icosahedron.ui;
 import heronarts.lx.LX;
 import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.studio.LXStudio;
+import noomechanism.icosahedron.ParameterFile;
 
 public class UILightBarConfig extends UIConfig {
   public static final String LENGTH = "length";
@@ -15,8 +16,8 @@ public class UILightBarConfig extends UIConfig {
   public LX lx;
   private boolean parameterChanged = false;
 
-  public UILightBarConfig(final LXStudio.UI ui, LX lx) {
-    super(ui, title, filename);
+  public UILightBarConfig(final LXStudio.UI ui, LX lx, ParameterFile paramFile) {
+    super(ui, title, filename, paramFile);
     int contentWidth = (int) ui.leftPane.global.getContentWidth();
     this.lx = lx;
 

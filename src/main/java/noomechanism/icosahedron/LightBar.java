@@ -4,23 +4,31 @@ import heronarts.lx.model.LXPoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LightBar {
+  private static final Logger logger = Logger.getLogger(LightBar.class.getName());
 
   public float length;
+  public float startMargin;
+  public float endMargin;
   public int numPoints;
   public boolean arch;
+  public int barNum;
   public List<LXPoint> points;
 
-  public LightBar(float length, int numPoints, boolean arch) {
+  public LightBar(int barNum, float length, float startMargin, float endMargin, int numPoints, boolean arch) {
+    this.barNum = barNum;
     this.length = length;
     this.numPoints = numPoints;
     this.arch = arch;
+    this.startMargin = startMargin;
+    this.endMargin = endMargin;
 
     points = new ArrayList<LXPoint>(numPoints);
     for (int i = 0; i < numPoints; i++) {
       if (!arch) {
-        points.add(new LXPoint(((float) i / (float) numPoints) * length, 0f, 0f));
+        points.add(new LXPoint(((float) i / (float) numPoints) * (length - (startMargin+endMargin)) + startMargin, 0f, 0f));
       } else {
         float archRadius = 2.0f; // 2 meter radius arch
         float tPos = (float) i / (float) numPoints;
@@ -53,6 +61,10 @@ public class LightBar {
     float lengthX = finishX - startX;
     float lengthY = finishY - startY;
     float lengthZ = finishZ - startZ;
+
+    // TODO(tracy): compute startMargin and endMargin based on orientation.
+    double vLength = Math.sqrt((double)((lengthX*lengthX) + (lengthY*lengthY) + (lengthZ * lengthZ)));
+    logger.info("Edge length: " + vLength);
 
     for (int i = 0; i < numPoints; i++) {
       float tParam = (float) i / (float) (numPoints - 1);

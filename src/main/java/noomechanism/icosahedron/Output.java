@@ -1,5 +1,6 @@
 package noomechanism.icosahedron;
 
+import heronarts.lx.parameter.LXParameter;
 import noomechanism.icosahedron.ui.UIPixliteConfig;
 import heronarts.lx.LX;
 import heronarts.lx.model.LXPoint;
@@ -71,11 +72,91 @@ public class Output {
     }
   }
 
+  public static void configurePixliteOutput(LX lx) {
+    List<ArtNetDatagram> datagrams = new ArrayList<ArtNetDatagram>();
+    List<Integer> countsPerOutput = new ArrayList<Integer>();
+    // For each output, track the number of points per panel type so we can log the details to help
+    // with output verification.
+
+    String artNetIpAddress = Icosahedron.pixliteConfig.getStringParameter(UIPixliteConfig.PIXLITE_1_IP).getString();
+    int artNetIpPort = Integer.parseInt(Icosahedron.pixliteConfig.getStringParameter(UIPixliteConfig.PIXLITE_1_PORT).getString());
+    logger.log(Level.INFO, "Using ArtNet: " + artNetIpAddress + ":" + artNetIpPort);
+
+    // For each non-empty mapping output parameter, collect all points in wire order from each lightbar listed
+    // Distribute all points across the necessary number of 170-led sized universes.
+    // TODO(tracy): Make number of outputs configurable in UIPixliteConfig
+    int curUniverseNum = 0;
+    for (int outputNum = 0; outputNum < 16; outputNum++) {
+      logger.info("Loading mapping for output " + (outputNum+1));
+      String lightBarLeds = Icosahedron.mappingConfig.getStringParameter("output" + (outputNum+1)).getString();
+      logger.info("lightbars: " + lightBarLeds);
+      if (lightBarLeds.length() > 0) {
+        List<LXPoint> pointsWireOrder = new ArrayList<LXPoint>();
+        String[] ids = lightBarLeds.split(",");
+        for (int i = 0; i < ids.length; i++) {
+          int lightBarId = Integer.parseInt(ids[i]);
+          LightBar lightBar = IcosahedronModel.lightBars.get(lightBarId);
+          pointsWireOrder.addAll(lightBar.pointsInWireOrder());
+        }
+
+        int[] thisUniverseIndices = new int[170];  // 170f
+        int numUniversesThisWire = (int) Math.ceil((float) pointsWireOrder.size() / 170f);
+        int univStartNum = curUniverseNum;
+        int lastUniverseCount = pointsWireOrder.size() - 170 * (numUniversesThisWire - 1);
+        int curIndex = 0;
+        int curUnivOffset = 0;
+        for (LXPoint pt : pointsWireOrder) {
+          thisUniverseIndices[curIndex] = pt.index;
+          curIndex++;
+          if (curIndex == 170 || (curUnivOffset == numUniversesThisWire - 1 && curIndex == lastUniverseCount)) {
+            logger.log(Level.INFO, "Adding datagram: universe=" + (univStartNum + curUnivOffset) + " points=" + curIndex);
+            ArtNetDatagram datagram = new ArtNetDatagram(thisUniverseIndices, curIndex * 3, univStartNum + curUnivOffset);
+            try {
+              datagram.setAddress(artNetIpAddress).setPort(artNetIpPort);
+            } catch (UnknownHostException uhex) {
+              logger.log(Level.SEVERE, "Configuring ArtNet: " + artNetIpAddress + ":" + artNetIpPort, uhex);
+            }
+            datagrams.add(datagram);
+            curUnivOffset++;
+            curIndex = 0;
+            if (curUnivOffset == numUniversesThisWire - 1) {
+              thisUniverseIndices = new int[lastUniverseCount];
+            } else {
+              thisUniverseIndices = new int[170];
+            }
+          }
+        }
+        curUniverseNum += curUnivOffset;
+      }
+    }
+
+    try {
+      datagramOutput = new LXDatagramOutput(lx);
+      for (ArtNetDatagram datagram : datagrams) {
+        datagramOutput.addDatagram(datagram);
+      }
+      try {
+        datagramOutput.addDatagram(new ArtSyncDatagram().setAddress(artNetIpAddress).setPort(artNetIpPort));
+      } catch (UnknownHostException uhex) {
+        logger.log(Level.SEVERE, "Unknown host for ArtNet sync.", uhex);
+      }
+    } catch (SocketException sex) {
+      logger.log(Level.SEVERE, "Initializing LXDatagramOutput failed.", sex);
+    }
+    if (datagramOutput != null) {
+      datagramOutput.enabled.setValue(true);
+      lx.engine.output.addChild(datagramOutput);
+    } else {
+      logger.log(Level.SEVERE, "Did not configure output, error during LXDatagramOutput init");
+    }
+  }
+
+
   /**
    * One universe per lightbar.
    * @param lx
    */
-  public static void configurePixliteOutput(LX lx) {
+  public static void configurePixliteOutputBarPerOutput(LX lx) {
     List<ArtNetDatagram> datagrams = new ArrayList<ArtNetDatagram>();
     List<Integer> countsPerOutput = new ArrayList<Integer>();
     // For each output, track the number of points per panel type so we can log the details to help

@@ -74,11 +74,17 @@ public class Icosahedron extends PApplet {
   private heronarts.lx.studio.LXStudio lx;
 
   public static PApplet pApplet;
-  public static final int GLOBAL_FRAME_RATE = 33;
+  public static final int GLOBAL_FRAME_RATE = 60;
 
+  public static ParameterFile lightBarParams;
   public static UIPixliteConfig pixliteConfig;
   public static UIMappingConfig mappingConfig;
   public static UILightBarConfig lightBarConfig;
+
+  static public float lightBarParamsLength;
+  static public float lightBarParamsStartMargin;
+  static public float lightBarParamsEndMargin;
+  static public int lightBarParamsLeds;
 
 
   @Override
@@ -145,6 +151,14 @@ public class Icosahedron extends PApplet {
       logger.log(Level.SEVERE, "Error creating log file: " + LOG_FILENAME_PREFIX, ex);
     }
 
+    // These are parameters we need for building the model. We bind the UI to this ParameterFile
+    // in onUIReady.
+    lightBarParams = ParameterFile.instantiateAndLoad(UILightBarConfig.filename);
+    lightBarParamsLength = Float.parseFloat(lightBarParams.getStringParameter(UILightBarConfig.LENGTH, "5.0").getString());
+    lightBarParamsLeds = Integer.parseInt(lightBarParams.getStringParameter(UILightBarConfig.LEDS, "150").getString());
+    lightBarParamsStartMargin = Float.parseFloat(lightBarParams.getStringParameter(UILightBarConfig.START_MARGIN, "0.0").getString());
+    lightBarParamsEndMargin = Float.parseFloat(lightBarParams.getStringParameter(UILightBarConfig.END_MARGIN, "0.0").getString());
+
     LXModel model = IcosahedronModel.createModel();
 
     LXStudio.Flags flags = new LXStudio.Flags();
@@ -173,7 +187,7 @@ public class Icosahedron extends PApplet {
   }
 
   public void onUIReady(LXStudio lx, LXStudio.UI ui) {
-    lightBarConfig = (UILightBarConfig) new UILightBarConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
+    lightBarConfig = (UILightBarConfig) new UILightBarConfig(lx.ui, lx, lightBarParams).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     mappingConfig = (UIMappingConfig) new UIMappingConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     pixliteConfig = (UIPixliteConfig) new UIPixliteConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
 

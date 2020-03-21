@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import heronarts.lx.studio.LXStudio;
+import noomechanism.icosahedron.ui.UILightBarConfig;
 import org.jengineering.sjmply.PLY;
 import org.jengineering.sjmply.PLYElementList;
 import org.jengineering.sjmply.PLYFormat;
@@ -30,7 +33,7 @@ public class IcosahedronModel extends LXModel {
   public static Point3D[] vertices;
   public static Edge[] edges;
 
-  public List<LightBar> lightBars;
+  static public List<LightBar> lightBars;
 
   public static class Point3D {
     public Point3D(float x, float y, float z) {
@@ -172,6 +175,17 @@ public class IcosahedronModel extends LXModel {
     }
     vertices[11] = new Point3D(0f, -radius, 0f);
 
+    // rotate 90 degrees around X
+    // y' = y*cos q - z*sin q
+    // z' = y*sin q + z*cos q
+    // x' = x
+
+    for (Point3D p : vertices) {
+      float yOrig = p.y;
+      p.y = (float)(-p.z * Math.sin(Math.toRadians(90)) + p.y * Math.cos(Math.toRadians(90)));
+      p.z = (float)(yOrig * Math.sin(Math.toRadians(90)) + p.z * Math.cos(Math.toRadians(90)));
+    }
+
     // Edges
     // One edge from top to first row.
     int edgeNum = 0;
@@ -217,7 +231,12 @@ public class IcosahedronModel extends LXModel {
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_LIGHT_BARS; i++) {
-      LightBar lb = new LightBar(5.0f, 150, false);
+      LightBar lb = new LightBar(i,
+          Icosahedron.lightBarParamsLength,
+          Icosahedron.lightBarParamsStartMargin,
+          Icosahedron.lightBarParamsEndMargin,
+          Icosahedron.lightBarParamsLeds,
+          false);
       lb.interpolate(edges[i]);
       lightBars.add(lb);
       allPoints.addAll(lb.points);
@@ -231,7 +250,12 @@ public class IcosahedronModel extends LXModel {
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_ARCH_LIGHT_BARS; i++) {
-      LightBar lb = new LightBar(5.0f, 300, true);
+      LightBar lb = new LightBar(i,
+          Icosahedron.lightBarParamsLength,
+          Icosahedron.lightBarParamsStartMargin,
+          Icosahedron.lightBarParamsEndMargin,
+          Icosahedron.lightBarParamsLeds,
+          true);
       lb.translate(0f, 0f, i * 0.2f);
       lightBars.add(lb);
       allPoints.addAll(lb.points);

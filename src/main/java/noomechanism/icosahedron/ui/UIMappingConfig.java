@@ -38,22 +38,22 @@ public class UIMappingConfig extends UIConfig {
     int contentWidth = (int)ui.leftPane.global.getContentWidth();
     this.lx = lx;
 
-    registerStringParameter(OUTPUT1, "");
-    registerStringParameter(OUTPUT2, "");
-    registerStringParameter(OUTPUT3, "");
-    registerStringParameter(OUTPUT4, "");
-    registerStringParameter(OUTPUT5, "");
-    registerStringParameter(OUTPUT6, "");
-    registerStringParameter(OUTPUT7, "");
-    registerStringParameter(OUTPUT8, "");
-    registerStringParameter(OUTPUT9, "");
-    registerStringParameter(OUTPUT10, "");
-    registerStringParameter(OUTPUT11, "");
-    registerStringParameter(OUTPUT12, "");
-    registerStringParameter(OUTPUT13, "");
-    registerStringParameter(OUTPUT14, "");
-    registerStringParameter(OUTPUT15, "");
-    registerStringParameter(OUTPUT16, "");
+    registerStringParameter(OUTPUT1, "0,16,17");
+    registerStringParameter(OUTPUT2, "1,18");
+    registerStringParameter(OUTPUT3, "2,19,20,21");
+    registerStringParameter(OUTPUT4, "3,22,23,24");
+    registerStringParameter(OUTPUT5, "4");
+    registerStringParameter(OUTPUT6, "5,25,26,27,28,29");
+    registerStringParameter(OUTPUT7, "6");
+    registerStringParameter(OUTPUT8, "7");
+    registerStringParameter(OUTPUT9, "8");
+    registerStringParameter(OUTPUT10, "9");
+    registerStringParameter(OUTPUT11, "10");
+    registerStringParameter(OUTPUT12, "11");
+    registerStringParameter(OUTPUT13, "12");
+    registerStringParameter(OUTPUT14, "13");
+    registerStringParameter(OUTPUT15, "14");
+    registerStringParameter(OUTPUT16, "15");
 
     save();
 

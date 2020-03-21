@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class UIConfig extends UICollapsibleSection implements LXParameterListener {
+  private static final Logger logger = Logger.getLogger(UIConfig.class.getName());
   public static Map<String, UIConfig> allConfigs = new HashMap<String, UIConfig>();
 
   public ParameterFile paramFile;
@@ -39,6 +41,25 @@ public class UIConfig extends UICollapsibleSection implements LXParameterListene
     allConfigs.put(title, this);
   }
 
+  /**
+   * Creates a UIConfig object with backing json file where the ParameterFile has already been
+   * pre-loaded.  UIConfigs are instantiated after the model has been created and LX Studio has
+   * been instantiated.
+   * @param ui
+   * @param title
+   * @param filename
+   * @param paramFile
+   */
+  public UIConfig(final LXStudio.UI ui, String title, String filename, ParameterFile paramFile) {
+    super(ui, 0, 0, ui.leftPane.global.getContentWidth(), 200);
+    this.title = title;
+    this.filename = filename;
+    this.paramFile = paramFile;
+    // Keep track of all UIConfigs so we have a handy reference for exposing them via
+    // OSC.  Eventually helpful for OSCQuery.
+    allConfigs.put(title, this);
+  }
+
   static public Map<String, UIConfig> getAllConfigs() {
     return allConfigs;
   }
@@ -52,9 +73,9 @@ public class UIConfig extends UICollapsibleSection implements LXParameterListene
     try {
       paramFile.load();
     } catch (PropertyFile.NotFound nfex) {
-      System.out.println(filename + ", property not found.");
+      // System.out.println(filename + ", property not found.");
     } catch (IOException ioex) {
-      System.err.println(filename + " not found, will be created.");
+      logger.info(filename + " not found, will be created.");
     }
   }
 

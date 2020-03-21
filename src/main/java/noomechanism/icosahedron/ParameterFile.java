@@ -30,6 +30,28 @@ public class ParameterFile {
     props = new PropertyFile(filename);
   }
 
+  /**
+   * Instantiates and loads a ParameterFile instance.  This will attempt to
+   * load the underlying PropertyFile if it exists, otherwise an empty
+   * ParameterFile will be instantiated.  Values will be initialized with
+   * defaults passed into getter methods.
+   * @param filename The filename storing the properties.
+   * @return An instantiated ParameterFile that has been loaded and initialized if it
+   * exists.  Otherwise an empty placeholder.
+   */
+  static public ParameterFile instantiateAndLoad(String filename) {
+    ParameterFile pFile = new ParameterFile(filename);
+    try {
+      pFile.load();
+      return pFile;
+    } catch (IOException ioex) {
+      // File not found, will be initialized with defaults and then should be saved.
+    } catch (PropertyFile.NotFound pfnfex) {
+      // Property not found, will be created.
+    }
+    return null;
+  }
+
   public boolean exists() {
     return props.exists();
   }
@@ -133,10 +155,7 @@ public class ParameterFile {
   public StringParameter getStringParameter(String name, String value) {
     StringParameter sp = (StringParameter)params.get(name);
     if (sp == null) {
-      // System.out.println("Did not find existing, creating new.");
       sp = newStringParameter(name, value);
-    } else {
-      // System.out.println("Found existing StringParameter.");
     }
     return sp;
   }
