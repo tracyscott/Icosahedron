@@ -154,24 +154,30 @@ public class IcosahedronModel extends LXModel {
 
     vertices[0] = new Point3D(0f, radius, 0f);
     // top band of 5 points
-    double latitude = Math.toRadians(26.57);  // ISO inclination
+    double latitudeDegrees = 26.57;
+    double latitude = Math.toRadians(latitudeDegrees);
+    double longitudeIncr = 36.0;
+    double ninetyRadians = Math.toRadians(90f);
 
-    // 3D graphics converted to Mathematical spherical coordinates
-    // X is is -Z, Y is X, Z is Y
+    // https://en.wikipedia.org/wiki/Spherical_coordinate_system
+    // 3D graphics converted to Mathematical spherical coordinates (Physics model on the page).
+    // X is is -Z, Y is X, Z is Y.
+    // our construction latitude is 90 degrees - theta degrees from theta on wikipedia page.
     for (int i = 0; i < 5; i++) {
-      double polarAngle = Math.toRadians(i * 36.0 * 2.0);  // ISO azimuth
+      double polarAngle = Math.toRadians(i * longitudeIncr * 2.0);  // ISO azimuth
       vertices[i+1] = new Point3D(
-          (float)(radius * Math.sin(latitude) * Math.sin(polarAngle)),
-          (float)(radius * Math.sin(latitude)),
-          -(float)(radius * Math.sin(latitude) * Math.cos(polarAngle)));
+          (float)(radius * Math.sin(ninetyRadians - latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.cos(ninetyRadians - latitude)),
+          -(float)(radius * Math.sin(ninetyRadians - latitude) * Math.cos(polarAngle)));
     }
-    latitude = Math.toRadians(-26.57);
+    // Lower hemisphere points.
+    latitude = Math.toRadians(-latitudeDegrees);
     for (int i = 0; i < 5; i++) {
-      double polarAngle = Math.toRadians(i * 36.0 * 2.0);  // ISO azimuth
+      double polarAngle = Math.toRadians(i * longitudeIncr * 2.0 + longitudeIncr);  // ISO azimuth
       vertices[i+6] = new Point3D(
-          (float)(radius * Math.sin(latitude) * Math.sin(polarAngle)),
-          (float)(radius * Math.sin(latitude)),
-          -(float)(radius * Math.sin(latitude) * Math.cos(polarAngle)));
+          (float)(radius * Math.sin(ninetyRadians - latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.cos(ninetyRadians - latitude)),
+          -(float)(radius * Math.sin(ninetyRadians - latitude) * Math.cos(polarAngle)));
     }
     vertices[11] = new Point3D(0f, -radius, 0f);
 
@@ -179,7 +185,6 @@ public class IcosahedronModel extends LXModel {
     // y' = y*cos q - z*sin q
     // z' = y*sin q + z*cos q
     // x' = x
-
     for (Point3D p : vertices) {
       float yOrig = p.y;
       p.y = (float)(-p.z * Math.sin(Math.toRadians(90)) + p.y * Math.cos(Math.toRadians(90)));
@@ -201,16 +206,16 @@ public class IcosahedronModel extends LXModel {
 
     int offset = 5;
     // Edges from top row to bottom row alternate vertices.
-    edges[edgeNum++] = new Edge(vertices[1], vertices[4+offset]);
-    edges[edgeNum++] = new Edge(vertices[offset+4], vertices[2]);
-    edges[edgeNum++] = new Edge(vertices[2], vertices[5+offset]);
-    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[3]);
-    edges[edgeNum++] = new Edge(vertices[3], vertices[1+offset]);
-    edges[edgeNum++] = new Edge(vertices[1+offset], vertices[4]);
-    edges[edgeNum++] = new Edge(vertices[4], vertices[2+offset]);
-    edges[edgeNum++] = new Edge(vertices[2+offset], vertices[5]);
-    edges[edgeNum++] = new Edge(vertices[5], vertices[3+offset]);
-    edges[edgeNum++] = new Edge(vertices[3+offset], vertices[1]);
+    edges[edgeNum++] = new Edge(vertices[1], vertices[1+offset]);
+    edges[edgeNum++] = new Edge(vertices[offset+1], vertices[2]);
+    edges[edgeNum++] = new Edge(vertices[2], vertices[2+offset]);
+    edges[edgeNum++] = new Edge(vertices[2+offset], vertices[3]);
+    edges[edgeNum++] = new Edge(vertices[3], vertices[3+offset]);
+    edges[edgeNum++] = new Edge(vertices[3+offset], vertices[4]);
+    edges[edgeNum++] = new Edge(vertices[4], vertices[4+offset]);
+    edges[edgeNum++] = new Edge(vertices[4+offset], vertices[5]);
+    edges[edgeNum++] = new Edge(vertices[5], vertices[5+offset]);
+    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[1]);
 
     // One edge between all vertices bottom row
     edges[edgeNum++] = new Edge(vertices[6], vertices[7]);
@@ -227,7 +232,7 @@ public class IcosahedronModel extends LXModel {
   }
 
   public static IcosahedronModel createModel() {
-    unitIcosahedron = createIcosahedronVerticesEdges(6.0f);
+    unitIcosahedron = createIcosahedronVerticesEdges(4.75f);
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_LIGHT_BARS; i++) {
