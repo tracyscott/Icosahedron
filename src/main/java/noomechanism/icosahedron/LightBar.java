@@ -15,7 +15,7 @@ public class LightBar {
   public int numPoints;
   public boolean arch;
   public int barNum;
-  public List<LXPoint> points;
+  public List<LBPoint> points;
 
   public LightBar(int barNum, float length, float startMargin, float endMargin, int numPoints, boolean arch) {
     this.barNum = barNum;
@@ -25,16 +25,19 @@ public class LightBar {
     this.startMargin = startMargin;
     this.endMargin = endMargin;
 
-    points = new ArrayList<LXPoint>(numPoints);
+    points = new ArrayList<LBPoint>(numPoints);
     for (int i = 0; i < numPoints; i++) {
       if (!arch) {
-        points.add(new LXPoint(((float) i / (float) numPoints) * (length - (startMargin+endMargin)) + startMargin, 0f, 0f));
+        double xPos = ((float) i / (float) numPoints) * (length - (startMargin+endMargin)) + startMargin;
+        points.add(new LBPoint(this, xPos, 0f, 0f, xPos));
       } else {
         float archRadius = 2.0f; // 2 meter radius arch
         float tPos = (float) i / (float) numPoints;
         // For Arch right to left we want tPos from 180 degrees to 0 degrees or
+        /*
         points.add(new LXPoint(Math.cos(Math.toRadians(180f - tPos * 180f)) * length ,
             Math.sin(Math.toRadians(180f - tPos * 180f)) * length, 0f));
+            */
       }
     }
   }
@@ -64,7 +67,7 @@ public class LightBar {
 
     // TODO(tracy): compute startMargin and endMargin based on orientation.
     double vLength = Math.sqrt((double)((lengthX*lengthX) + (lengthY*lengthY) + (lengthZ * lengthZ)));
-    logger.info("Edge length: " + vLength);
+    logger.info("Computed edge length: " + vLength);
 
     for (int i = 0; i < numPoints; i++) {
       float tParam = (float) i / (float) (numPoints - 1);
@@ -79,8 +82,8 @@ public class LightBar {
    * order in which we create the points.
    * @return Points in the order they are on the data line.
    */
-  public List<LXPoint> pointsInWireOrder(){
-    List<LXPoint> pointsWireOrder = new ArrayList<LXPoint>(points);
+  public List<LBPoint> pointsInWireOrder(){
+    List<LBPoint> pointsWireOrder = new ArrayList<LBPoint>(points);
     return pointsWireOrder;
   }
 }

@@ -169,14 +169,14 @@ public class Output {
 
     int lightBarNum = 0;
     for (LightBar lightBar : IcosahedronModel.model.lightBars) {
-      List<LXPoint> pointsWireOrder = lightBar.pointsInWireOrder();
+      List<LBPoint> pointsWireOrder = lightBar.pointsInWireOrder();
       int[] thisUniverseIndices = new int[150];  // 170f
       int numUniversesThisWire = (int)Math.ceil((float)pointsWireOrder.size() / 170f);
       int univStartNum = lightBarNum * numUniversesThisWire;
       int lastUniverseCount = pointsWireOrder.size() - 150 * (numUniversesThisWire - 1);
       int curIndex = 0;
       int curUnivOffset = 0;
-      for (LXPoint pt : pointsWireOrder) {
+      for (LBPoint pt : pointsWireOrder) {
         thisUniverseIndices[curIndex] = pt.index;
         curIndex++;
         if (curIndex == 170 || (curUnivOffset == numUniversesThisWire - 1 && curIndex == lastUniverseCount)) {

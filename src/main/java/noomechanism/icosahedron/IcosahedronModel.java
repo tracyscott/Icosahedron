@@ -181,14 +181,16 @@ public class IcosahedronModel extends LXModel {
     }
     vertices[11] = new Point3D(0f, -radius, 0f);
 
-    // rotate 90 degrees around X
+    // rotate 100.8 degrees around X
     // y' = y*cos q - z*sin q
     // z' = y*sin q + z*cos q
     // x' = x
+    // TODO(tracy): Properly compute this, heh.
+    float xAxisRotate = 100.8f;
     for (Point3D p : vertices) {
       float yOrig = p.y;
-      p.y = (float)(-p.z * Math.sin(Math.toRadians(90)) + p.y * Math.cos(Math.toRadians(90)));
-      p.z = (float)(yOrig * Math.sin(Math.toRadians(90)) + p.z * Math.cos(Math.toRadians(90)));
+      p.y = (float)(-p.z * Math.sin(Math.toRadians(xAxisRotate)) + p.y * Math.cos(Math.toRadians(xAxisRotate)));
+      p.z = (float)(yOrig * Math.sin(Math.toRadians(xAxisRotate)) + p.z * Math.cos(Math.toRadians(xAxisRotate)));
     }
 
     // Edges
@@ -232,6 +234,7 @@ public class IcosahedronModel extends LXModel {
   }
 
   public static IcosahedronModel createModel() {
+    // TODO(tracy): 4.75f radius should be computed from Icosahedron.lightBarParamsLength.
     unitIcosahedron = createIcosahedronVerticesEdges(4.75f);
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
