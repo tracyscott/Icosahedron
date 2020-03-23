@@ -74,10 +74,32 @@ public class IcosahedronModel extends LXModel {
       return bars;
     }
 
+    public boolean isAdjacent(Face f) {
+      if (f.a == a || f.b == a || f.c == a) return true;
+      if (f.a == b || f.b == b || f.c == b) return true;
+      if (f.a == c || f.b == c || f.c == c) return true;
+      return false;
+    }
+
+    public boolean isFaceIdAdjacent(int faceId) {
+      Face f = faces[faceId];
+      return isAdjacent(f);
+    }
+
+    public void findAdjacentFaces() {
+      for (int i = 0; i < 20; i++) {
+        Face f = faces[i];
+        if (f.faceNum == faceNum) continue;
+        if (isAdjacent(f))
+          adjacentFaces.add(f);
+      }
+    }
+
     public int faceNum;
     public Edge a;
     public Edge b;
     public Edge c;
+    public List<Face> adjacentFaces = new ArrayList();
   }
 
   /**
@@ -235,6 +257,11 @@ public class IcosahedronModel extends LXModel {
     faceNum++;
     faces[faceNum] = new Face(faceNum, edges[24], edges[29], edges[25]);
     faceNum++;
+
+    // Populate our adjacent faces list.
+    for (int i = 0; i < faceNum; i++) {
+      faces[i].findAdjacentFaces();
+    }
 
     return vertices;
   }
