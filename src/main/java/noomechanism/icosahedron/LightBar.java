@@ -75,6 +75,8 @@ public class LightBar {
       points.get(i).y = startY + lengthY * tParam;
       points.get(i).z = startZ + lengthZ * tParam;
     }
+
+    edge.lightBar = this;
   }
 
   /**

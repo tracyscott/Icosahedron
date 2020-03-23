@@ -10,7 +10,7 @@ import noomechanism.icosahedron.LightBar;
 
 public class BarSelector extends LXPattern {
 
-  DiscreteParameter barNum = new DiscreteParameter("BarNum", 0, 0, IcosahedronModel.NUM_LIGHT_BARS+1);
+  DiscreteParameter barNum = new DiscreteParameter("BarNum", 0, 0, IcosahedronModel.NUM_LIGHT_BARS);
 
   public BarSelector(LX lx) {
     super(lx);

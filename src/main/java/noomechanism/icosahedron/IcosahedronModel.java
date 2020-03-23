@@ -32,6 +32,7 @@ public class IcosahedronModel extends LXModel {
   public static IcosahedronModel model;
   public static Point3D[] vertices;
   public static Edge[] edges;
+  public static Face[] faces;
 
   static public List<LightBar> lightBars;
 
@@ -54,90 +55,29 @@ public class IcosahedronModel extends LXModel {
 
     public Point3D a;
     public Point3D b;
+    public LightBar lightBar;
   }
 
-  // Icosahedron vertices via
-  // http://rbwhitaker.wikidot.com/index-and-vertex-buffers
-  // This didn't work very well, leaving it for reference.  Instead
-  // we build it through spherical coordinates in another method.
-  // Will delete this soon.
-  //
-  public static Point3D[] brokenCreate(float scale) {
-    // A temporary array, with 12 items in it, because
-    // the icosahedron has 12 distinct vertices
-    vertices = new Point3D[12];
-    edges = new Edge[30];
+  /**
+   * Represents one triangular face.
+   */
+  public static class Face {
+    public Face(int faceNum, Edge a, Edge b, Edge c) {
+      this.faceNum = faceNum; this.a = a; this.b = b; this.c = c;
+    }
 
-    // vertex position and color information for icosahedron
-    vertices[0] = new Point3D(-0.26286500f, 0.0000000f, 0.42532500f);
-    vertices[0].scale(scale, scale, scale);
-    vertices[1] = new Point3D(0.26286500f, 0.0000000f, 0.42532500f);
-    vertices[1].scale(scale, scale, scale);
-    vertices[2] = new Point3D(-0.26286500f, 0.0000000f, -0.42532500f);
-    vertices[2].scale(scale, scale, scale);
-    vertices[3] = new Point3D(0.26286500f, 0.0000000f, -0.42532500f);
-    vertices[3].scale(scale, scale, scale);
-    vertices[4] = new Point3D(0.0000000f, 0.42532500f, 0.26286500f);
-    vertices[4].scale(scale, scale, scale);
-    vertices[5] = new Point3D(0.0000000f, 0.42532500f, -0.26286500f);
-    vertices[5].scale(scale, scale, scale);
-    vertices[6] = new Point3D(0.0000000f, -0.42532500f, 0.26286500f);
-    vertices[6].scale(scale, scale, scale);
-    vertices[7] = new Point3D(0.0000000f, -0.42532500f, -0.26286500f);
-    vertices[7].scale(scale, scale, scale);
-    vertices[8] = new Point3D(0.42532500f, 0.26286500f, 0.0000000f);
-    vertices[8].scale(scale, scale, scale);
-    vertices[9] = new Point3D(-0.42532500f, 0.26286500f, 0.0000000f);
-    vertices[9].scale(scale, scale, scale);
-    vertices[10] = new Point3D(0.42532500f, -0.26286500f, 0.0000000f);
-    vertices[10].scale(scale, scale, scale);
-    vertices[11] = new Point3D(-0.42532500f, -0.26286500f, 0.0000000f);
-    vertices[11].scale(scale, scale, scale);
+    public List<LightBar> getLightBars() {
+      List<LightBar> bars = new ArrayList<LightBar>();
+      bars.add(a.lightBar);
+      bars.add(b.lightBar);
+      bars.add(c.lightBar);
+      return bars;
+    }
 
-    // Build edges
-    edges[0] = new Edge(vertices[0], vertices[6]);
-    edges[1] = new Edge(vertices[6], vertices[1]);
-    edges[2] = new Edge(vertices[0], vertices[11]);
-    edges[3] = new Edge(vertices[11], vertices[6]);
-    edges[4] = new Edge(vertices[1], vertices[4]);
-    edges[5] = new Edge(vertices[4], vertices[0]);
-    edges[6] = new Edge(vertices[1], vertices[8]);
-    edges[7] = new Edge(vertices[8], vertices[4]);
-    edges[8] = new Edge(vertices[1], vertices[10]);
-    edges[9] = new Edge(vertices[10], vertices[8]);
-    edges[10] = new Edge(vertices[2], vertices[5]);
-    edges[11] = new Edge(vertices[5], vertices[3]);
-    edges[12] = new Edge(vertices[2], vertices[9]);
-    edges[13] = new Edge(vertices[9], vertices[5]);
-    edges[14] = new Edge(vertices[2], vertices[11]);
-    edges[15] = new Edge(vertices[11], vertices[9]);
-    edges[16] = new Edge(vertices[3], vertices[7]);
-    edges[17] = new Edge(vertices[7], vertices[2]);
-    edges[18] = new Edge(vertices[3], vertices[10]);
-    edges[19] = new Edge(vertices[10], vertices[7]);
-    edges[20] = new Edge(vertices[4], vertices[8]);
-    edges[21] = new Edge(vertices[8], vertices[5]);
-    edges[22] = new Edge(vertices[4], vertices[9]);
-    edges[23] = new Edge(vertices[9], vertices[0]);
-    // already above at 21 edges[25] = new Edge(vertices[5], vertices[8]);
-    edges[24] = new Edge(vertices[8], vertices[3]);
-    // already at 13 edges[] = new Edge(vertices[5], vertices[9]);
-    // already at 22 edges[26] = new Edge(vertices[9], vertices[4]);
-    edges[25] = new Edge(vertices[6], vertices[10]);
-    edges[26] = new Edge(vertices[10], vertices[1]);
-    // 6 and 11 at 3
-    edges[27] = new Edge(vertices[11], vertices[7]);
-    // 7 and 10 at 19
-    // 10 and 6 at 25
-    // 7 and 11 at 27
-    // 2 and 11 at 14
-    // 8 and 10 at 9
-    // 10 and 3 at 18
-    edges[28] = new Edge(vertices[9], vertices[11]);
-    // 11 and 0 at 2
-    edges[29] = new Edge(vertices[0], vertices[6]);
-
-    return vertices;
+    public int faceNum;
+    public Edge a;
+    public Edge b;
+    public Edge c;
   }
 
   /**
@@ -151,6 +91,7 @@ public class IcosahedronModel extends LXModel {
   public static Point3D[] createIcosahedronVerticesEdges(float radius) {
     vertices = new Point3D[12];
     edges = new Edge[30];
+    faces = new Face[20];
 
     vertices[0] = new Point3D(0f, radius, 0f);
     // top band of 5 points
@@ -230,6 +171,71 @@ public class IcosahedronModel extends LXModel {
     for (int i = 0; i < 5; i++) {
       edges[edgeNum++] = new Edge(vertices[i+6], vertices[11]);
     }
+
+    int faceNum = 0;
+    // Top cone
+    faces[faceNum] = new Face(faceNum, edges[0], edges[5], edges[1]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[1], edges[6], edges[2]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[2], edges[7], edges[3]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[3], edges[8], edges[4]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[4], edges[9], edges[0]);
+    faceNum++;
+
+    // Body is 10 faces.  For top row points, we take the edge between
+    // the top row and the 36degree shifted point on the bottom row.
+    // The edge between that bottom row point and the adjacent top row point, and
+    // finally another edge from the new top row point back to the original point.
+    // Next, starting at the bottom row point, we take the edge to the adjacent
+    // bottom row point, and then the edge to the previous top row point, and finally
+    // the edge from that top row point back down to the original bottom row point.
+    //
+    // i.e. in the diagram below the first face is AB,BC,CA and the second face is
+    // BD, DC, CB.  We use the standard counter-clockwise vertex order winding.
+    //
+    //  A --------  C     C  /\
+    //     \    /           /  \
+    //      \  /           /    \
+    //    B  \/         B -------- D
+    //
+    //int firstTopRingPt =
+
+    faces[faceNum] = new Face(faceNum, edges[10], edges[11], edges[5]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[20], edges[12], edges[11]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[12], edges[13], edges[6]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[21], edges[14], edges[13]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[14], edges[15], edges[7]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[22], edges[15], edges[16]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[16], edges[17], edges[8]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[23], edges[17], edges[18]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[18], edges[19], edges[9]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[24], edges[10], edges[19]);
+    faceNum++;
+
+    // bottom cone
+    faces[faceNum] = new Face(faceNum, edges[20], edges[25], edges[26]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[21], edges[26], edges[27]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[22], edges[27], edges[28]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[23], edges[28], edges[29]);
+    faceNum++;
+    faces[faceNum] = new Face(faceNum, edges[24], edges[29], edges[25]);
+    faceNum++;
+
     return vertices;
   }
 
