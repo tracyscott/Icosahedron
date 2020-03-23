@@ -43,13 +43,12 @@ public class ParameterFile {
     ParameterFile pFile = new ParameterFile(filename);
     try {
       pFile.load();
-      return pFile;
     } catch (IOException ioex) {
       // File not found, will be initialized with defaults and then should be saved.
     } catch (PropertyFile.NotFound pfnfex) {
       // Property not found, will be created.
     }
-    return null;
+    return pFile;
   }
 
   public boolean exists() {
