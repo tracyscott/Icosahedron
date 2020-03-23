@@ -1,6 +1,7 @@
 package noomechanism.icosahedron;
 
 import com.google.common.reflect.ClassPath;
+import heronarts.lx.color.LXColor;
 import noomechanism.icosahedron.ui.UILightBarConfig;
 import noomechanism.icosahedron.ui.UIMappingConfig;
 import noomechanism.icosahedron.ui.UIPixliteConfig;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import noomechanism.icosahedron.ui.UIPreviewComponents;
 import processing.core.PApplet;
 
 public class Icosahedron extends PApplet {
@@ -76,10 +78,12 @@ public class Icosahedron extends PApplet {
   public static PApplet pApplet;
   public static final int GLOBAL_FRAME_RATE = 60;
 
+  static public PreviewComponents.Axes axes;
   public static ParameterFile lightBarParams;
   public static UIPixliteConfig pixliteConfig;
   public static UIMappingConfig mappingConfig;
   public static UILightBarConfig lightBarConfig;
+  public static UIPreviewComponents previewComponents;
 
   static public float lightBarParamsLength;
   static public float lightBarParamsStartMargin;
@@ -187,6 +191,9 @@ public class Icosahedron extends PApplet {
   }
 
   public void onUIReady(LXStudio lx, LXStudio.UI ui) {
+    axes = new PreviewComponents.Axes();
+    lx.ui.preview.addComponent(axes);
+    previewComponents = (UIPreviewComponents) new UIPreviewComponents(lx.ui).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     lightBarConfig = (UILightBarConfig) new UILightBarConfig(lx.ui, lx, lightBarParams).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     mappingConfig = (UIMappingConfig) new UIMappingConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     pixliteConfig = (UIPixliteConfig) new UIPixliteConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
