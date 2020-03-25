@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1585170487834,
+  "timestamp": 1585174539764,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -65494,
+    "modulationColor": -16580353,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -244,7 +244,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 1,
+        "patternIndex": 2,
         "patterns": [
           {
             "id": 95,
@@ -322,7 +322,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.6054649904868744
+                    "basis": 0.22294889144585706
                   }
                 ],
                 "modulations": [
@@ -352,6 +352,37 @@
                 "triggers": []
               }
             }
+          },
+          {
+            "id": 149,
+            "class": "noomechanism.icosahedron.patterns.Collision",
+            "modulationColor": -16711748,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "Collision",
+              "Move": 0.5,
+              "Explode": 0.3,
+              "slope": 2.8452999476835132
+            },
+            "children": {
+              "modulation": {
+                "id": 150,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -16128,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
           }
         ]
       }
@@ -376,8 +407,8 @@
         "camera": {
           "active": false,
           "radius": 24.607599710216633,
-          "theta": 7.427682629092682,
-          "phi": 0.3439502095095459,
+          "theta": 6.381885104639481,
+          "phi": 0.3710329046982218,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -386,8 +417,8 @@
           {
             "active": false,
             "radius": 24.607599710216633,
-            "theta": 7.427682629092682,
-            "phi": 0.3439502095095459,
+            "theta": 6.381885104639481,
+            "phi": 0.3710329046982218,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
