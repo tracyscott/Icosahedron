@@ -2,6 +2,8 @@ package noomechanism.icosahedron.patterns;
 
 import heronarts.lx.LX;
 import heronarts.lx.LXPattern;
+import heronarts.lx.color.LXColor;
+import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.CompoundParameter;
 import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.LightBar;
@@ -19,8 +21,12 @@ public class BarScanner extends LXPattern {
 
   @Override
   public void run(double deltaMs) {
+    for (LXPoint pt : lx.getModel().points) {
+      colors[pt.index] = LXColor.rgba(0,0,0, 255);
+    }
     for (LightBar lb : IcosahedronModel.lightBars) {
-      LightBarRender1D.renderTriangle(colors, lb, pos.getValuef(), slope.getValuef());
+      LightBarRender1D.renderTriangle(colors, lb, pos.getValuef(), slope.getValuef(), LXColor.Blend.ADD);
+      LightBarRender1D.randomGray(colors, lb, LXColor.Blend.MULTIPLY);
     }
   }
 }

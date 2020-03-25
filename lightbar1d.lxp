@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1585168438792,
+  "timestamp": 1585170487834,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -16770049,
+    "modulationColor": -65494,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -286,7 +286,7 @@
             "parameters": {
               "label": "BarScanner",
               "pos": 0.0,
-              "slope": 1.700659962009638
+              "slope": 1.100779975418001
             },
             "children": {
               "modulation": {
@@ -322,7 +322,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.5676143169322997
+                    "basis": 0.6054649904868744
                   }
                 ],
                 "modulations": [
@@ -376,8 +376,8 @@
         "camera": {
           "active": false,
           "radius": 24.607599710216633,
-          "theta": 6.451184918706322,
-          "phi": 0.6283185089906468,
+          "theta": 7.427682629092682,
+          "phi": 0.3439502095095459,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -386,8 +386,8 @@
           {
             "active": false,
             "radius": 24.607599710216633,
-            "theta": 6.451184918706322,
-            "phi": 0.6283185089906468,
+            "theta": 7.427682629092682,
+            "phi": 0.3439502095095459,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

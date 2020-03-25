@@ -13,11 +13,11 @@ import java.util.logging.Logger;
 public class LightBarRender1D {
   private static final Logger logger = Logger.getLogger(LightBarRender1D.class.getName());
 
-  static public void randomGray(int colors[], LightBar lightBar) {
+  static public void randomGray(int colors[], LightBar lightBar, LXColor.Blend blend) {
     Random r = new Random();
     for (LBPoint pt : lightBar.points) {
       int randomValue = r.nextInt(256);
-      colors[pt.index] = LXColor.rgba(randomValue, randomValue, randomValue, 255);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(randomValue, randomValue, randomValue, 255), blend);
     }
   }
 
@@ -32,11 +32,11 @@ public class LightBarRender1D {
    * @param t Normalized (0.0-1.0) x position.
    * @param slope The slope of the gradient.  Not normalized currently.
    */
-  static public void renderTriangle(int colors[], LightBar lightBar, float t, float slope) {
+  static public void renderTriangle(int colors[], LightBar lightBar, float t, float slope, LXColor.Blend blend) {
     double peakPos = t * lightBar.length;
     for (LBPoint pt : lightBar.points) {
       int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0);
-      colors[pt.index] = LXColor.rgba(gray, gray, gray, 255);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
     }
   }
 
