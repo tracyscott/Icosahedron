@@ -10,11 +10,11 @@ import heronarts.lx.model.LXPoint;
 public class LBPoint extends LXPoint {
 
   public LightBar lightBar;
-  public double lbx;
+  public float lbx;
 
   public LBPoint(LightBar lightBar, double x, double y, double z, double lbx) {
     super(x, y, z);
     this.lightBar = lightBar;
-    this.lbx = lbx;
+    this.lbx = (float)lbx;
   }
 }

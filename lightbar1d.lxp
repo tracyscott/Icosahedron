@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1584937981270,
+  "timestamp": 1585168438792,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -65333,
+    "modulationColor": -16770049,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -244,7 +244,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 0,
+        "patternIndex": 1,
         "patterns": [
           {
             "id": 95,
@@ -273,6 +273,85 @@
                 "triggers": []
               }
             }
+          },
+          {
+            "id": 111,
+            "class": "noomechanism.icosahedron.patterns.BarScanner",
+            "modulationColor": -8716033,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": true,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "BarScanner",
+              "pos": 0.0,
+              "slope": 1.700659962009638
+            },
+            "children": {
+              "modulation": {
+                "id": 112,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -12058880,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [
+                  {
+                    "id": 129,
+                    "class": "heronarts.lx.modulator.VariableLFO",
+                    "modulationColor": -7077633,
+                    "internal": {},
+                    "parameters": {
+                      "label": "LFO",
+                      "running": true,
+                      "trigger": false,
+                      "loop": true,
+                      "tempoSync": false,
+                      "tempoMultiplier": 5,
+                      "tempoLock": true,
+                      "clockMode": 0,
+                      "periodFast": 4155.837344665151,
+                      "periodSlow": 10000.0,
+                      "wave": 0,
+                      "skew": 0.0,
+                      "shape": 0.0,
+                      "phase": 0.0,
+                      "exp": 0.0
+                    },
+                    "children": {},
+                    "basis": 0.5676143169322997
+                  }
+                ],
+                "modulations": [
+                  {
+                    "source": {
+                      "id": 129,
+                      "path": "/modulation/modulator/1"
+                    },
+                    "target": {
+                      "componentId": 111,
+                      "parameterPath": "pos",
+                      "path": "/pos"
+                    },
+                    "id": 130,
+                    "class": "heronarts.lx.parameter.LXCompoundModulation",
+                    "modulationColor": -9174785,
+                    "internal": {},
+                    "parameters": {
+                      "label": "LX",
+                      "enabled": true,
+                      "Polarity": 0,
+                      "Range": 1.0
+                    },
+                    "children": {}
+                  }
+                ],
+                "triggers": []
+              }
+            }
           }
         ]
       }
@@ -296,9 +375,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 28.408734177840252,
-          "theta": 3.131092685618265,
-          "phi": 1.2783031979076311,
+          "radius": 24.607599710216633,
+          "theta": 6.451184918706322,
+          "phi": 0.6283185089906468,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -306,9 +385,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 28.408734177840252,
-            "theta": 3.131092685618265,
-            "phi": 1.2783031979076311,
+            "radius": 24.607599710216633,
+            "theta": 6.451184918706322,
+            "phi": 0.6283185089906468,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

@@ -3,6 +3,7 @@ package noomechanism.icosahedron.ui;
 import heronarts.lx.LX;
 import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.studio.LXStudio;
+import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.ParameterFile;
 
 public class UILightBarConfig extends UIConfig {
@@ -80,6 +81,8 @@ public class UILightBarConfig extends UIConfig {
     // Only reconfigure if a parameter changed.
     if (parameterChanged) {
       // TODO(tracy): Rebuild the model and update LXStudio
+      // NOTE(tracy): This isn't working.
+      // lx.setModel(IcosahedronModel.createModel());
     }
   }
 }

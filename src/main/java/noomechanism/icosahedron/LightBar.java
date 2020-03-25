@@ -28,7 +28,7 @@ public class LightBar {
     points = new ArrayList<LBPoint>(numPoints);
     for (int i = 0; i < numPoints; i++) {
       if (!arch) {
-        double xPos = ((float) i / (float) numPoints) * (length - (startMargin+endMargin)) + startMargin;
+        double xPos = ((float) i / (float) (numPoints-1)) * (length - (startMargin+endMargin)) + startMargin;
         points.add(new LBPoint(this, xPos, 0f, 0f, xPos));
       } else {
         float archRadius = 2.0f; // 2 meter radius arch
