@@ -57,7 +57,7 @@ public class UILightBarConfig extends UIConfig {
    * distance from the edge of the lightbar to the first LED.
    * @return Distance from edge of lightbar to first LED in feet.
    */
-  public float getStartMagin() {
+  public float getStartMargin() {
     return Float.parseFloat(getStringParameter(START_MARGIN).getString());
   }
 

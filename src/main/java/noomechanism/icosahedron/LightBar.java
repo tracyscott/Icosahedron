@@ -70,10 +70,13 @@ public class LightBar {
     logger.info("Computed edge length: " + vLength);
 
     for (int i = 0; i < numPoints; i++) {
-      float tParam = (float) i / (float) (numPoints - 1);
+      float startMargin = Icosahedron.lightBarParamsStartMargin/length;
+      float endMargin = Icosahedron.lightBarParamsEndMargin/length;
+      float tParam = startMargin + (1.0f - (startMargin + endMargin)) * (float) i / (float) (numPoints - 1);
       points.get(i).x = startX + lengthX * tParam;
       points.get(i).y = startY + lengthY * tParam;
       points.get(i).z = startZ + lengthZ * tParam;
+      points.get(i).lbx = tParam * length;
     }
 
     edge.lightBar = this;
