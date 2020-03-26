@@ -6,12 +6,13 @@ import heronarts.lx.parameter.CompoundParameter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Utility base class for patterns that are based on animation phases.
  */
 public abstract class AnimPattern extends LXPattern {
-
+  private static final Logger logger = Logger.getLogger(AnimPattern.class.getName());
   protected float time = 0.0f;
   protected float curPhaseDuration = 0.0f;
 
@@ -49,18 +50,14 @@ public abstract class AnimPattern extends LXPattern {
    * @param deltaMs
    */
   public void run(double deltaMs) {
-    boolean resetTime = false;
+    boolean resetTime;
     curPhaseDuration = phaseDurations.get(curAnimPhase).getValuef();
-    float percentDone = time / curPhaseDuration;
 
-    // First we iterate over all the points and potentially update intensity and kelvins.  Note, that
-    // some calls to assignLightColor don't result in an update.  For example, if we are just in an
-    // animation phase that is holding a value.
     runPhase(curAnimPhase, deltaMs);
     resetTime = updateAnimPhase();
     if (resetTime) {
       time = 0.0f;
-      System.out.println("Changing anim phase to: " + phaseNames.get(curAnimPhase));
+      logger.info("Changing anim phase to: " + phaseNames.get(curAnimPhase));
     } else {
       time += deltaMs / 1000f;
     }
