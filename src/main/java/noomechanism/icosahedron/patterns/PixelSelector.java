@@ -12,7 +12,7 @@ import noomechanism.icosahedron.LightBar;
 public class PixelSelector extends LXPattern {
 
   DiscreteParameter barNum = new DiscreteParameter("BarNum", 0, 0, IcosahedronModel.NUM_LIGHT_BARS);
-  DiscreteParameter pixNum = new DiscreteParameter("PixNum", 0, 0, 149);
+  DiscreteParameter pixNum = new DiscreteParameter("PixNum", 0, 0, 150);
   BooleanParameter caps = new BooleanParameter("caps", false).setDescription("Debugging caps");
 
   public PixelSelector(LX lx) {
