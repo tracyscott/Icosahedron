@@ -30,11 +30,13 @@ public class LightBarRender1D {
    * @param lightBar The lightbar to render on.
    * @param t Normalized (0.0-1.0) x position.
    * @param slope The slope of the gradient.  Not normalized currently.
+   * @param maxValue Maximum value of the step function (0.0 - 1.0)
+   * @param blend Blend mode for writing into the colors array.
    */
-  static public void renderTriangle(int colors[], LightBar lightBar, float t, float slope, LXColor.Blend blend) {
+  static public void renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend) {
     double peakPos = t * lightBar.length;
     for (LBPoint pt : lightBar.points) {
-      int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0);
+      int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
     }
   }

@@ -11,10 +11,13 @@ import noomechanism.icosahedron.LightBarRender1D;
 public class Collision extends AnimPattern {
 
   CompoundParameter slope = new CompoundParameter("slope", 0.5f, 0.01f, 5.0f);
+  CompoundParameter maxValue = new CompoundParameter("maxv", 1.0, 0.0, 1.0);
+
   public Collision(LX lx) {
     super(lx);
     registerPhase("Move", 3.0f, 60.0f, "Start duration");
     registerPhase("Explode", 1.0f, 60.0f, "Explosion duration");
+    addParameter(maxValue);
     addParameter(slope);
   }
 
@@ -31,12 +34,12 @@ public class Collision extends AnimPattern {
       if (phaseNum == 0) {
         blobPos1 = (time / curPhaseDuration) / 2f - 0.01f;
         blobPos2 = 1f - (time / curPhaseDuration) / 2f + 0.01f;
-        LightBarRender1D.renderTriangle(colors, lightBar, blobPos1, slope.getValuef(), LXColor.Blend.ADD);
-        LightBarRender1D.renderTriangle(colors, lightBar, blobPos2, slope.getValuef(), LXColor.Blend.ADD);
+        LightBarRender1D.renderTriangle(colors, lightBar, blobPos1, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
+        LightBarRender1D.renderTriangle(colors, lightBar, blobPos2, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
       } else if (phaseNum == 1) {
         float explosionSlope = slope.getValuef() - (time/curPhaseDuration) * slope.getValuef();
-        LightBarRender1D.renderTriangle(colors, lightBar, blobPos1, explosionSlope, LXColor.Blend.ADD);
-        LightBarRender1D.renderTriangle(colors, lightBar, blobPos2, explosionSlope, LXColor.Blend.ADD);
+        LightBarRender1D.renderTriangle(colors, lightBar, blobPos1, explosionSlope, maxValue.getValuef(), LXColor.Blend.ADD);
+        LightBarRender1D.renderTriangle(colors, lightBar, blobPos2, explosionSlope, maxValue.getValuef(), LXColor.Blend.ADD);
       }
     }
   }
