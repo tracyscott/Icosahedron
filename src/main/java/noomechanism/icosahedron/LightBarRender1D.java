@@ -1,6 +1,5 @@
 package noomechanism.icosahedron;
 
-import heronarts.lx.LX;
 import heronarts.lx.color.LXColor;
 
 import java.util.Random;
@@ -40,6 +39,24 @@ public class LightBarRender1D {
     }
   }
 
+  /**
+   * Render a step function at the given position with the given slope.
+   * @param colors Points color array to write into.
+   * @param lightBar The lightbar to render on.
+   * @param t Normalized (0.0-1.0) x position of the step function on the lightbar.
+   * @param slope The slope of edge of the step function.
+   * @param maxValue Maximum value of the step function (0.0 - 1.0)
+   * @param forward Direction of the step function.
+   * @param blend Blend mode for writing into the colors array.
+   */
+  static public void renderStep(int colors[], LightBar lightBar, float t, float slope, float maxValue, boolean forward, LXColor.Blend blend) {
+    float stepPos = t * lightBar.length;
+    for (LBPoint pt : lightBar.points) {
+      int gray = (int) (stepWave(stepPos, slope, pt.lbx, forward)*255.0*maxValue);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+    }
+  }
+
   static public float triWave(float t, float p)  {
       return 2.0f * (float)Math.abs(t / p - Math.floor(t / p + 0.5f));
   }
@@ -64,7 +81,6 @@ public class LightBarRender1D {
         value = slope * (x - stepPos) + 1.0f;
         if (value < 0f) value = 0f;
       }
-
     }
     return value;
   }
