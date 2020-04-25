@@ -157,42 +157,54 @@ public class IcosahedronModel extends LXModel {
     }
 
     // Edges
-    // One edge from top to first row.
+    // One edge from top to first row. 5 total
     int edgeNum = 0;
-    for (int i = 1; i < 6; i++) {
-      edges[edgeNum++] = new Edge(vertices[0], vertices[i]);
-    }
+    //for (int i = 1; i < 6; i++) {
+    //  edges[edgeNum++] = new Edge(vertices[0], vertices[i]);
+    //}
+    //hard-coded for ease of reversing directions
+    edges[edgeNum++] = new Edge(vertices[1], vertices[0]); //0
+    edges[edgeNum++] = new Edge(vertices[0], vertices[2]); //1
+    edges[edgeNum++] = new Edge(vertices[3], vertices[0]); //2
+    edges[edgeNum++] = new Edge(vertices[4], vertices[0]); //3
+    edges[edgeNum++] = new Edge(vertices[0], vertices[5]); //4
+
     // One edge between all vertices in top row
-    edges[edgeNum++] = new Edge(vertices[1], vertices[2]);
-    edges[edgeNum++] = new Edge(vertices[2], vertices[3]);
-    edges[edgeNum++] = new Edge(vertices[3], vertices[4]);
-    edges[edgeNum++] = new Edge(vertices[4], vertices[5]);
-    edges[edgeNum++] = new Edge(vertices[5], vertices[1]);
+    edges[edgeNum++] = new Edge(vertices[2], vertices[1]); //5
+    edges[edgeNum++] = new Edge(vertices[3], vertices[2]); //6
+    edges[edgeNum++] = new Edge(vertices[3], vertices[4]); //7
+    edges[edgeNum++] = new Edge(vertices[5], vertices[4]); //8
+    edges[edgeNum++] = new Edge(vertices[5], vertices[1]); //9
 
     int offset = 5;
     // Edges from top row to bottom row alternate vertices.
-    edges[edgeNum++] = new Edge(vertices[1], vertices[1+offset]);
-    edges[edgeNum++] = new Edge(vertices[offset+1], vertices[2]);
-    edges[edgeNum++] = new Edge(vertices[2], vertices[2+offset]);
-    edges[edgeNum++] = new Edge(vertices[2+offset], vertices[3]);
-    edges[edgeNum++] = new Edge(vertices[3], vertices[3+offset]);
-    edges[edgeNum++] = new Edge(vertices[3+offset], vertices[4]);
-    edges[edgeNum++] = new Edge(vertices[4], vertices[4+offset]);
-    edges[edgeNum++] = new Edge(vertices[4+offset], vertices[5]);
-    edges[edgeNum++] = new Edge(vertices[5], vertices[5+offset]);
-    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[1]);
+    edges[edgeNum++] = new Edge(vertices[1], vertices[1+offset]); //10
+    edges[edgeNum++] = new Edge(vertices[offset+1], vertices[2]); //11
+    edges[edgeNum++] = new Edge(vertices[2], vertices[2+offset]); //12
+    edges[edgeNum++] = new Edge(vertices[3], vertices[2+offset]); //13
+    edges[edgeNum++] = new Edge(vertices[3], vertices[3+offset]); //14
+    edges[edgeNum++] = new Edge(vertices[3+offset], vertices[4]); //15
+    edges[edgeNum++] = new Edge(vertices[4], vertices[4+offset]); //16
+    edges[edgeNum++] = new Edge(vertices[4+offset], vertices[5]); //17
+    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[5]); //18
+    edges[edgeNum++] = new Edge(vertices[5+offset], vertices[1]); //19
 
     // One edge between all vertices bottom row
-    edges[edgeNum++] = new Edge(vertices[6], vertices[7]);
-    edges[edgeNum++] = new Edge(vertices[7], vertices[8]);
-    edges[edgeNum++] = new Edge(vertices[8], vertices[9]);
-    edges[edgeNum++] = new Edge(vertices[9], vertices[10]);
-    edges[edgeNum++] = new Edge(vertices[10], vertices[6]);
+    edges[edgeNum++] = new Edge(vertices[7], vertices[6]); //20
+    edges[edgeNum++] = new Edge(vertices[7], vertices[8]); //21
+    edges[edgeNum++] = new Edge(vertices[9], vertices[8]); //22
+    edges[edgeNum++] = new Edge(vertices[10], vertices[9]); //23
+    edges[edgeNum++] = new Edge(vertices[10], vertices[6]); //24
 
     // One edge from bottom to bottom row points
-    for (int i = 0; i < 5; i++) {
-      edges[edgeNum++] = new Edge(vertices[i+6], vertices[11]);
-    }
+    //for (int i = 0; i < 5; i++) {
+    //  edges[edgeNum++] = new Edge(vertices[i+6], vertices[11]);
+    //}
+    edges[edgeNum++] = new Edge(vertices[6], vertices[11]); //25
+    edges[edgeNum++] = new Edge(vertices[11], vertices[7]); //26
+    edges[edgeNum++] = new Edge(vertices[8], vertices[11]); //27
+    edges[edgeNum++] = new Edge(vertices[11], vertices[9]); //28
+    edges[edgeNum++] = new Edge(vertices[10], vertices[11]); //29
 
     int faceNum = 0;
     // Top cone
