@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1585174539764,
+  "timestamp": 1587862439981,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -16580353,
+    "modulationColor": -65526,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -244,7 +244,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 2,
+        "patternIndex": 3,
         "patterns": [
           {
             "id": 95,
@@ -286,7 +286,8 @@
             "parameters": {
               "label": "BarScanner",
               "pos": 0.0,
-              "slope": 1.100779975418001
+              "slope": 1.100779975418001,
+              "maxv": 1.0
             },
             "children": {
               "modulation": {
@@ -366,6 +367,7 @@
               "label": "Collision",
               "Move": 0.5,
               "Explode": 0.3,
+              "maxv": 1.0,
               "slope": 2.8452999476835132
             },
             "children": {
@@ -373,6 +375,38 @@
                 "id": 150,
                 "class": "heronarts.lx.LXModulationEngine",
                 "modulationColor": -16128,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
+          },
+          {
+            "id": 171,
+            "class": "noomechanism.icosahedron.Traveler",
+            "modulationColor": -39168,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "Traveler",
+              "pos": 0.906000018119812,
+              "slope": 0.3501300145257264,
+              "maxv": 1.0,
+              "speed": 9.399999812245369
+            },
+            "children": {
+              "modulation": {
+                "id": 172,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -5897985,
                 "internal": {},
                 "parameters": {
                   "label": "Modulation"
@@ -407,8 +441,8 @@
         "camera": {
           "active": false,
           "radius": 24.607599710216633,
-          "theta": 6.381885104639481,
-          "phi": 0.3710329046982218,
+          "theta": 21.82944891168862,
+          "phi": 0.39811559988689993,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -417,8 +451,8 @@
           {
             "active": false,
             "radius": 24.607599710216633,
-            "theta": 6.381885104639481,
-            "phi": 0.3710329046982218,
+            "theta": 21.82944891168862,
+            "phi": 0.39811559988689993,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
