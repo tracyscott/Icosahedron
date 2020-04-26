@@ -1,10 +1,13 @@
-package noomechanism.icosahedron;
+package noomechanism.icosahedron.patterns;
 
 import heronarts.lx.LX;
 import heronarts.lx.LXPattern;
 import heronarts.lx.color.LXColor;
 import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.CompoundParameter;
+import noomechanism.icosahedron.IcosahedronModel;
+import noomechanism.icosahedron.LightBar;
+import noomechanism.icosahedron.LightBarRender1D;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -44,7 +47,7 @@ public class Traveler extends LXPattern {
         }
         // If we are going off the end of our start point, look for a new lightbar
         if (p <= 0.0) {
-          int jointNum = ThreadLocalRandom.current().nextInt(5);
+          int jointNum = ThreadLocalRandom.current().nextInt(4);
           IcosahedronModel.Edge nextEdge = IcosahedronModel.edges[currentBarNum].myStartPointJoints[jointNum].edge;
           forward = IcosahedronModel.edges[currentBarNum].myStartPointJoints[jointNum].isAdjacentEdgeAStartPoint;
           newCurrentLightBarNum = nextEdge.lightBar.barNum;
@@ -55,7 +58,7 @@ public class Traveler extends LXPattern {
           }
         } else if (p >= 1.0f) {
           // We are going off the end of our end point, look for a new lightbar.
-          int jointNum = ThreadLocalRandom.current().nextInt(5);
+          int jointNum = ThreadLocalRandom.current().nextInt(4);
           IcosahedronModel.Edge nextEdge = IcosahedronModel.edges[currentBarNum].myEndPointJoints[jointNum].edge;
           forward = IcosahedronModel.edges[currentBarNum].myEndPointJoints[jointNum].isAdjacentEdgeAStartPoint;
           newCurrentLightBarNum = nextEdge.lightBar.barNum;

@@ -54,8 +54,8 @@ public class IcosahedronModel extends LXModel {
       isAdjacentEdgeAStartPoint = isStartPoint;
     }
 
-    Edge edge;
-    boolean isAdjacentEdgeAStartPoint;
+    public Edge edge;
+    public boolean isAdjacentEdgeAStartPoint;
   }
 
   public static class Edge {
@@ -66,8 +66,8 @@ public class IcosahedronModel extends LXModel {
     public Point3D a;
     public Point3D b;
     public LightBar lightBar;
-    public Joint[] myStartPointJoints = new Joint[5];
-    public Joint[] myEndPointJoints = new Joint[5];
+    public Joint[] myStartPointJoints = new Joint[4];
+    public Joint[] myEndPointJoints = new Joint[4];
 
     public int isEdgeAdjacentStart(Edge edge) {
       return isEdgeAdjacent(a, edge);
@@ -91,6 +91,8 @@ public class IcosahedronModel extends LXModel {
         int currentStartJointNum = 0;
         int currentEndJointNum = 0;
         for (Edge otherEdge: edges) {
+          if (thisEdge == otherEdge)
+            continue;
           int adjacentValue = thisEdge.isEdgeAdjacentStart(otherEdge);
           if (adjacentValue == 1) {
             thisEdge.myStartPointJoints[currentStartJointNum++] = new Joint(otherEdge, true);
@@ -257,7 +259,7 @@ public class IcosahedronModel extends LXModel {
     edges[edgeNum++] = new Edge(vertices[10], vertices[11]); //29
 
     Edge.computeAdjacentEdges(edges);
-    
+
     int faceNum = 0;
     // Top cone
     faces[faceNum] = new Face(faceNum, edges[0], edges[5], edges[1]);

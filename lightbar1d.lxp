@@ -388,7 +388,7 @@
           },
           {
             "id": 171,
-            "class": "noomechanism.icosahedron.Traveler",
+            "class": "noomechanism.icosahedron.patterns.Traveler",
             "modulationColor": -39168,
             "internal": {
               "expanded": true,
