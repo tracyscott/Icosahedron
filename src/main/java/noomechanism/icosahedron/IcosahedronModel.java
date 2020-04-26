@@ -48,6 +48,16 @@ public class IcosahedronModel extends LXModel {
     public float z;
   }
 
+  public static class Joint {
+    public Joint(Edge e, boolean isStartPoint) {
+      edge = e;
+      isAdjacentEdgeAStartPoint = isStartPoint;
+    }
+
+    Edge edge;
+    boolean isAdjacentEdgeAStartPoint;
+  }
+
   public static class Edge {
     public Edge(Point3D a, Point3D b) {
       this.a = a; this.b =b;
@@ -56,6 +66,46 @@ public class IcosahedronModel extends LXModel {
     public Point3D a;
     public Point3D b;
     public LightBar lightBar;
+    public Joint[] myStartPointJoints = new Joint[5];
+    public Joint[] myEndPointJoints = new Joint[5];
+
+    public int isEdgeAdjacentStart(Edge edge) {
+      return isEdgeAdjacent(a, edge);
+    }
+
+    public int isEdgeAdjacentEnd(Edge edge) {
+      return isEdgeAdjacent(b, edge);
+    }
+
+    public int isEdgeAdjacent(Point3D pt, Edge edge) {
+      if (edge.a == pt) {
+        return 1;
+      } else if (edge.b == pt) {
+        return 2;
+      }
+      return 0;
+    }
+
+    public static void computeAdjacentEdges(Edge[] edges) {
+      for (Edge thisEdge : edges) {
+        int currentStartJointNum = 0;
+        int currentEndJointNum = 0;
+        for (Edge otherEdge: edges) {
+          int adjacentValue = thisEdge.isEdgeAdjacentStart(otherEdge);
+          if (adjacentValue == 1) {
+            thisEdge.myStartPointJoints[currentStartJointNum++] = new Joint(otherEdge, true);
+          } else if (adjacentValue == 2) {
+            thisEdge.myStartPointJoints[currentStartJointNum++] = new Joint(otherEdge, false);
+          }
+          adjacentValue = thisEdge.isEdgeAdjacentEnd(otherEdge);
+          if (adjacentValue == 1) {
+            thisEdge.myEndPointJoints[currentEndJointNum++] = new Joint(otherEdge, true);
+          } else if (adjacentValue == 2) {
+            thisEdge.myEndPointJoints[currentEndJointNum++] = new Joint(otherEdge, false);
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -206,6 +256,8 @@ public class IcosahedronModel extends LXModel {
     edges[edgeNum++] = new Edge(vertices[11], vertices[9]); //28
     edges[edgeNum++] = new Edge(vertices[10], vertices[11]); //29
 
+    Edge.computeAdjacentEdges(edges);
+    
     int faceNum = 0;
     // Top cone
     faces[faceNum] = new Face(faceNum, edges[0], edges[5], edges[1]);
