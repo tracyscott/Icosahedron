@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1587862439981,
+  "timestamp": 1587867913893,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -65526,
+    "modulationColor": -65414,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -397,10 +397,11 @@
             },
             "parameters": {
               "label": "Traveler",
-              "pos": 0.906000018119812,
-              "slope": 0.3501300145257264,
+              "slope": 1.9997999776527282,
               "maxv": 1.0,
-              "speed": 9.399999812245369
+              "speed": 0.8000000044703481,
+              "blobs": 99,
+              "randspd": 5.0
             },
             "children": {
               "modulation": {
@@ -440,9 +441,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 24.607599710216633,
-          "theta": 21.82944891168862,
-          "phi": 0.39811559988689993,
+          "radius": 31.015605972956863,
+          "theta": 26.3969382544105,
+          "phi": 0.10020595281146047,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -450,9 +451,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 24.607599710216633,
-            "theta": 21.82944891168862,
-            "phi": 0.39811559988689993,
+            "radius": 31.015605972956863,
+            "theta": 26.3969382544105,
+            "phi": 0.10020595281146047,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
