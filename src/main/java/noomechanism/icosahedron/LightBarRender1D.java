@@ -32,13 +32,18 @@ public class LightBarRender1D {
    * @param slope The slope of the gradient.  Not normalized currently.
    * @param maxValue Maximum value of the step function (0.0 - 1.0)
    * @param blend Blend mode for writing into the colors array.
+   * @return A float array containing the minimum x intercept and maximum x intercept in that order.
    */
-  static public void renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend) {
+  static public float[] renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend) {
     double peakPos = t * lightBar.length;
+    float[] minMax = new float[2];
     for (LBPoint pt : lightBar.points) {
       int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
+      minMax[0] = (float)zeroCrossingTriangleWave(peakPos, slope);
+      minMax[1] = (float)zeroCrossingTriangleWave(peakPos, -slope);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
     }
+    return minMax;
   }
 
   /**
@@ -85,6 +90,10 @@ public class LightBarRender1D {
       }
     }
     return value;
+  }
+
+  static public double zeroCrossingTriangleWave(double peakX, double slope) {
+    return -1.0/slope;
   }
 
   /**

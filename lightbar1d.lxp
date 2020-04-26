@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1587867913893,
+  "timestamp": 1587936185596,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -65414,
+    "modulationColor": -65317,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -93,7 +93,7 @@
         "parameters": {
           "label": "Master",
           "arm": false,
-          "selected": true
+          "selected": false
         },
         "children": {},
         "effects": [],
@@ -226,7 +226,7 @@
         "parameters": {
           "label": "Channel-1",
           "arm": false,
-          "selected": false,
+          "selected": true,
           "enabled": true,
           "cue": false,
           "fader": 1.0,
@@ -397,17 +397,81 @@
             },
             "parameters": {
               "label": "Traveler",
-              "slope": 1.9997999776527282,
+              "slope": 2.2997399709485467,
               "maxv": 1.0,
-              "speed": 0.8000000044703481,
+              "speed": 3.3999999463558197,
               "blobs": 99,
-              "randspd": 5.0
+              "randspd": 0.0,
+              "sparkle": true
             },
             "children": {
               "modulation": {
                 "id": 172,
                 "class": "heronarts.lx.LXModulationEngine",
                 "modulationColor": -5897985,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": 195,
+        "class": "heronarts.lx.LXChannel",
+        "modulationColor": -6226176,
+        "internal": {
+          "controlsExpanded": true
+        },
+        "parameters": {
+          "label": "Channel-2",
+          "arm": false,
+          "selected": false,
+          "enabled": true,
+          "cue": false,
+          "fader": 0.0,
+          "crossfadeGroup": 0,
+          "blendMode": 0,
+          "midiMonitor": false,
+          "midiChannel": 16,
+          "autoCycleEnabled": false,
+          "autoCycleMode": 0,
+          "autoCycleTimeSecs": 60.0,
+          "transitionEnabled": false,
+          "transitionTimeSecs": 5.0,
+          "transitionBlendMode": 0
+        },
+        "children": {},
+        "effects": [],
+        "clips": [],
+        "patternIndex": 0,
+        "patterns": [
+          {
+            "id": 207,
+            "class": "noomechanism.icosahedron.patterns.BarSelector",
+            "modulationColor": -16711902,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "BarSelector",
+              "BarNum": -1,
+              "caps": true,
+              "dircaps": true
+            },
+            "children": {
+              "modulation": {
+                "id": 208,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -8913152,
                 "internal": {},
                 "parameters": {
                   "label": "Modulation"
@@ -441,9 +505,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 31.015605972956863,
-          "theta": 26.3969382544105,
-          "phi": 0.10020595281146047,
+          "radius": 30.097825712410398,
+          "theta": 44.906294935206965,
+          "phi": 0.506446385030356,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -451,9 +515,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 31.015605972956863,
-            "theta": 26.3969382544105,
-            "phi": 0.10020595281146047,
+            "radius": 30.097825712410398,
+            "theta": 44.906294935206965,
+            "phi": 0.506446385030356,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
