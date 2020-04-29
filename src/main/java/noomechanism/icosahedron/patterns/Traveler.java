@@ -23,6 +23,8 @@ public class Traveler extends LXPattern {
   public DiscreteParameter numBlobs = new DiscreteParameter("blobs", 1, 1, MAX_BLOBS);
   public BooleanParameter sparkle = new BooleanParameter("sparkle", true);
   public DiscreteParameter nextBarKnob = new DiscreteParameter("nxtBar", -1, -1, 4);
+  public CompoundParameter sparkleMin = new CompoundParameter("spklMin", 0.0f, 0.0f, 255.0f);
+  public CompoundParameter sparkleDepth = new CompoundParameter("spklDepth", 255.0f, 0.0f, 255.0f);
 
   public static class Blob {
     public int currentBarNum = 0;
@@ -33,6 +35,23 @@ public class Traveler extends LXPattern {
     public boolean nextBarForward = true;
     public int prevBarNum = -1;
     public boolean prevBarForward = true;
+
+    public void updateCurrentBar(int nextBarSelector) {
+      if (nextBarNum == -1)
+        Traveler.chooseNextBar(this, nextBarSelector);
+
+      // Now we need to make nextBarNum the currentBarNum.
+      prevBarNum = currentBarNum;
+      prevBarForward = forward;
+      currentBarNum = nextBarNum;
+      forward = nextBarForward;
+      nextBarNum = -1;
+      if (forward) {
+        pos = 0.0f;
+      } else {
+        pos = 1.0f;
+      }
+    }
   }
 
   public Blob[] blobs = new Blob[MAX_BLOBS];
@@ -46,6 +65,8 @@ public class Traveler extends LXPattern {
     addParameter(randSpeed);
     addParameter(sparkle);
     addParameter(nextBarKnob);
+    addParameter(sparkleMin);
+    addParameter(sparkleDepth);
     resetBars();
   }
 
@@ -55,7 +76,7 @@ public class Traveler extends LXPattern {
       blobs[i].pos = (float)Math.random();
       blobs[i].currentBarNum = (i * 4) % IcosahedronModel.lightBars.size();
       float randSpeedOffset = randSpeed.getValuef() * (float)Math.random();
-      blobs[i].speed = speed.getValuef() + randSpeedOffset;
+      blobs[i].speed = randSpeedOffset;
     }
   }
 
@@ -77,73 +98,62 @@ public class Traveler extends LXPattern {
     for (int i = 0; i < numBlobs.getValuei(); i++) {
       Blob blob = blobs[i];
       int newCurrentLightBarNum = -1;
+      boolean needsCurrentBarUpdate = false;
       for (LightBar lb : IcosahedronModel.lightBars) {
         if (blob.currentBarNum == lb.barNum) {
-          float minMax[] = LightBarRender1D.renderTriangle(colors, lb, blob.pos, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
-          //LightBarRender1D.randomGray(colors, lb, LXColor.Blend.MULTIPLY);
+          float minMax[] = LightBarRender1D.renderTriangle(colors, lb, blob.pos, slope.getValuef(),
+              maxValue.getValuef(), LXColor.Blend.ADD);
+          // If the trailing edge of the triangle pulse is fully on the current lightbar, then we
+          // can reset the prevBarNum so we don't render on it unnecessarily.
+          if ((minMax[0] > 0f && blob.forward) || (minMax[1] < 1.0f && !blob.forward)) {
+            blob.prevBarNum = -1;
+          }
           if ((minMax[0] < 0.0f && !blob.forward) || (minMax[1] > 1.0f && blob.forward)) {
-            // Beginning of triangle wave spans the joint.  But for now we are only handling the leading edge of the wave for the
-            // case of supporting spanning a single joint.
             if (blob.nextBarNum == -1) {
               chooseNextBar(blob, nextBarKnob.getValuei());
             }
             float nextBarPos = computeNextBarPos(blob);
             LightBar nextBar = IcosahedronModel.lightBars.get(blob.nextBarNum);
-            LightBarRender1D.renderTriangle(colors, nextBar, nextBarPos, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
-            //LightBarRender1D.randomGray(colors, nextBar, LXColor.Blend.MULTIPLY);
+            LightBarRender1D.renderTriangle(colors, nextBar, nextBarPos, slope.getValuef(), maxValue.getValuef(),
+                LXColor.Blend.ADD);
           }
           // Render on the previous bar if necessary
-          // TODO(tracy): Ideally, we should reset prevBarNum when our triangle pulse no longer touches it but it is also
-          // okay to just render it because it will render black.
           if (blob.prevBarNum != -1) {
             LightBar prevBar = IcosahedronModel.lightBars.get(blob.prevBarNum);
             float prevBarPos = computePrevBarPos(blob);
-            LightBarRender1D.renderTriangle(colors, prevBar, prevBarPos, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
-            //LightBarRender1D.randomGray(colors, prevBar, LXColor.Blend.MULTIPLY);
-          }
-          if (minMax[1] > 1.0f && blob.forward) {
-            // Ending of triangle wave spans the end joint.  In that scenario, we need to select the next lightbar and re-render
-            // on it 0.8 on one light bar is .2 on another so 0 - (1.0 - current position) if the next bar is starting
-            // otherwise, if the next bar in the joint is the end of the bar then we need to be at
-            // 1.0 + (1.0 - current position)
-            // If we currently don't have a nextBarNum selected, choose the next random lightbar to traverse.
-            if (blob.nextBarNum == -1) {
-              chooseNextBar(blob, nextBarKnob.getValuei());
-            }
+            LightBarRender1D.renderTriangle(colors, prevBar, prevBarPos, slope.getValuef(), maxValue.getValuef(),
+                LXColor.Blend.ADD);
           }
 
           if (blob.forward) {
-            blob.pos += blob.speed / 100f;
+            blob.pos += speed.getValuef()/100f + blob.speed / 100f;
           } else {
-            blob.pos -= blob.speed / 100f;
+            blob.pos -= speed.getValuef()/100f + blob.speed / 100f;
           }
-          // If we are going off the end of our lightbar, look for a new lightbar if necessary and reset our
-          // nextBarNum, nextBarForward parameters if they are set.
-          if (blob.pos <= 0.0 || blob.pos >= 1.0f) {
-            if (blob.nextBarNum == -1)
-              chooseNextBar(blob, nextBarKnob.getValuei());
 
-            // Now we need to make nextBarNum the currentBarNum.
-            blob.prevBarNum = blob.currentBarNum;
-            blob.prevBarForward = blob.forward;
-            blob.currentBarNum = blob.nextBarNum;
-            blob.forward = blob.nextBarForward;
-            blob.nextBarNum = -1;
-            if (blob.forward) {
-              blob.pos = 0.0f;
-            } else {
-              blob.pos = 1.0f;
-            }
+          // We are going off the end of the lightbar.  Note that we need to update the current lightbar for this
+          // blob.  We will update the blob lightbar parameters after we are done iterating through all of the
+          // lightbars for this blob rendering pass.
+          if (blob.pos <= 0.0 || blob.pos >= 1.0f) {
+            // We don't want to update the currentBarNum until we have processed all lightbars for this blob.
+            // Otherwise, there is some chance that we might double-render.  For example, if the new lightbar is later
+            // in our list of lightbars that we are iterating over then it will also render on the new lightbar,
+            // causing a double render that looks like a "flash" with our current color ADD mode.
+            needsCurrentBarUpdate = true;
           }
         }
       }
       if (newCurrentLightBarNum != -1) {
         blob.currentBarNum = newCurrentLightBarNum;
       }
+      if (needsCurrentBarUpdate) {
+        blob.updateCurrentBar(nextBarKnob.getValuei());
+      }
     }
     if (sparkle.getValueb()) {
       for (LightBar lb : IcosahedronModel.lightBars) {
-        LightBarRender1D.randomGray(colors, lb, LXColor.Blend.MULTIPLY);
+        LightBarRender1D.randomGrayBaseDepth(colors, lb, LXColor.Blend.MULTIPLY, (int)sparkleMin.getValuef(),
+            (int)sparkleDepth.getValuef());
       }
     }
   }
@@ -154,7 +164,7 @@ public class Traveler extends LXPattern {
    * lightbar.  We store the choice in blob.nextBarNum.  We also track the directionality of the next bar in
    * blob.nextBarForward.
    */
-  public void chooseNextBar(Blob blob, int nextBarSelector) {
+  static public void chooseNextBar(Blob blob, int nextBarSelector) {
     if (blob.forward) {
       chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myEndPointJoints, nextBarSelector);
     } else {
@@ -168,7 +178,7 @@ public class Traveler extends LXPattern {
    * @param blob
    * @param joints
    */
-  public void chooseRandomBarFromJoints(Blob blob, IcosahedronModel.Joint[] joints, int nextBarSelector) {
+  static public void chooseRandomBarFromJoints(Blob blob, IcosahedronModel.Joint[] joints, int nextBarSelector) {
     int jointNum = nextBarSelector;
     if (jointNum == -1)
       jointNum = ThreadLocalRandom.current().nextInt(4);
@@ -177,7 +187,7 @@ public class Traveler extends LXPattern {
     blob.nextBarNum = nextEdge.lightBar.barNum;
   }
 
-  public float computeNextBarPos(Blob blob) {
+  static public float computeNextBarPos(Blob blob) {
     // Ending of triangle wave spans the end joint.  In that scenario, we need to select the next lightbar and re-render
     // on it 0.8 on one light bar is .2 on another so 0 - (1.0 - current position) if the next bar is starting
     // otherwise, if the next bar in the joint is the end of the bar then we need to be at
@@ -203,7 +213,7 @@ public class Traveler extends LXPattern {
     }
   }
 
-  public float computePrevBarPos(Blob blob) {
+  static public float computePrevBarPos(Blob blob) {
     // If we are forward, and our pos is 0.2, then if prev bar was forward then position should be 1.2
     // else position is -0.2
     if (blob.forward) {

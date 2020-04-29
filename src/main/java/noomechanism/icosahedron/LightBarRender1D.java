@@ -3,6 +3,7 @@ package noomechanism.icosahedron;
 import heronarts.lx.color.LXColor;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 /**
@@ -17,6 +18,17 @@ public class LightBarRender1D {
     for (LBPoint pt : lightBar.points) {
       int randomValue = r.nextInt(256);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(randomValue, randomValue, randomValue, 255), blend);
+    }
+  }
+
+  static public void randomGrayBaseDepth(int colors[], LightBar lightBar, LXColor.Blend blend, int min, int depth) {
+    for (LBPoint pt : lightBar.points) {
+      int randomDepth = ThreadLocalRandom.current().nextInt(depth);
+      int value = min + randomDepth;
+      if (value > 255) {
+        value = 255;
+      }
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(value, value, value, 255), blend);
     }
   }
 
