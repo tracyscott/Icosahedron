@@ -22,6 +22,7 @@ public class Traveler extends LXPattern {
   public CompoundParameter randSpeed = new CompoundParameter("randspd", 1.0, 0.0, 5.0);
   public DiscreteParameter numBlobs = new DiscreteParameter("blobs", 1, 1, MAX_BLOBS);
   public BooleanParameter sparkle = new BooleanParameter("sparkle", true);
+  public DiscreteParameter nextBarKnob = new DiscreteParameter("nxtBar", -1, -1, 4);
 
   public static class Blob {
     public int currentBarNum = 0;
@@ -44,9 +45,15 @@ public class Traveler extends LXPattern {
     addParameter(numBlobs);
     addParameter(randSpeed);
     addParameter(sparkle);
+    addParameter(nextBarKnob);
+    resetBars();
+  }
+
+  public void resetBars() {
     for (int i = 0; i < MAX_BLOBS; i++) {
       blobs[i] = new Blob();
       blobs[i].pos = (float)Math.random();
+      blobs[i].currentBarNum = (i * 4) % IcosahedronModel.lightBars.size();
       float randSpeedOffset = randSpeed.getValuef() * (float)Math.random();
       blobs[i].speed = speed.getValuef() + randSpeedOffset;
     }
@@ -58,9 +65,7 @@ public class Traveler extends LXPattern {
    */
   @Override
   public void onActive() {
-    for (int i = 0; i < MAX_BLOBS; i++) {
-      blobs[i].speed = speed.getValuef() + randSpeed.getValuef() * (float)Math.random();
-    }
+    resetBars();
   }
 
   @Override
@@ -80,7 +85,7 @@ public class Traveler extends LXPattern {
             // Beginning of triangle wave spans the joint.  But for now we are only handling the leading edge of the wave for the
             // case of supporting spanning a single joint.
             if (blob.nextBarNum == -1) {
-              chooseNextBar(blob);
+              chooseNextBar(blob, nextBarKnob.getValuei());
             }
             float nextBarPos = computeNextBarPos(blob);
             LightBar nextBar = IcosahedronModel.lightBars.get(blob.nextBarNum);
@@ -103,7 +108,7 @@ public class Traveler extends LXPattern {
             // 1.0 + (1.0 - current position)
             // If we currently don't have a nextBarNum selected, choose the next random lightbar to traverse.
             if (blob.nextBarNum == -1) {
-              chooseNextBar(blob);
+              chooseNextBar(blob, nextBarKnob.getValuei());
             }
           }
 
@@ -116,7 +121,7 @@ public class Traveler extends LXPattern {
           // nextBarNum, nextBarForward parameters if they are set.
           if (blob.pos <= 0.0 || blob.pos >= 1.0f) {
             if (blob.nextBarNum == -1)
-              chooseNextBar(blob);
+              chooseNextBar(blob, nextBarKnob.getValuei());
 
             // Now we need to make nextBarNum the currentBarNum.
             blob.prevBarNum = blob.currentBarNum;
@@ -149,11 +154,11 @@ public class Traveler extends LXPattern {
    * lightbar.  We store the choice in blob.nextBarNum.  We also track the directionality of the next bar in
    * blob.nextBarForward.
    */
-  public void chooseNextBar(Blob blob) {
+  public void chooseNextBar(Blob blob, int nextBarSelector) {
     if (blob.forward) {
-      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myEndPointJoints);
+      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myEndPointJoints, nextBarSelector);
     } else {
-      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myStartPointJoints);
+      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myStartPointJoints, nextBarSelector);
     }
   }
 
@@ -163,8 +168,10 @@ public class Traveler extends LXPattern {
    * @param blob
    * @param joints
    */
-  public void chooseRandomBarFromJoints(Blob blob, IcosahedronModel.Joint[] joints) {
-    int jointNum = ThreadLocalRandom.current().nextInt(4);
+  public void chooseRandomBarFromJoints(Blob blob, IcosahedronModel.Joint[] joints, int nextBarSelector) {
+    int jointNum = nextBarSelector;
+    if (jointNum == -1)
+      jointNum = ThreadLocalRandom.current().nextInt(4);
     IcosahedronModel.Edge nextEdge = joints[jointNum].edge;
     blob.nextBarForward = joints[jointNum].isAdjacentEdgeAStartPoint;
     blob.nextBarNum = nextEdge.lightBar.barNum;

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import heronarts.lx.studio.LXStudio;
-import noomechanism.icosahedron.ui.UILightBarConfig;
 import org.jengineering.sjmply.PLY;
 import org.jengineering.sjmply.PLYElementList;
 import org.jengineering.sjmply.PLYFormat;
@@ -36,13 +34,102 @@ public class IcosahedronModel extends LXModel {
 
   static public List<LightBar> lightBars;
 
+  public static class SphericalCoord {
+    public float r;
+    public float inclination;
+    public float azimuth;
+  }
+
   public static class Point3D {
     public Point3D(float x, float y, float z) {
       this.x = x; this.y = y; this.z = z;
     }
+
+    public Point3D(Point3D p) {
+      x = p.x;
+      y = p.y;
+      z = p.z;
+    }
+
     public void scale(float x, float y, float z) {
       this.x *= x; this.y *= y; this.z *= z;
     }
+
+    public void rotate(float angle) {
+      float xNew = x * (float)Math.cos(angle) - y * (float)Math.sin(angle);
+      float yNew = x * (float)Math.sin(angle) + y * (float)Math.cos(angle);
+      x = xNew;
+      y = yNew;
+    }
+
+    public float computePolarAngle() {
+      return (float)Math.atan2(z, x);
+    }
+
+    public void translate(float x, float y, float z) {
+      this.x += x;
+      this.y += y;
+      this.z += z;
+    }
+
+    public SphericalCoord computeSphericalCoord() {
+      SphericalCoord sc = new SphericalCoord();
+      sc.r = (float)Math.sqrt(x * x + y * y + z * z);
+      sc.azimuth = (float)Math.atan2(z, x);
+      sc.inclination = (float)Math.acos(y/sc.r);
+      return sc;
+    }
+
+    public void rotateZAxis(float angle) {
+      float newX = x * (float)Math.cos(angle) + y * (float)Math.sin(angle);
+      float newY = - x * (float)Math.sin(angle) + y * (float)Math.cos(angle);
+      x = newX;
+      y = newY;
+    }
+
+    public void rotateYAxis(float angle) {
+      float newX = x * (float)Math.cos(angle) - z * (float)Math.sin(angle);
+      float newZ = x * (float)Math.sin(angle) + z * (float)Math.cos(angle);
+      x = newX;
+      z = newZ;
+    }
+
+    public void rotateXAxis(float angle) {
+      float newY = y * (float)Math.cos(angle) + z * (float)Math.sin(angle);
+      float newZ = -y * (float)Math.sin(angle) + z * (float)Math.cos(angle);
+      y = newY;
+      z = newZ;
+    }
+
+    public void projectXYPlane() {
+      z = 0f;
+    }
+
+    public void projectXZPlane() {
+      y = 0f;
+    }
+
+    public void projectYZPlane() {
+      x = 0f;
+    }
+
+    public float length() {
+      return (float)Math.sqrt(x*x + y*y + z*z);
+    }
+
+    public float distanceTo(Point3D p) {
+      return (float)Math.sqrt((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y) + (z-p.z)*(z-p.x));
+    }
+
+    public float dotProduct(Point3D p) {
+      float dotProduct = x * p.x + y * p.y + z * p.z;
+      return dotProduct;
+    }
+
+    public float angle(Point3D p) {
+      return (float)Math.acos(dotProduct(p) / (length() * p.length()));
+    }
+
     public float x;
     public float y;
     public float z;
@@ -54,17 +141,62 @@ public class IcosahedronModel extends LXModel {
       isAdjacentEdgeAStartPoint = isStartPoint;
     }
 
+    public Point3D getJointPt() {
+      if (isAdjacentEdgeAStartPoint)
+        return edge.a2;
+      else
+        return edge.b2;
+    }
+
+    public Point3D getFarPt() {
+      if (isAdjacentEdgeAStartPoint)
+        return edge.b2;
+      else
+        return edge.a2;
+    }
+
+    /**
+     * Given an array of joints and a Point3D, return a sorted list where the joints are sorted
+     * by the distance to their farPt() (i.e. not joint point) to the given point).  The two edges on
+     * the outside of a joint are the closest to the reference edge.  The edges connected to the interior
+     * of the joint we have their far points a greater distance from the far point of the reference edge.
+     *
+     * @param joints
+     * @param pt
+     * @return
+     */
+    static public List<Joint> sortByDistanceFrom(Joint[] joints, Point3D pt) {
+      List<Joint> sortedJoints = new ArrayList<Joint>();
+      for (int i = 0; i < joints.length; i++) {
+        boolean inserted = false;
+        for (int j = 0; j < sortedJoints.size(); j++) {
+          if (joints[i].getFarPt().distanceTo(pt) < sortedJoints.get(j).getFarPt().distanceTo(pt)) {
+            sortedJoints.add(j, joints[i]);
+            inserted = true;
+            break;
+          }
+        }
+        if (!inserted) sortedJoints.add(joints[i]);
+      }
+      return sortedJoints;
+    }
+
     public Edge edge;
     public boolean isAdjacentEdgeAStartPoint;
+    public float sortAngle;
   }
 
   public static class Edge {
     public Edge(Point3D a, Point3D b) {
-      this.a = a; this.b =b;
+      this.a = a; this.b =b; this.a2 = new Point3D(a.x, a.y, a.z); this.b2 = new Point3D(b.x, b.y, b.z);
     }
 
     public Point3D a;
     public Point3D b;
+    // These are working coordinates that we operate on while computing the adjacent edges sorting order.
+    public Point3D a2;
+    public Point3D b2;
+
     public LightBar lightBar;
     public Joint[] myStartPointJoints = new Joint[4];
     public Joint[] myEndPointJoints = new Joint[4];
@@ -84,6 +216,31 @@ public class IcosahedronModel extends LXModel {
         return 2;
       }
       return 0;
+    }
+
+    public void resetSortParams() {
+      a2 = new Point3D(a.x, a.y, a.z);
+      b2 = new Point3D(b.x, b.y, b.z);
+    }
+
+    public void projectXYPlane() {
+      a2.z = 0f;
+      b2.z = 0f;
+    }
+
+    public void translate(float x, float y) {
+      a2.x += x;
+      b2.y += y;
+    }
+
+    public void translate(float x, float y, float z) {
+      a2.translate(x, y, z);
+      b2.translate(x, y, z);
+    }
+
+    public void rotate(float angle) {
+      a2.rotate(angle);
+      b2.rotate(angle);
     }
 
     public static void computeAdjacentEdges(Edge[] edges) {
@@ -107,6 +264,108 @@ public class IcosahedronModel extends LXModel {
           }
         }
       }
+    }
+
+    /**
+     * Sort our adjacent edges at each end.  The edges are sorted in left to right order from the perspective of this
+     * edge and looking towards the joint.  First, we project all edge endpoints into the XY plane.  Since we don't
+     * have any strictly vertical edges, this will preserve the angle we care about.  Next, we translate the position
+     * of the joint to the origin.  This will give us a series of 2D lines joining at the origin.  Next, we compute
+     * the rotation angle of the non-joint endpoint of our reference edge in polar coordinates.  We rotate all
+     * edges by the negative of the angle to align our reference edge with the X axis. Next, we compute the polar
+     * coordinate angles of the adjacent edges and then reverse sort them for left to right orientation.
+     */
+    static public void sortEdges() {
+      for (Edge edge : edges) {
+        edge.sortAdjacentEdges();
+      }
+    }
+
+    public void sortAdjacentEdges() {
+      // We pass new points here
+      sortAdjacentEdges(new Point3D(b), myEndPointJoints, true);
+      sortAdjacentEdges(new Point3D(a), myStartPointJoints, false);
+    }
+
+    public void sortAdjacentEdges(Point3D jointPoint, Joint[] joints, boolean isBigEnd) {
+      translate(-jointPoint.x, -jointPoint.y, -jointPoint.z);
+      Point3D referenceEndPt;
+      if (isBigEnd) {
+        referenceEndPt = a2;
+      } else {
+        referenceEndPt = b2;
+      }
+      SphericalCoord sc = referenceEndPt.computeSphericalCoord();
+
+      // Rotate to put the reference end point on to the positive x axis.
+      float azimuthRotation = -sc.azimuth;
+      float inclinationRotation = ((float)Math.PI/2.0f - sc.inclination);
+      referenceEndPt.rotateYAxis(azimuthRotation);
+      referenceEndPt.rotateZAxis(inclinationRotation);
+
+      float centroidX = 0f;
+      float centroidY = 0f;
+      float centroidZ = 0f;
+      for (Joint j : joints) {
+        j.edge.translate(-jointPoint.x, -jointPoint.y, -jointPoint.z);
+        Point3D farPt = j.getFarPt();
+        farPt.rotateYAxis(azimuthRotation);
+        farPt.rotateZAxis(inclinationRotation);
+        centroidX += farPt.x;
+        centroidY += farPt.y;
+        centroidZ += farPt.z;
+      }
+      // Compute the centroid
+      centroidX = centroidX / 4f;
+      centroidY = centroidY / 4f;
+      centroidZ = centroidZ / 4f;
+      Point3D centroid = new Point3D(centroidX, centroidY, centroidZ);
+
+      // Now we need to compute how much to rotate around the X Axis to make the centroid parallel to the Y axis.
+      float angle;
+      Point3D centroidYZ = new Point3D(centroid);
+      centroidYZ.projectYZPlane();
+      Point3D yAxis = new Point3D(0, 1, 0);
+      angle = centroidYZ.angle(yAxis);
+      if (centroidZ < 0f) {
+        angle = -angle;
+      }
+
+      float angleYAxisOrient = angle;
+      for (Joint j : joints) {
+        Point3D farPt = j.getFarPt();
+        farPt.rotateXAxis(angleYAxisOrient);
+        farPt.projectXZPlane();
+      }
+
+      // Now we need to compute the angles of the end points of the adjacent edges.  Whether that is
+      // the 'a' point or 'b' point depends on the directional orientation of the connected edge.
+      for (Joint j : joints) {
+        Point3D farPt = j.getFarPt();
+        j.sortAngle = farPt.computePolarAngle();
+        if (j.sortAngle < 0f) {
+          j.sortAngle += 2.0f * Math.PI;
+        }
+      }
+
+      List<Joint> sortedJoints = new ArrayList<Joint>();
+      for (int i = 0; i < joints.length; i++) {
+        boolean inserted = false;
+        for (int j = 0; j < sortedJoints.size(); j++) {
+          if (joints[i].sortAngle < sortedJoints.get(j).sortAngle) {
+            sortedJoints.add(j, joints[i]);
+            inserted = true;
+            break;
+          }
+        }
+        if (!inserted) sortedJoints.add(joints[i]);
+      }
+      for (int i = 0; i < sortedJoints.size(); i++) {
+        joints[i] = sortedJoints.get(i);
+        joints[i].sortAngle = 0f;
+        joints[i].edge.resetSortParams();
+      }
+      resetSortParams();
     }
   }
 
@@ -259,6 +518,7 @@ public class IcosahedronModel extends LXModel {
     edges[edgeNum++] = new Edge(vertices[10], vertices[11]); //29
 
     Edge.computeAdjacentEdges(edges);
+    Edge.sortEdges();
 
     int faceNum = 0;
     // Top cone
