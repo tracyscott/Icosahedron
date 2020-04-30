@@ -603,7 +603,8 @@ public class IcosahedronModel extends LXModel {
           Icosahedron.lightBarParamsStartMargin,
           Icosahedron.lightBarParamsEndMargin,
           Icosahedron.lightBarParamsLeds,
-          false);
+          false,
+          edges[i]);
       lb.interpolate(edges[i]);
       lightBars.add(lb);
       allPoints.addAll(lb.points);
@@ -622,7 +623,8 @@ public class IcosahedronModel extends LXModel {
           Icosahedron.lightBarParamsStartMargin,
           Icosahedron.lightBarParamsEndMargin,
           Icosahedron.lightBarParamsLeds,
-          true);
+          true,
+          null);
       lb.translate(0f, 0f, i * 0.2f);
       lightBars.add(lb);
       allPoints.addAll(lb.points);

@@ -16,14 +16,17 @@ public class LightBar {
   public boolean arch;
   public int barNum;
   public List<LBPoint> points;
+  public IcosahedronModel.Edge edge;
 
-  public LightBar(int barNum, float length, float startMargin, float endMargin, int numPoints, boolean arch) {
+  public LightBar(int barNum, float length, float startMargin, float endMargin, int numPoints, boolean arch,
+                  IcosahedronModel.Edge edge) {
     this.barNum = barNum;
     this.length = length;
     this.numPoints = numPoints;
     this.arch = arch;
     this.startMargin = startMargin;
     this.endMargin = endMargin;
+    this.edge = edge;
 
     points = new ArrayList<LBPoint>(numPoints);
     for (int i = 0; i < numPoints; i++) {
