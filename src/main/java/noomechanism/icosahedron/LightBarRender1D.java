@@ -81,41 +81,81 @@ public class LightBarRender1D {
    * @param forward Direction of the step function.
    * @param blend Blend mode for writing into the colors array.
    */
-  static public void renderStep(int colors[], LightBar lightBar, float t, float slope, float maxValue, boolean forward, LXColor.Blend blend) {
+  static public float[] renderStepDecay(int colors[], LightBar lightBar, float t, float width, float slope,
+                                     float maxValue, boolean forward, LXColor.Blend blend) {
     float stepPos = t * lightBar.length;
-    float[] minMax = new float[2];
-    minMax[0] = (float)zeroCrossingTriangleWave(t, slope);
-    minMax[1] = (float)zeroCrossingTriangleWave(t, -slope);
+    float[] minMax = stepDecayZeroCrossing(t, width, slope, forward);
     for (LBPoint pt : lightBar.points) {
-      int gray = (int) (stepWave(stepPos, slope, pt.lbx, forward)*255.0*maxValue);
+      int gray = (int) (stepDecayWave(t, width, slope, pt.lbx/lightBar.length, forward)*255.0*maxValue);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
     }
+
+    return minMax;
   }
 
   static public float triWave(float t, float p)  {
       return 2.0f * (float)Math.abs(t / p - Math.floor(t / p + 0.5f));
   }
 
+  static public float[] stepDecayZeroCrossing(float stepPos, float width, float slope, boolean forward) {
+    float[] minMax = new float[2];
+    float max = stepPos + width/2.0f;
+    float min = stepPos - width/2.0f - 1.0f/slope;
+    // If our orientation traveling along the bar is backwards, swap our min/max computations.
+
+    float tail = 0f;
+    if (forward) {
+      tail  = - 1.0f/slope + stepPos - width/2.0f;
+    } else {
+      tail = 1.0f/slope + stepPos + width/2.0f;
+    }
+
+    float head = 0;
+    if (forward) {
+      head = stepPos + width/2.0f;
+    } else {
+      head = stepPos - width/2.0f;
+    }
+
+    if (forward) {
+      minMax[0] = tail;
+      minMax[1] = head;
+    } else {
+      minMax[1] = tail;
+      minMax[0] = head;
+    }
+    /*
+    if (forward) {
+      minMax[0] = min;
+      minMax[1] = max;
+    } else {
+      minMax[0] = max;
+      minMax[1] = min;
+    }
+    */
+    return minMax;
+  }
+
   /**
    * Step wave with attack slope.
    * Returns value from 0.0f to 1.0f
    */
-  static public float stepWave(float stepPos, float slope, float x, boolean forward) {
+  static public float stepDecayWave(float stepPos, float width, float slope, float x, boolean forward) {
     float value;
+    if ((x > stepPos - width/2.0f) && (x < stepPos + width/2.0f))
+      return 1.0f;
+
+    if ((x > stepPos + width/2.0f) && forward)
+      return 0f;
+    else if ((x < stepPos - width/2.0f && !forward))
+      return 0f;
+
     if (forward) {
-      if (x < stepPos)
-        value = 1.0f;
-      else {
-        value = -slope * (x - stepPos) + 1.0f;
+        value = 1.0f + slope * (x - (stepPos - width/2.0f));
         if (value < 0f) value = 0f;
-      }
     } else {
-      if (x > stepPos)
-        value = 1.0f;
-      else {
-        value = slope * (x - stepPos) + 1.0f;
+        value = 1.0f - slope * (x - (stepPos + width/2.0f));
         if (value < 0f) value = 0f;
-      }
     }
     return value;
   }
@@ -138,10 +178,9 @@ public class LightBarRender1D {
   }
 
   static public void renderColor(int[] colors, LightBar lb, int red, int green, int blue, int alpha) {
-
     renderColor(colors, lb, LXColor.rgba(red, green, blue, alpha));
-
   }
+
   static public void renderColor(int[] colors, LightBar lb, int color) {
     for (LXPoint point: lb.points) {
       colors[point.index] = color;

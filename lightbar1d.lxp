@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588356561140,
+  "timestamp": 1588373132094,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -16729089,
+    "modulationColor": -28928,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -466,17 +466,17 @@
             },
             "parameters": {
               "label": "TravelN",
-              "slope": 0.09998999888263643,
+              "slope": 4.3491699072588235,
               "maxv": 1.0,
-              "speed": 3.4999999217689037,
-              "blobs": 1,
+              "speed": 4.89999994635582,
+              "blobs": 22,
               "randspd": 0.0,
               "sparkle": false,
               "nxtBar": -1,
               "spklMin": 198.89999555423856,
-              "spklDepth": 63.75000427477062,
-              "triWave": false,
-              "width": 4.000000096857548
+              "spklDepth": 30.600005015730858,
+              "wave": 2,
+              "width": 0.0
             },
             "children": {
               "modulation": {
@@ -666,9 +666,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 29.66246958560751,
-          "theta": 202.21926556640489,
-          "phi": 0.2356194550873671,
+          "radius": 24.746925585586542,
+          "theta": 227.6452881899828,
+          "phi": 0.4692505737326554,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -676,9 +676,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 29.66246958560751,
-            "theta": 202.21926556640489,
-            "phi": 0.2356194550873671,
+            "radius": 24.746925585586542,
+            "theta": 227.6452881899828,
+            "phi": 0.4692505737326554,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

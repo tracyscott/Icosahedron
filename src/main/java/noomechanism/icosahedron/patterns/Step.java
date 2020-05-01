@@ -30,7 +30,7 @@ public class Step extends LXPattern {
       colors[pt.index] = LXColor.rgba(0,0,0, 255);
     }
     for (LightBar lb : IcosahedronModel.lightBars) {
-      LightBarRender1D.renderStep(colors, lb, pos.getValuef(), slope.getValuef(), maxV.getValuef(), forward.getValueb(), LXColor.Blend.ADD);
+      LightBarRender1D.renderStepDecay(colors, lb, pos.getValuef(), 0.2f, slope.getValuef(), maxV.getValuef(), forward.getValueb(), LXColor.Blend.ADD);
     }
   }
 }
