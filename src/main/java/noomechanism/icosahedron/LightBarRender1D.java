@@ -1,6 +1,7 @@
 package noomechanism.icosahedron;
 
 import heronarts.lx.color.LXColor;
+import heronarts.lx.model.LXPoint;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -119,5 +120,16 @@ public class LightBarRender1D {
     double y = slope * (evalAtX - peakX) + 1.0f;
     if (y < 0f) y = 0f;
     return y;
+  }
+
+  static public void renderColor(int[] colors, LightBar lb, int red, int green, int blue, int alpha) {
+
+    renderColor(colors, lb, LXColor.rgba(red, green, blue, alpha));
+
+  }
+  static public void renderColor(int[] colors, LightBar lb, int color) {
+    for (LXPoint point: lb.points) {
+      colors[point.index] = color;
+    }
   }
 }

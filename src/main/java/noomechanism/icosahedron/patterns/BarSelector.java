@@ -9,6 +9,7 @@ import heronarts.lx.parameter.DiscreteParameter;
 import noomechanism.icosahedron.Icosahedron;
 import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.LightBar;
+import noomechanism.icosahedron.LightBarRender1D;
 
 public class BarSelector extends LXPattern {
 
@@ -50,47 +51,23 @@ public class BarSelector extends LXPattern {
         }
         if (joint.getValueb()) {
           // Color code the joint connections.
-          int firstBarNum = IcosahedronModel.edges[lb.barNum].myStartPointJoints[0].edge.lightBar.barNum;
-          LightBar jlb = IcosahedronModel.lightBars.get(firstBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(255, 0, 0, 255);
-          }
-          int secondBarNum = IcosahedronModel.edges[lb.barNum].myStartPointJoints[1].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(secondBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(0, 255, 0, 255);
-          }
-          int thirdBarNum = IcosahedronModel.edges[lb.barNum].myStartPointJoints[2].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(thirdBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(0, 0, 255, 255);
-          }
-          int fourthBarNum = IcosahedronModel.edges[lb.barNum].myStartPointJoints[3].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(fourthBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(255, 255, 0, 255);
-          }
+          LightBarRender1D.renderColor(colors, lb.edge.myStartPointJoints[0].edge.lightBar,
+              255, 0, 0, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myStartPointJoints[1].edge.lightBar,
+              0, 255, 0, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myStartPointJoints[2].edge.lightBar,
+              0, 0, 255, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myStartPointJoints[3].edge.lightBar,
+              255, 255, 0, 255);
 
-          firstBarNum = IcosahedronModel.edges[lb.barNum].myEndPointJoints[0].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(firstBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(255, 0, 0, 255);
-          }
-          secondBarNum = IcosahedronModel.edges[lb.barNum].myEndPointJoints[1].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(secondBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(0, 255, 0, 255);
-          }
-          thirdBarNum = IcosahedronModel.edges[lb.barNum].myEndPointJoints[2].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(thirdBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(0, 0, 255, 255);
-          }
-          fourthBarNum = IcosahedronModel.edges[lb.barNum].myEndPointJoints[3].edge.lightBar.barNum;
-          jlb = IcosahedronModel.lightBars.get(fourthBarNum);
-          for (LXPoint point: jlb.points) {
-            colors[point.index] = LXColor.rgba(255, 255, 0, 255);
-          }
+          LightBarRender1D.renderColor(colors, lb.edge.myEndPointJoints[0].edge.lightBar,
+              255, 0, 0, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myEndPointJoints[1].edge.lightBar,
+              0, 255, 0, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myEndPointJoints[2].edge.lightBar,
+              0, 0, 255, 255);
+          LightBarRender1D.renderColor(colors, lb.edge.myEndPointJoints[3].edge.lightBar,
+              255, 255, 0, 255);
         }
       } else {
 
