@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588351174942,
+  "timestamp": 1588356561140,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -12544,
+    "modulationColor": -16729089,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -466,15 +466,17 @@
             },
             "parameters": {
               "label": "TravelN",
-              "slope": 0.34996999664790923,
+              "slope": 0.09998999888263643,
               "maxv": 1.0,
-              "speed": 10.0,
-              "blobs": 31,
-              "randspd": 1.0,
-              "sparkle": true,
+              "speed": 3.4999999217689037,
+              "blobs": 1,
+              "randspd": 0.0,
+              "sparkle": false,
               "nxtBar": -1,
               "spklMin": 198.89999555423856,
-              "spklDepth": 63.75000427477062
+              "spklDepth": 63.75000427477062,
+              "triWave": false,
+              "width": 4.000000096857548
             },
             "children": {
               "modulation": {
@@ -494,7 +496,7 @@
                     "internal": {},
                     "parameters": {
                       "label": "LFO",
-                      "running": true,
+                      "running": false,
                       "trigger": false,
                       "loop": true,
                       "tempoSync": false,
@@ -510,7 +512,7 @@
                       "exp": 1.0
                     },
                     "children": {},
-                    "basis": 0.2833458911605892
+                    "basis": 0.8998561457781648
                   }
                 ],
                 "modulations": [
@@ -554,11 +556,11 @@
           "label": "Channel-2",
           "arm": false,
           "selected": false,
-          "enabled": true,
+          "enabled": false,
           "cue": false,
-          "fader": 0.4285714337602258,
+          "fader": 0.22857143264263868,
           "crossfadeGroup": 0,
-          "blendMode": 1,
+          "blendMode": 0,
           "midiMonitor": false,
           "midiChannel": 16,
           "autoCycleEnabled": false,
@@ -571,7 +573,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 1,
+        "patternIndex": 0,
         "patterns": [
           {
             "id": 207,
@@ -664,9 +666,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 14.105346942644694,
-          "theta": 165.5342121918744,
-          "phi": 0.19959144997086894,
+          "radius": 29.66246958560751,
+          "theta": 202.21926556640489,
+          "phi": 0.2356194550873671,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -674,9 +676,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 14.105346942644694,
-            "theta": 165.5342121918744,
-            "phi": 0.19959144997086894,
+            "radius": 29.66246958560751,
+            "theta": 202.21926556640489,
+            "phi": 0.2356194550873671,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

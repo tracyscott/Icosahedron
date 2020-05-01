@@ -27,6 +27,8 @@ public class TravelN extends LXPattern {
   public DiscreteParameter nextBarKnob = new DiscreteParameter("nxtBar", -1, -1, 4);
   public CompoundParameter sparkleMin = new CompoundParameter("spklMin", 0.0f, 0.0f, 255.0f);
   public CompoundParameter sparkleDepth = new CompoundParameter("spklDepth", 255.0f, 0.0f, 255.0f);
+  public BooleanParameter waveKnob = new BooleanParameter("triWave", true).setDescription("Render triangle wave");
+  public CompoundParameter widthKnob = new CompoundParameter("width", 0.1f, 0.0f, 10.0f).setDescription("Square wave width");
 
   public static class Blob {
     public DirectionalLightBar dlb;
@@ -68,6 +70,8 @@ public class TravelN extends LXPattern {
     addParameter(nextBarKnob);
     addParameter(sparkleMin);
     addParameter(sparkleDepth);
+    addParameter(waveKnob);
+    addParameter(widthKnob);
     resetBars();
   }
 
@@ -104,12 +108,16 @@ public class TravelN extends LXPattern {
       for (LightBar lb : IcosahedronModel.lightBars) {
         if (blob.dlb.lb.barNum == lb.barNum) {
           // -- Render on our target light bar --
-          float minMax[] = LightBarRender1D.renderTriangle(colors, lb, blob.pos, slope.getValuef(),
-              maxValue.getValuef(), LXColor.Blend.ADD);
+          float minMax[] = renderWaveform(lb, blob.pos);
 
           // -- Fix up the set of lightbars that we are rendering over.
           int numPrevBars = -1 * (int)Math.floor(minMax[0]);
           int numNextBars = (int)Math.ceil(minMax[1] - 1.0f);
+          if (!blob.dlb.forward) {
+            int oldNumNextBars = numNextBars;
+            numNextBars = numPrevBars;
+            numPrevBars = oldNumNextBars;
+          }
           // We need to handle the initial case, so we might need to add multiple next bars to our list.
           while (blob.nextBars.size() < numNextBars) {
             DirectionalLightBar dlb;
@@ -120,6 +128,7 @@ public class TravelN extends LXPattern {
             blob.nextBars.add(dlb);
           }
 
+          /*
           while (blob.prevBars.size() < numPrevBars) {
             DirectionalLightBar dlb;
             if (blob.prevBars.size() == 0)
@@ -128,6 +137,7 @@ public class TravelN extends LXPattern {
               dlb = blob.prevBars.get(blob.prevBars.size() - 1).choosePrevBar(nextBarKnob.getValuei());
             blob.prevBars.add(dlb);
           }
+          */
 
           // Garbage collect any old bars.
           // TODO(tracy): We should trim both nextBars and prevBars each time so for example if our slope changes
@@ -138,7 +148,7 @@ public class TravelN extends LXPattern {
           }
 
           // For the number of previous bars, render on each bar
-          for (int j = 0; j < numPrevBars; j++) {
+          for (int j = 0; j < numPrevBars && j < blob.prevBars.size(); j++) {
             DirectionalLightBar prevBar = blob.prevBars.get(j);
             // We need to compute the next bar pos but we need to account for any intermediate bars.
             float prevBarPos = blob.dlb.computePrevBarPos(blob.pos, prevBar);
@@ -146,7 +156,7 @@ public class TravelN extends LXPattern {
             // whether there are any intermediate lightbars.
             if (prevBar.forward) prevBarPos += j;
             else prevBarPos -= j; //
-            LightBarRender1D.renderTriangle(colors, prevBar.lb, prevBarPos, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
+            renderWaveform(prevBar.lb, prevBarPos);
           }
 
           for (int j = 0; j < numNextBars; j++) {
@@ -156,7 +166,7 @@ public class TravelN extends LXPattern {
               nextBarPos -= j; // shift the position to the left by the number of bars away it is actually at.
             else
               nextBarPos += j;
-            LightBarRender1D.renderTriangle(colors, nextBar.lb, nextBarPos, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
+            renderWaveform(nextBar.lb, nextBarPos);
           }
 
           if (blob.dlb.forward) {
@@ -180,5 +190,12 @@ public class TravelN extends LXPattern {
         LightBarRender1D.randomGray(colors, lb, LXColor.Blend.MULTIPLY);
       }
     }
+  }
+
+  public float[] renderWaveform(LightBar lb, float position) {
+    if (waveKnob.getValueb())
+      return LightBarRender1D.renderTriangle(colors, lb, position, slope.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
+    else
+      return LightBarRender1D.renderSquare(colors, lb, position, widthKnob.getValuef(), maxValue.getValuef(), LXColor.Blend.ADD);
   }
 }

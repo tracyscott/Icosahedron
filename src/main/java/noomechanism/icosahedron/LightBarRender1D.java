@@ -50,10 +50,22 @@ public class LightBarRender1D {
   static public float[] renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend) {
     double peakPos = t * lightBar.length;
     float[] minMax = new float[2];
+    minMax[0] = (float)zeroCrossingTriangleWave(t, slope);
+    minMax[1] = (float)zeroCrossingTriangleWave(t, -slope);
     for (LBPoint pt : lightBar.points) {
       int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
-      minMax[0] = (float)zeroCrossingTriangleWave(peakPos, slope);
-      minMax[1] = (float)zeroCrossingTriangleWave(peakPos, -slope);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+    }
+    return minMax;
+  }
+
+  static public float[] renderSquare(int colors[], LightBar lightBar, float t, float width, float maxValue, LXColor.Blend blend) {
+    double barPos = t * lightBar.length;
+    float[] minMax = new float[2];
+    minMax[0] = t - width/2.0f;
+    minMax[1] = t + width/2.0f;
+    for (LBPoint pt: lightBar.points) {
+      int gray = (int) ((((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f)*255.0f);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
     }
     return minMax;
@@ -71,6 +83,9 @@ public class LightBarRender1D {
    */
   static public void renderStep(int colors[], LightBar lightBar, float t, float slope, float maxValue, boolean forward, LXColor.Blend blend) {
     float stepPos = t * lightBar.length;
+    float[] minMax = new float[2];
+    minMax[0] = (float)zeroCrossingTriangleWave(t, slope);
+    minMax[1] = (float)zeroCrossingTriangleWave(t, -slope);
     for (LBPoint pt : lightBar.points) {
       int gray = (int) (stepWave(stepPos, slope, pt.lbx, forward)*255.0*maxValue);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
@@ -106,7 +121,7 @@ public class LightBarRender1D {
   }
 
   static public double zeroCrossingTriangleWave(double peakX, double slope) {
-    return -1.0/slope;
+    return peakX - 1.0/slope;
   }
 
   /**
