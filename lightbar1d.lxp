@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588628239031,
+  "timestamp": 1588631681782,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -15104,
+    "modulationColor": -3604225,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -261,7 +261,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 8,
+        "patternIndex": 9,
         "patterns": [
           {
             "id": 95,
@@ -703,6 +703,39 @@
                 "triggers": []
               }
             }
+          },
+          {
+            "id": 851,
+            "class": "noomechanism.icosahedron.patterns.CollT",
+            "modulationColor": -16711734,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "CollT",
+              "t": 1.0,
+              "Move": 1.0,
+              "Explode": 1.0,
+              "maxv": 1.0,
+              "slope": 2.6048000534296034
+            },
+            "children": {
+              "modulation": {
+                "id": 852,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -12452096,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
           }
         ]
       },
@@ -956,8 +989,8 @@
         "camera": {
           "active": false,
           "radius": 25.532943368236435,
-          "theta": 315.05811512538634,
-          "phi": 0.5984932900562765,
+          "theta": 319.9792808621398,
+          "phi": 0.6680855476645708,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -966,8 +999,8 @@
           {
             "active": false,
             "radius": 25.532943368236435,
-            "theta": 315.05811512538634,
-            "phi": 0.5984932900562765,
+            "theta": 319.9792808621398,
+            "phi": 0.6680855476645708,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
