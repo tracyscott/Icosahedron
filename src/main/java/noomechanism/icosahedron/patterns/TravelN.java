@@ -45,7 +45,7 @@ public class TravelN extends LXPattern {
   public void resetBlobs() {
     for (int i = 0; i < MAX_BLOBS; i++) {
       blobs[i] = new Blob();
-      blobs[i].reset(i%30, 0.0f, randSpeed.getValuef());
+      blobs[i].reset(i%30, 0.0f, randSpeed.getValuef(), true);
     }
   }
 

@@ -31,9 +31,9 @@ public class Blob {
     }
   }
 
-  public void reset(int lightBarNum, float initialPos, float randomSpeed) {
+  public void reset(int lightBarNum, float initialPos, float randomSpeed, boolean forward) {
     pos = initialPos;
-    dlb = new DirectionalLightBar(lightBarNum, true);
+    dlb = new DirectionalLightBar(lightBarNum, forward);
     speed = randomSpeed * (float)Math.random();
     nextBars = new ArrayList<DirectionalLightBar>();
     prevBars = new ArrayList<DirectionalLightBar>();
