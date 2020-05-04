@@ -233,7 +233,7 @@ public class Icosahedron extends PApplet {
   final static float M = CM * 100;
   final static float METER = M;
 
-  public static final boolean enablePixliteOutput = false;
+  public static final boolean enablePixliteOutput = true;
   public static final boolean enableUnityOutput = true;
   public static final boolean enableOutputOnStart = true;
 }
