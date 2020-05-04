@@ -7,6 +7,7 @@ import heronarts.lx.model.LXPoint;
 import heronarts.lx.output.ArtNetDatagram;
 import heronarts.lx.output.ArtSyncDatagram;
 import heronarts.lx.output.LXDatagramOutput;
+import noomechanism.icosahedron.ui.UIUnityOut;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -27,12 +28,22 @@ public class Output {
 
   public static List<List<Integer>> outputs = new ArrayList<List<Integer>>(MAX_OUTPUTS);
 
-  public static String artnetIpAddress = "192.168.137.26"; //"192.168.137.149";
+  public static String artnetIpAddress = "192.168.2.123"; // 204"; //"192.168.137.149";
   public static int artnetPort = 6454;
+
+  // Output for Unity, configured via ui/UIUnityOut.
+  public static LXDatagramOutput unityOutput = null;
 
   // TODO(tracy): We need to put out the points in the same order for the CNC-based panels that we did for
   // the dimensions-based generated panels.
   public static void configureUnityArtNet(LX lx) {
+    String unityIpAddress = Icosahedron.unityOut.getStringParameter(UIUnityOut.OUT_1_IP).getString();
+    logger.log(Level.INFO, "Using ArtNet: " + unityIpAddress + ":" + artnetPort);
+
+    if (unityOutput != null) {
+      lx.engine.output.removeChild(unityOutput);
+    }
+
     List<LXPoint> points = lx.getModel().getPoints();
     int numUniverses = (int)Math.ceil(((double)points.size())/170.0);
     logger.info("Num universes: " + numUniverses);
@@ -46,30 +57,33 @@ public class Output {
         dmxChannelsForUniverse[i] = p.index;
         totalPointsOutput++;
       }
-      logger.info("Added points for universe number: " + univNum);
+
       ArtNetDatagram artnetDatagram = new ArtNetDatagram(dmxChannelsForUniverse, univNum);
       try {
-        artnetDatagram.setAddress(artnetIpAddress).setPort(artnetPort);
+        artnetDatagram.setAddress(unityIpAddress).setPort(artnetPort);
       } catch (UnknownHostException uhex) {
         logger.log(Level.SEVERE, "Configuring ArtNet: " + artnetIpAddress, uhex);
       }
       datagrams.add(artnetDatagram);
     }
 
+    try {
+      unityOutput = new LXDatagramOutput(lx);
+    } catch (SocketException sex) {
+      logger.log(Level.SEVERE, "Initializing LXDatagramOutput failed.", sex);
+    }
 
     for (ArtNetDatagram dgram : datagrams) {
-      try {
-        datagramOutput = new LXDatagramOutput(lx);
-        datagramOutput.addDatagram(dgram);
-      } catch (SocketException sex) {
-        logger.log(Level.SEVERE, "Initializing LXDatagramOutput failed.", sex);
-      }
-      if (datagramOutput != null) {
-        lx.engine.output.addChild(datagramOutput);
+      unityOutput.addDatagram(dgram);
+    }
+
+      if (unityOutput != null) {
+        unityOutput.enabled.setValue(false);
+        lx.engine.output.addChild(unityOutput);
       } else {
         logger.log(Level.SEVERE, "Did not configure output, error during LXDatagramOutput init");
       }
-    }
+
   }
 
   public static void configurePixliteOutput(LX lx) {
@@ -80,7 +94,7 @@ public class Output {
 
     String artNetIpAddress = Icosahedron.pixliteConfig.getStringParameter(UIPixliteConfig.PIXLITE_1_IP).getString();
     int artNetIpPort = Integer.parseInt(Icosahedron.pixliteConfig.getStringParameter(UIPixliteConfig.PIXLITE_1_PORT).getString());
-    logger.log(Level.INFO, "Using ArtNet: " + artNetIpAddress + ":" + artNetIpPort);
+    logger.log(Level.INFO, "Using Pixlite ArtNet: " + artNetIpAddress + ":" + artNetIpPort);
 
     // For each non-empty mapping output parameter, collect all points in wire order from each lightbar listed
     // Distribute all points across the necessary number of 170-led sized universes.

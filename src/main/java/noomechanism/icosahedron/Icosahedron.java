@@ -2,9 +2,7 @@ package noomechanism.icosahedron;
 
 import com.google.common.reflect.ClassPath;
 import heronarts.lx.color.LXColor;
-import noomechanism.icosahedron.ui.UILightBarConfig;
-import noomechanism.icosahedron.ui.UIMappingConfig;
-import noomechanism.icosahedron.ui.UIPixliteConfig;
+import noomechanism.icosahedron.ui.*;
 import heronarts.lx.LXEffect;
 import heronarts.lx.LXPattern;
 import heronarts.lx.model.LXModel;
@@ -23,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import noomechanism.icosahedron.ui.UIPreviewComponents;
 import processing.core.PApplet;
 
 public class Icosahedron extends PApplet {
@@ -81,6 +78,7 @@ public class Icosahedron extends PApplet {
   static public PreviewComponents.Axes axes;
   public static ParameterFile lightBarParams;
   public static UIPixliteConfig pixliteConfig;
+  public static UIUnityOut unityOut;
   public static UIMappingConfig mappingConfig;
   public static UILightBarConfig lightBarConfig;
   public static UIPreviewComponents previewComponents;
@@ -93,7 +91,7 @@ public class Icosahedron extends PApplet {
 
   @Override
   public void settings() {
-    size(1200, 600, P3D);
+    size(1400, 1200, P3D);
   }
 
   /**
@@ -170,7 +168,7 @@ public class Icosahedron extends PApplet {
     //flags.isP3LX = true;
     //flags.immutableModel = true;
     flags.useGLPointCloud = false;
-    flags.startMultiThreaded = false;
+    flags.startMultiThreaded = true;
     //flags.showFramerate = true;
 
     logger.info("Current renderer:" + sketchRenderer());
@@ -197,8 +195,9 @@ public class Icosahedron extends PApplet {
     lightBarConfig = (UILightBarConfig) new UILightBarConfig(lx.ui, lx, lightBarParams).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     mappingConfig = (UIMappingConfig) new UIMappingConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
     pixliteConfig = (UIPixliteConfig) new UIPixliteConfig(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
+    unityOut = (UIUnityOut) new UIUnityOut(lx.ui, lx).setExpanded(false).addToContainer(lx.ui.leftPane.global);
 
-    if (enableArtnetOutput) {
+    if (enablePixliteOutput) {
       Output.configurePixliteOutput(lx);
     }
 
@@ -234,7 +233,7 @@ public class Icosahedron extends PApplet {
   final static float M = CM * 100;
   final static float METER = M;
 
-  public static final boolean enableArtnetOutput = true;
-  public static final boolean enableUnityOutput = false;
+  public static final boolean enablePixliteOutput = false;
+  public static final boolean enableUnityOutput = true;
   public static final boolean enableOutputOnStart = true;
 }
