@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588551295338,
+  "timestamp": 1588624339784,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -14024960,
+    "modulationColor": -6815489,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -27,7 +27,7 @@
       "crossfader": 0.5,
       "crossfaderBlendMode": 0,
       "speed": 1.0,
-      "focusedChannel": 1,
+      "focusedChannel": 0,
       "cueA": false,
       "cueB": false,
       "multithreaded": true,
@@ -243,7 +243,7 @@
         "parameters": {
           "label": "Channel-1",
           "arm": false,
-          "selected": false,
+          "selected": true,
           "enabled": true,
           "cue": false,
           "fader": 1.0,
@@ -261,7 +261,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 2,
+        "patternIndex": 5,
         "patterns": [
           {
             "id": 95,
@@ -483,15 +483,15 @@
             },
             "parameters": {
               "label": "TravelN",
-              "slope": 0.15001000111736362,
+              "slope": 1.149809978770092,
               "maxv": 1.0,
-              "speed": 3.099999986588955,
-              "blobs": 2,
+              "speed": 3.2999999821186066,
+              "blobs": 30,
               "randspd": 0.0,
               "sparkle": false,
-              "nxtBar": 1,
-              "spklMin": 255.0,
-              "spklDepth": 17.84999960102141,
+              "nxtBar": 0,
+              "spklMin": 0.0,
+              "spklDepth": 193.79999566823244,
               "wave": 2,
               "width": 0.0
             },
@@ -641,7 +641,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.22191732134998474
+                    "basis": 0.4667442191981385
                   }
                 ],
                 "modulations": [
@@ -684,7 +684,7 @@
         "parameters": {
           "label": "Channel-2",
           "arm": false,
-          "selected": true,
+          "selected": false,
           "enabled": true,
           "cue": false,
           "fader": 0.5999999949708581,
@@ -890,9 +890,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 23.217175244902673,
-          "theta": 243.48746509418268,
-          "phi": 0.25869109990826417,
+          "radius": 22.05631648265754,
+          "theta": 301.59201650006736,
+          "phi": 0.6513901538115373,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -900,9 +900,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 23.217175244902673,
-            "theta": 243.48746509418268,
-            "phi": 0.25869109990826417,
+            "radius": 22.05631648265754,
+            "theta": 301.59201650006736,
+            "phi": 0.6513901538115373,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
