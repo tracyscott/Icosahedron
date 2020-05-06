@@ -23,6 +23,7 @@ public class TopBottomT extends LXPattern {
   public CompoundParameter paramT = new CompoundParameter("t", 0.0, 0.0, 1.0);
   public DiscreteParameter waveKnob = new DiscreteParameter("wave", 0, 0, 3).setDescription("Waveform type");
   public CompoundParameter widthKnob = new CompoundParameter("width", 0.1f, 0.0f, 10.0f).setDescription("Square wave width");
+  public CompoundParameter extraLength = new CompoundParameter("extra", 0.5, 0.0f, 10.0f);
 
   public Blob topBlob = new Blob();
   public Blob bottomBlob = new Blob();
@@ -39,6 +40,7 @@ public class TopBottomT extends LXPattern {
     addParameter(paramT);
     addParameter(waveKnob);
     addParameter(widthKnob);
+    addParameter(extraLength);
     topBars.add(new DirectionalLightBar(TOP_BAR_NUM, false));
     bottomBars.add(new DirectionalLightBar(BOTTOM_BAR_NUM, true));
 
@@ -59,7 +61,9 @@ public class TopBottomT extends LXPattern {
     for (LXPoint pt : lx.getModel().points) {
       colors[pt.index] = LXColor.rgba(0,0,0, 255);
     }
-    topBlob.renderBlobAtT(colors, paramT.getValuef(), widthKnob.getValuef(), slope.getValuef(), MAX_INTENSITY, waveKnob.getValuei());
-    bottomBlob.renderBlobAtT(colors, paramT.getValuef(), widthKnob.getValuef(), slope.getValuef(), MAX_INTENSITY, waveKnob.getValuei());
+    topBlob.renderBlobAtT(colors, paramT.getValuef(), widthKnob.getValuef(), slope.getValuef(),
+        MAX_INTENSITY, waveKnob.getValuei(), 3 + extraLength.getValuef());
+    bottomBlob.renderBlobAtT(colors, paramT.getValuef(), widthKnob.getValuef(), slope.getValuef(),
+        MAX_INTENSITY, waveKnob.getValuei(), 3 + extraLength.getValuef());
   }
 }

@@ -152,14 +152,13 @@ public class Blob {
    * @param waveform
    */
   public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
-                         float maxValue, int waveform) {
+                         float maxValue, int waveform, float maxGlobalPos) {
     for (LightBar lb : IcosahedronModel.lightBars) {
       int dlbNum = 0;
       for (DirectionalLightBar currentDlb : pathBars) {
-        float globalPos = paramT * pathBars.size();
         if (currentDlb.lb.barNum == lb.barNum) {
           // -- Render on our target light bar and adjust pos based on bar num.
-          float localDlbPos = globalPos;
+          float localDlbPos = paramT * maxGlobalPos;
           localDlbPos -= dlbNum;
           if (!currentDlb.forward)
             localDlbPos = 1.0f - localDlbPos;
