@@ -12,6 +12,10 @@ public class Blob {
   public List<DirectionalLightBar> prevBars;
   public List<DirectionalLightBar> nextBars;
 
+  // When rendering position parametrically from 0 to 1, we need a pre-computed set of lightbars
+  // that we intend to render on.  See TopBottomT for an example of setting this up.
+  public List<DirectionalLightBar> pathBars;
+
   public void updateCurrentBar(int barSelector) {
     // First, lets transfer the current lightbar into our
     // previous lightbars list.  The list will be trimmed in our draw loop.
@@ -133,6 +137,37 @@ public class Blob {
 
     if (needsCurrentBarUpdate) {
       updateCurrentBar(whichJoint);
+    }
+  }
+
+  /**
+   * Renders a waveform on a pre-computed list of lightbars stored in pathBars.  Position is
+   * defined parametrically from 0 to 1 where 1 is at the end of the last lightbar.  Automatically
+   * adjusts to number of lightbars.
+   * @param colors
+   * @param paramT
+   * @param width
+   * @param slope
+   * @param maxValue
+   * @param waveform
+   */
+  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+                         float maxValue, int waveform) {
+    for (LightBar lb : IcosahedronModel.lightBars) {
+      int dlbNum = 0;
+      for (DirectionalLightBar currentDlb : pathBars) {
+        float globalPos = paramT * pathBars.size();
+        if (currentDlb.lb.barNum == lb.barNum) {
+          // -- Render on our target light bar and adjust pos based on bar num.
+          float localDlbPos = globalPos;
+          localDlbPos -= dlbNum;
+          if (!currentDlb.forward)
+            localDlbPos = 1.0f - localDlbPos;
+
+          renderWaveform(colors, currentDlb, localDlbPos, width, slope, maxValue, waveform);
+        }
+        dlbNum++;
+      }
     }
   }
 
