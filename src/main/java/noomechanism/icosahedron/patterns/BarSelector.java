@@ -6,10 +6,10 @@ import heronarts.lx.color.LXColor;
 import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.BooleanParameter;
 import heronarts.lx.parameter.DiscreteParameter;
-import noomechanism.icosahedron.Icosahedron;
-import noomechanism.icosahedron.IcosahedronModel;
-import noomechanism.icosahedron.LightBar;
-import noomechanism.icosahedron.LightBarRender1D;
+import noomechanism.icosahedron.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BarSelector extends LXPattern {
 
@@ -17,6 +17,7 @@ public class BarSelector extends LXPattern {
   BooleanParameter caps = new BooleanParameter("caps", false).setDescription("Debugging caps");
   BooleanParameter directionCaps = new BooleanParameter("dircaps", false).setDescription("Direction caps");
   BooleanParameter joint = new BooleanParameter("joint", false).setDescription("Color code the joint");
+  BooleanParameter showNum = new BooleanParameter("showNum", false).setDescription("Encode bar number on bar");
 
   public BarSelector(LX lx) {
     super(lx);
@@ -24,6 +25,7 @@ public class BarSelector extends LXPattern {
     addParameter(caps);
     addParameter(directionCaps);
     addParameter(joint);
+    addParameter(showNum);
   }
 
   @Override
@@ -49,6 +51,7 @@ public class BarSelector extends LXPattern {
             colors[point.index] = LXColor.rgba(255, 255, 255, 255);
           ptNum++;
         }
+        if (showNum.getValueb()) renderBarNum(lb);
         if (joint.getValueb()) {
           // Color code the joint connections.
           LightBarRender1D.renderColor(colors, lb.edge.myStartPointJoints[0].edge.lightBar,
@@ -72,6 +75,36 @@ public class BarSelector extends LXPattern {
       } else {
 
       }
+    }
+  }
+
+  public void renderBarNum(LightBar lb) {
+    int numFiveBlobs = lb.barNum / 5;
+    int numOneBlobs = lb.barNum % 5;
+    List<Blob> fiveBlobs = new ArrayList<Blob>();
+    for (int i = 0; i < numFiveBlobs; i++) {
+      Blob blob = new Blob();
+      blob.dlb = new DirectionalLightBar(lb.barNum, true);
+      blob.pos = (20.0f + i * 15.0f)/(float)lb.numPoints;
+      fiveBlobs.add(blob);
+    }
+
+    List<Blob> oneBlobs = new ArrayList<Blob>();
+    for (int i = 0; i < numOneBlobs; i++) {
+      Blob blob = new Blob();
+      blob.dlb = new DirectionalLightBar(lb.barNum, true);
+      blob.pos = (20.0f + 15.0f * numFiveBlobs + 8.0f * i)/(float)lb.numPoints;
+      oneBlobs.add(blob);
+    }
+
+    for (Blob b : fiveBlobs) {
+      b.renderBlob(colors, 0f, 10.f/(float)lb.numPoints, 50.0f, 1.0f, 1,
+          0, false, LXColor.Blend.SUBTRACT);
+    }
+
+    for (Blob b : oneBlobs) {
+      b.renderBlob(colors, 0f, 4f/(float)lb.numPoints, 50.0f, 1.0f, 1,
+          0, false, LXColor.Blend.SUBTRACT);
     }
   }
 }

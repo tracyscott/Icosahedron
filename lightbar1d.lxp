@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588726557191,
+  "timestamp": 1588867671246,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -9109249,
+    "modulationColor": -16732929,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -261,7 +261,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 10,
+        "patternIndex": 4,
         "patterns": [
           {
             "id": 95,
@@ -451,10 +451,11 @@
             },
             "parameters": {
               "label": "BarSelector",
-              "BarNum": 20,
+              "BarNum": -1,
               "caps": false,
               "dircaps": true,
-              "joint": true
+              "joint": false,
+              "showNum": true
             },
             "children": {
               "modulation": {
@@ -788,7 +789,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.13700000000005375
+                    "basis": 0.7470000000987359
                   }
                 ],
                 "modulations": [
@@ -832,7 +833,7 @@
           "label": "Channel-2",
           "arm": false,
           "selected": false,
-          "enabled": true,
+          "enabled": false,
           "cue": false,
           "fader": 0.5999999949708581,
           "crossfadeGroup": 0,
@@ -896,7 +897,8 @@
               "BarNum": -1,
               "caps": true,
               "dircaps": true,
-              "joint": false
+              "joint": false,
+              "showNum": false
             },
             "children": {
               "modulation": {
@@ -1030,7 +1032,8 @@
               "BarNum": -1,
               "caps": false,
               "dircaps": true,
-              "joint": false
+              "joint": false,
+              "showNum": false
             },
             "children": {
               "modulation": {
@@ -1070,9 +1073,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 25.532943368236435,
-          "theta": 320.8889508789878,
-          "phi": 1.2198526048515306,
+          "radius": 17.384388753991097,
+          "theta": 326.71481557625185,
+          "phi": 0.4195417295826333,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -1080,9 +1083,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 25.532943368236435,
-            "theta": 320.8889508789878,
-            "phi": 1.2198526048515306,
+            "radius": 17.384388753991097,
+            "theta": 326.71481557625185,
+            "phi": 0.4195417295826333,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

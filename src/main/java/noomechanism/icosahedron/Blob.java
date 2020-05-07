@@ -9,8 +9,8 @@ public class Blob {
   public DirectionalLightBar dlb;
   public float pos = 0f;
   public float speed = 1f;
-  public List<DirectionalLightBar> prevBars;
-  public List<DirectionalLightBar> nextBars;
+  public List<DirectionalLightBar> prevBars = new ArrayList<DirectionalLightBar>();
+  public List<DirectionalLightBar> nextBars = new ArrayList<DirectionalLightBar>();
 
   // When rendering position parametrically from 0 to 1, we need a pre-computed set of lightbars
   // that we intend to render on.  See TopBottomT for an example of setting this up.
@@ -43,6 +43,11 @@ public class Blob {
     prevBars = new ArrayList<DirectionalLightBar>();
   }
 
+  public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
+                         float maxValue, int waveform, int whichJoint, boolean initialTail) {
+    renderBlob(colors, baseSpeed, width, slope, maxValue, waveform, whichJoint, initialTail, LXColor.Blend.ADD);
+  }
+
   /**
    * Renders a 'blob'.  Could we a number of different 'waveforms' centered at the current
    * position.  Position will be incremented by baseSpeed + the blobs random speed component.
@@ -57,12 +62,12 @@ public class Blob {
    * @param whichJoint
    */
   public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
-                         float maxValue, int waveform, int whichJoint, boolean initialTail) {
+                         float maxValue, int waveform, int whichJoint, boolean initialTail, LXColor.Blend blend) {
     boolean needsCurrentBarUpdate = false;
     for (LightBar lb : IcosahedronModel.lightBars) {
       if (dlb.lb.barNum == lb.barNum) {
         // -- Render on our target light bar --
-        float minMax[] = renderWaveform(colors, dlb, pos, width, slope, maxValue, waveform);
+        float minMax[] = renderWaveform(colors, dlb, pos, width, slope, maxValue, waveform, blend);
 
         // -- Fix up the set of lightbars that we are rendering over.
         int numPrevBars = -1 * (int)Math.floor(minMax[0]);
@@ -110,7 +115,7 @@ public class Blob {
           // whether there are any intermediate lightbars.
           if (prevBar.forward) prevBarPos += j;
           else prevBarPos -= j; //
-          renderWaveform(colors, prevBar, prevBarPos, width, slope, maxValue, waveform);
+          renderWaveform(colors, prevBar, prevBarPos, width, slope, maxValue, waveform, blend);
         }
 
         for (int j = 0; j < numNextBars; j++) {
@@ -120,7 +125,7 @@ public class Blob {
             nextBarPos -= j; // shift the position to the left by the number of bars away it is actually at.
           else
             nextBarPos += j;
-          renderWaveform(colors, nextBar, nextBarPos, width, slope, maxValue, waveform);
+          renderWaveform(colors, nextBar, nextBarPos, width, slope, maxValue, waveform, blend);
         }
 
         if (dlb.forward) {
@@ -163,7 +168,7 @@ public class Blob {
           if (!currentDlb.forward)
             localDlbPos = 1.0f - localDlbPos;
 
-          renderWaveform(colors, currentDlb, localDlbPos, width, slope, maxValue, waveform);
+          renderWaveform(colors, currentDlb, localDlbPos, width, slope, maxValue, waveform, LXColor.Blend.ADD);
         }
         dlbNum++;
       }
@@ -171,11 +176,11 @@ public class Blob {
   }
 
   public float[] renderWaveform(int[] colors, DirectionalLightBar targetDlb, float position, float width, float slope,
-                                float maxValue, int waveform) {
+                                float maxValue, int waveform, LXColor.Blend blend) {
     if (waveform == 0)
-      return LightBarRender1D.renderTriangle(colors, targetDlb.lb, position, slope, maxValue, LXColor.Blend.ADD);
+      return LightBarRender1D.renderTriangle(colors, targetDlb.lb, position, slope, maxValue, blend);
     else if (waveform == 1)
-      return LightBarRender1D.renderSquare(colors, targetDlb.lb, position, width, maxValue, LXColor.Blend.ADD);
+      return LightBarRender1D.renderSquare(colors, targetDlb.lb, position, width, maxValue, blend);
     else
       return LightBarRender1D.renderStepDecay(colors, targetDlb.lb, position, width, slope,
           maxValue, targetDlb.forward, LXColor.Blend.ADD);
