@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1588867671246,
+  "timestamp": 1588874928074,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -16732929,
+    "modulationColor": -11008,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -261,7 +261,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 4,
+        "patternIndex": 11,
         "patterns": [
           {
             "id": 95,
@@ -819,6 +819,89 @@
                 "triggers": []
               }
             }
+          },
+          {
+            "id": 1229,
+            "class": "noomechanism.icosahedron.patterns.Grow",
+            "modulationColor": -6226176,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": true,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "Grow",
+              "slope": 0.1501700189951808,
+              "t": 0.0,
+              "wave": 0,
+              "width": 0.29999999329447746,
+              "strtMgn": 1.8999999687075615,
+              "endMgn": 1.4999999776482582
+            },
+            "children": {
+              "modulation": {
+                "id": 1230,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -3408128,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [
+                  {
+                    "id": 1359,
+                    "class": "heronarts.lx.modulator.VariableLFO",
+                    "modulationColor": -11272448,
+                    "internal": {},
+                    "parameters": {
+                      "label": "LFO",
+                      "running": true,
+                      "trigger": false,
+                      "loop": true,
+                      "tempoSync": false,
+                      "tempoMultiplier": 5,
+                      "tempoLock": true,
+                      "clockMode": 0,
+                      "periodFast": 2149.9489311454117,
+                      "periodSlow": 10000.0,
+                      "wave": 3,
+                      "skew": 0.0,
+                      "shape": 0.0,
+                      "phase": 0.0,
+                      "exp": 0.0
+                    },
+                    "children": {},
+                    "basis": 0.42561350619360444
+                  }
+                ],
+                "modulations": [
+                  {
+                    "source": {
+                      "id": 1359,
+                      "path": "/modulation/modulator/1"
+                    },
+                    "target": {
+                      "componentId": 1229,
+                      "parameterPath": "t",
+                      "path": "/t"
+                    },
+                    "id": 1360,
+                    "class": "heronarts.lx.parameter.LXCompoundModulation",
+                    "modulationColor": -8257281,
+                    "internal": {},
+                    "parameters": {
+                      "label": "LX",
+                      "enabled": true,
+                      "Polarity": 0,
+                      "Range": 1.0
+                    },
+                    "children": {}
+                  }
+                ],
+                "triggers": []
+              }
+            }
           }
         ]
       },
@@ -1073,9 +1156,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 17.384388753991097,
-          "theta": 326.71481557625185,
-          "phi": 0.4195417295826333,
+          "radius": 17.34092778210612,
+          "theta": 377.22387074533316,
+          "phi": 0.28532818622697254,
           "x": 0.0,
           "y": 0.0,
           "z": 0.0
@@ -1083,9 +1166,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 17.384388753991097,
-            "theta": 326.71481557625185,
-            "phi": 0.4195417295826333,
+            "radius": 17.34092778210612,
+            "theta": 377.22387074533316,
+            "phi": 0.28532818622697254,
             "x": 0.0,
             "y": 0.0,
             "z": 0.0

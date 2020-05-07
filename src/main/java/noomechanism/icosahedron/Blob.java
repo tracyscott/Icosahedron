@@ -144,6 +144,10 @@ public class Blob {
       updateCurrentBar(whichJoint);
     }
   }
+  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+                            float maxValue, int waveform, float maxGlobalPos) {
+    renderBlobAtT(colors, paramT, width, slope, maxValue, waveform, 0f, maxGlobalPos);
+  }
 
   /**
    * Renders a waveform on a pre-computed list of lightbars stored in pathBars.  Position is
@@ -156,14 +160,14 @@ public class Blob {
    * @param maxValue
    * @param waveform
    */
-  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
-                         float maxValue, int waveform, float maxGlobalPos) {
+    public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+    float maxValue, int waveform, float startMargin, float maxGlobalPos) {
     for (LightBar lb : IcosahedronModel.lightBars) {
       int dlbNum = 0;
       for (DirectionalLightBar currentDlb : pathBars) {
-        if (currentDlb.lb.barNum == lb.barNum) {
+        if (currentDlb.lb.barNum == lb.barNum && !currentDlb.disableRender) {
           // -- Render on our target light bar and adjust pos based on bar num.
-          float localDlbPos = paramT * maxGlobalPos;
+          float localDlbPos = paramT * (maxGlobalPos + startMargin) - startMargin;
           localDlbPos -= dlbNum;
           if (!currentDlb.forward)
             localDlbPos = 1.0f - localDlbPos;

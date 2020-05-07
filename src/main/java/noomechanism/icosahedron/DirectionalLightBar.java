@@ -6,9 +6,11 @@ public class DirectionalLightBar {
   public DirectionalLightBar(int lbNum, boolean forward) {
     lb = IcosahedronModel.lightBars.get(lbNum);
     this.forward = forward;
+    disableRender = false;
   }
   public LightBar lb;
   public boolean forward;
+  public boolean disableRender;
 
 
   public DirectionalLightBar chooseNextBar(int jointSelector) {
