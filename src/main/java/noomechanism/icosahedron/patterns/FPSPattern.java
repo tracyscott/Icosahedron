@@ -2,7 +2,11 @@ package noomechanism.icosahedron.patterns;
 
 import heronarts.lx.LX;
 import heronarts.lx.LXPattern;
+import heronarts.lx.color.LXColor;
 import heronarts.lx.parameter.CompoundParameter;
+import noomechanism.icosahedron.IcosahedronModel;
+import noomechanism.icosahedron.LightBar;
+import noomechanism.icosahedron.LightBarRender1D;
 
 abstract public class FPSPattern extends LXPattern {
 
@@ -38,6 +42,11 @@ abstract public class FPSPattern extends LXPattern {
     }
   }
 
+  public void clearLightBarsToBlack() {
+    for (LightBar lb : IcosahedronModel.lightBars) {
+      LightBarRender1D.renderColor(colors, lb, LXColor.BLACK);
+    }
+  }
 
   protected abstract void renderFrame(double deltaDrawMs);
 }
