@@ -14,6 +14,7 @@ public class RandomFace extends ColorPattern {
   public RandomFace(LX lx) {
     super(lx);
     addParameter(fpsKnob);
+    addParameter(fbang);
     addParameter(paletteKnob);
     addParameter(randomPaletteKnob);
     addParameter(hue);
