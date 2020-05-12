@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomFace extends ColorPattern {
 
+  protected int previousFace = -1;
+
   public RandomFace(LX lx) {
     super(lx);
     addParameter(fpsKnob);
@@ -28,10 +30,15 @@ public class RandomFace extends ColorPattern {
       LightBarRender1D.renderColor(colors, lb, LXColor.BLACK);
     }
 
-    int whichFace = ThreadLocalRandom.current().nextInt(0, IcosahedronModel.faces.length - 1);
+    int whichFace;
+    do {
+      whichFace = ThreadLocalRandom.current().nextInt(0, IcosahedronModel.faces.length - 1);
+    } while (whichFace == previousFace);
+
     IcosahedronModel.Face f = IcosahedronModel.faces[whichFace];
     for (LightBar lb : f.getLightBars()) {
       LightBarRender1D.renderColor(colors, lb, getNewRGB());
     }
+    previousFace = whichFace;
   }
 }
