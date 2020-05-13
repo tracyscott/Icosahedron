@@ -44,8 +44,10 @@ public class Blob {
   }
 
   public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
-                         float maxValue, int waveform, int whichJoint, boolean initialTail) {
-    renderBlob(colors, baseSpeed, width, slope, maxValue, waveform, whichJoint, initialTail, LXColor.Blend.ADD);
+                         float maxValue, int waveform, int whichJoint, boolean initialTail,
+                         int whichEffect, float fxDepth, float cosineFreq) {
+    renderBlob(colors, baseSpeed, width, slope, maxValue, waveform, whichJoint, initialTail, LXColor.Blend.ADD,
+        whichEffect, fxDepth, cosineFreq);
   }
 
   /**
@@ -62,13 +64,20 @@ public class Blob {
    * @param whichJoint
    */
   public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
-                         float maxValue, int waveform, int whichJoint, boolean initialTail, LXColor.Blend blend) {
+                         float maxValue, int waveform, int whichJoint, boolean initialTail, LXColor.Blend blend,
+                         int whichEffect, float fxDepth, float cosineFreq) {
     boolean needsCurrentBarUpdate = false;
     for (LightBar lb : IcosahedronModel.lightBars) {
       if (dlb.lb.barNum == lb.barNum) {
         // -- Render on our target light bar --
         float minMax[] = renderWaveform(colors, dlb, pos, width, slope, maxValue, waveform, blend);
 
+        if (whichEffect == 1) {
+          LightBarRender1D.randomGrayBaseDepth(colors, dlb.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
+              (int)(255*fxDepth));
+        } else if (whichEffect == 2) {
+          LightBarRender1D.cosine(colors, dlb.lb, pos, cosineFreq, 0f, 1f - fxDepth, fxDepth, LXColor.Blend.MULTIPLY);
+        }
         // -- Fix up the set of lightbars that we are rendering over.
         int numPrevBars = -1 * (int)Math.floor(minMax[0]);
         int numNextBars = (int)Math.ceil(minMax[1] - 1.0f);
@@ -116,6 +125,12 @@ public class Blob {
           if (prevBar.forward) prevBarPos += j;
           else prevBarPos -= j; //
           renderWaveform(colors, prevBar, prevBarPos, width, slope, maxValue, waveform, blend);
+          if (whichEffect == 1) {
+            LightBarRender1D.randomGrayBaseDepth(colors, prevBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
+                (int)(255*fxDepth));
+          } else if (whichEffect == 2) {
+            LightBarRender1D.cosine(colors, prevBar.lb, prevBarPos, cosineFreq, 0f, 1f - fxDepth, fxDepth, LXColor.Blend.MULTIPLY);
+          }
         }
 
         for (int j = 0; j < numNextBars; j++) {
@@ -126,6 +141,13 @@ public class Blob {
           else
             nextBarPos += j;
           renderWaveform(colors, nextBar, nextBarPos, width, slope, maxValue, waveform, blend);
+          if (whichEffect == 1) {
+            LightBarRender1D.randomGrayBaseDepth(colors, nextBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
+                (int)(255 *fxDepth));
+          } else if (whichEffect == 2) {
+            LightBarRender1D.cosine(colors, nextBar.lb, nextBarPos, cosineFreq, 0f, 1f - fxDepth, fxDepth,
+                LXColor.Blend.MULTIPLY);
+          }
         }
 
         if (dlb.forward) {

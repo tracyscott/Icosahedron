@@ -19,10 +19,11 @@ public class TravelN extends LXPattern {
   public DiscreteParameter numBlobs = new DiscreteParameter("blobs", 1, 1, MAX_BLOBS);
   public BooleanParameter sparkle = new BooleanParameter("sparkle", true);
   public DiscreteParameter nextBarKnob = new DiscreteParameter("nxtBar", -1, -1, 4);
-  public CompoundParameter sparkleMin = new CompoundParameter("spklMin", 0.0f, 0.0f, 255.0f);
-  public CompoundParameter sparkleDepth = new CompoundParameter("spklDepth", 255.0f, 0.0f, 255.0f);
-  public DiscreteParameter waveKnob = new DiscreteParameter("wave", 0, 0, 3).setDescription("Waveform type");
+  public DiscreteParameter fxKnob = new DiscreteParameter("fx", 0, 0, 3).setDescription("0=none 1=sparkle 2=cosine");
+  public CompoundParameter fxDepth = new CompoundParameter("fxDepth", 1.0f, 0.1f, 1.0f);
+  public DiscreteParameter waveKnob = new DiscreteParameter("wave", 0, 0, 4).setDescription("Waveform type");
   public CompoundParameter widthKnob = new CompoundParameter("width", 0.1f, 0.0f, 10.0f).setDescription("Square wave width");
+  public CompoundParameter cosineFreq = new CompoundParameter("cfreq", 1.0, 1.0, 400.0);
 
   public Blob[] blobs = new Blob[MAX_BLOBS];
 
@@ -35,10 +36,11 @@ public class TravelN extends LXPattern {
     addParameter(randSpeed);
     addParameter(sparkle);
     addParameter(nextBarKnob);
-    addParameter(sparkleMin);
-    addParameter(sparkleDepth);
+    addParameter(fxKnob);
+    addParameter(fxDepth);
     addParameter(waveKnob);
     addParameter(widthKnob);
+    addParameter(cosineFreq);
     resetBlobs();
   }
 
@@ -65,7 +67,8 @@ public class TravelN extends LXPattern {
 
     for (int i = 0; i < numBlobs.getValuei(); i++) {
       blobs[i].renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), maxValue.getValuef(),
-          waveKnob.getValuei(), nextBarKnob.getValuei(), false);
+          waveKnob.getValuei(), nextBarKnob.getValuei(), false, fxKnob.getValuei(), fxDepth.getValuef(),
+          cosineFreq.getValuef());
     }
   }
 }

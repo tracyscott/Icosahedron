@@ -24,6 +24,8 @@ public class LightBarRender1D {
 
   static public void randomGrayBaseDepth(int colors[], LightBar lightBar, LXColor.Blend blend, int min, int depth) {
     for (LBPoint pt : lightBar.points) {
+      if (depth < 0)
+        depth = 0;
       int randomDepth = ThreadLocalRandom.current().nextInt(depth);
       int value = min + randomDepth;
       if (value > 255) {
@@ -32,6 +34,27 @@ public class LightBarRender1D {
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(value, value, value, 255), blend);
     }
   }
+
+  static public void sine(int colors[], LightBar lightBar, float head, float freq, float phase, float min, float depth, LXColor.Blend blend) {
+    for (LBPoint pt : lightBar.points) {
+      float ptX = pt.lbx / lightBar.length;
+      float value = ((float)Math.sin((double)freq * (head - ptX) + phase) + 1.0f)/2.0f;
+      value = min + depth * value;
+      int color = (int)(value * 255f);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(color, color, color, 255), blend);
+    }
+  }
+
+  static public void cosine(int colors[], LightBar lightBar, float head, float freq, float phase, float min, float depth, LXColor.Blend blend) {
+      for (LBPoint pt : lightBar.points) {
+      float ptX = pt.lbx / lightBar.length;
+      float value = ((float)Math.cos((double)freq * (head - ptX) + phase) + 1.0f)/2.0f;
+      value = min + depth * value;
+      int color = (int)(value * 255f);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(color, color, color, 255), blend);
+    }
+  }
+
 
   /**
    * Render a triangle gradient in gray.  t is the 0 to 1 normalized x position.  Slope

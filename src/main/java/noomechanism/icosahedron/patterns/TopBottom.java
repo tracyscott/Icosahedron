@@ -54,8 +54,8 @@ public class TopBottom extends LXPattern {
       colors[pt.index] = LXColor.rgba(0,0,0, 255);
     }
     topBlob.renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), MAX_INTENSITY,
-          waveKnob.getValuei(), 3, false);
+          waveKnob.getValuei(), 3, false, 0, 0f, 0f);
     bottomBlob.renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), MAX_INTENSITY,
-        waveKnob.getValuei(), 0, false);
+        waveKnob.getValuei(), 0, false, 0, 0f, 0f);
   }
 }

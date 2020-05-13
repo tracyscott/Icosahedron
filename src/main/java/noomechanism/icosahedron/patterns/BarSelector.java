@@ -99,12 +99,12 @@ public class BarSelector extends LXPattern {
 
     for (Blob b : fiveBlobs) {
       b.renderBlob(colors, 0f, 10.f/(float)lb.numPoints, 50.0f, 1.0f, 1,
-          0, false, LXColor.Blend.SUBTRACT);
+          0, false, LXColor.Blend.SUBTRACT, 0, 0f, 0f);
     }
 
     for (Blob b : oneBlobs) {
       b.renderBlob(colors, 0f, 4f/(float)lb.numPoints, 50.0f, 1.0f, 1,
-          0, false, LXColor.Blend.SUBTRACT);
+          0, false, LXColor.Blend.SUBTRACT, 0, 0f, 0f);
     }
   }
 }
