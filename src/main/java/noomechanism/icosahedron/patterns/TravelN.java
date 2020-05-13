@@ -17,7 +17,6 @@ public class TravelN extends LXPattern {
   public CompoundParameter speed = new CompoundParameter("speed", 1.0, 0.0, 10.0);
   public CompoundParameter randSpeed = new CompoundParameter("randspd", 1.0, 0.0, 5.0);
   public DiscreteParameter numBlobs = new DiscreteParameter("blobs", 1, 1, MAX_BLOBS);
-  public BooleanParameter sparkle = new BooleanParameter("sparkle", true);
   public DiscreteParameter nextBarKnob = new DiscreteParameter("nxtBar", -1, -1, 4);
   public DiscreteParameter fxKnob = new DiscreteParameter("fx", 0, 0, 3).setDescription("0=none 1=sparkle 2=cosine");
   public CompoundParameter fxDepth = new CompoundParameter("fxDepth", 1.0f, 0.1f, 1.0f);
@@ -34,7 +33,6 @@ public class TravelN extends LXPattern {
     addParameter(speed);
     addParameter(numBlobs);
     addParameter(randSpeed);
-    addParameter(sparkle);
     addParameter(nextBarKnob);
     addParameter(fxKnob);
     addParameter(fxDepth);
