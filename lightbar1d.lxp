@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1589244563447,
+  "timestamp": 1589397494166,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -6160640,
+    "modulationColor": -16756993,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -27,7 +27,7 @@
       "crossfader": 0.5,
       "crossfaderBlendMode": 0,
       "speed": 1.0,
-      "focusedChannel": 1,
+      "focusedChannel": 0,
       "cueA": false,
       "cueB": false,
       "multithreaded": true,
@@ -96,7 +96,37 @@
           "selected": false
         },
         "children": {},
-        "effects": [],
+        "effects": [
+          {
+            "id": 2009,
+            "class": "heronarts.lx.effect.BlurEffect",
+            "modulationColor": -7339777,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false
+            },
+            "parameters": {
+              "label": "Blur",
+              "enabled": false,
+              "amount": 0.8499999810010195
+            },
+            "children": {
+              "modulation": {
+                "id": 2010,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -11271937,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
+          }
+        ],
         "clips": [
           {
             "id": 426,
@@ -243,10 +273,10 @@
         "parameters": {
           "label": "Channel-1",
           "arm": false,
-          "selected": false,
+          "selected": true,
           "enabled": true,
           "cue": false,
-          "fader": 0.0,
+          "fader": 1.0,
           "crossfadeGroup": 0,
           "blendMode": 0,
           "midiMonitor": false,
@@ -484,17 +514,24 @@
             },
             "parameters": {
               "label": "TravelN",
-              "slope": 1.149809978770092,
+              "Fps": 61.0,
+              "fbang": false,
+              "palette": 0,
+              "RandomPlt": false,
+              "hue": 0.19999999552965164,
+              "sat": 1.0,
+              "bright": 1.0,
+              "slope": 0.3509301039148119,
               "maxv": 1.0,
-              "speed": 3.2999999821186066,
-              "blobs": 30,
+              "speed": 0.6999999843537807,
+              "blobs": 51,
               "randspd": 0.0,
-              "sparkle": false,
-              "nxtBar": 0,
-              "spklMin": 0.0,
-              "spklDepth": 193.79999566823244,
-              "wave": 2,
-              "width": 0.0
+              "nxtBar": 2,
+              "fx": 2,
+              "fxDepth": 0.6400000086426735,
+              "wave": 3,
+              "width": 0.09999999776482582,
+              "cfreq": 44.89000793732703
             },
             "children": {
               "modulation": {
@@ -914,7 +951,12 @@
             },
             "parameters": {
               "label": "RandomFace",
-              "Fps": 10.650001348927617,
+              "Fps": 65.95999944210052,
+              "bngOn": true,
+              "bngFrms": 25,
+              "bngFade": 0.4300000127404928,
+              "bngClr": true,
+              "fbang": false,
               "palette": 1,
               "RandomPlt": false,
               "hue": 0.0,
@@ -955,7 +997,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.8270000000609272
+                    "basis": 0.9530000000635086
                   }
                 ],
                 "modulations": [
@@ -998,8 +1040,8 @@
         "parameters": {
           "label": "Channel-2",
           "arm": false,
-          "selected": true,
-          "enabled": true,
+          "selected": false,
+          "enabled": false,
           "cue": false,
           "fader": 0.7571428576484323,
           "crossfadeGroup": 0,
@@ -1471,29 +1513,29 @@
         "mode": 0,
         "animation": false,
         "animationTime": 1000.0,
-        "projection": 1,
+        "projection": 0,
         "perspective": 60.0,
         "depth": 1.0,
         "phiLock": true,
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 11.692792092218166,
-          "theta": 497.1362745975598,
-          "phi": 0.10835135724310775,
-          "x": 0.0,
-          "y": 0.0,
-          "z": 0.0
+          "radius": 15.574501906124958,
+          "theta": 625.1412614362747,
+          "phi": 0.34883277796836293,
+          "x": 0.19749708520248532,
+          "y": -0.038795230910182,
+          "z": -0.2125862780958414
         },
         "cue": [
           {
             "active": false,
-            "radius": 11.692792092218166,
-            "theta": 497.1362745975598,
-            "phi": 0.10835135724310775,
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
+            "radius": 15.574501906124958,
+            "theta": 625.1412614362747,
+            "phi": 0.34883277796836293,
+            "x": 0.19749708520248532,
+            "y": -0.038795230910182,
+            "z": -0.2125862780958414
           },
           {
             "active": false,

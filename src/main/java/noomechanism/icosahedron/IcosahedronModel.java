@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -264,6 +265,30 @@ public class IcosahedronModel extends LXModel {
           }
         }
       }
+    }
+
+
+    public String getStartConnectorKey() {
+      return getConnectorKey(myStartPointJoints);
+    }
+
+    public String getEndConnectorKey() {
+      return getConnectorKey(myEndPointJoints);
+    }
+
+    public String getConnectorKey(Joint[] joints) {
+      List<String> barNums = new ArrayList<String>();
+      barNums.add("" + lightBar.barNum);
+      barNums.add("" + joints[0].edge.lightBar.barNum);
+      barNums.add("" + joints[1].edge.lightBar.barNum);
+      barNums.add("" + joints[2].edge.lightBar.barNum);
+      barNums.add("" + joints[3].edge.lightBar.barNum);
+      Collections.sort(barNums);
+      String barNumKey = "";
+      for (String s : barNums) {
+        barNumKey += s + "-";
+      }
+      return barNumKey;
     }
 
     /**
@@ -611,6 +636,8 @@ public class IcosahedronModel extends LXModel {
     }
 
     model = new IcosahedronModel(allPoints, lightBars);
+    Connector.computeConnectors(edges);
+
     return model;
   }
 
