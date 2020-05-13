@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1589397494166,
+  "timestamp": 1589398964575,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -16756993,
+    "modulationColor": -49920,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -291,7 +291,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 12,
+        "patternIndex": 5,
         "patterns": [
           {
             "id": 95,
@@ -516,6 +516,10 @@
               "label": "TravelN",
               "Fps": 61.0,
               "fbang": false,
+              "bngOn": true,
+              "bngFrms": 23,
+              "bngClr": true,
+              "bngFade": 1.0,
               "palette": 0,
               "RandomPlt": false,
               "hue": 0.19999999552965164,
@@ -997,7 +1001,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.9530000000635086
+                    "basis": 0.4830000000635118
                   }
                 ],
                 "modulations": [

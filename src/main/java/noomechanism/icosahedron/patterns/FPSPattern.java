@@ -85,5 +85,9 @@ abstract public class FPSPattern extends LXPattern {
     }
   }
 
+  public float bangFadeLevel() {
+    return 1f - ((float)currentBangFrames/(float)(bangFrames.getValuei()-1f) * bangFade.getValuef());
+  }
+
   protected abstract void renderFrame(double deltaDrawMs);
 }

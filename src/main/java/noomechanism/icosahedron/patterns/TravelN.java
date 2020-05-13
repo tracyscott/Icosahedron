@@ -75,8 +75,12 @@ public class TravelN extends ColorPattern {
       colors[pt.index] = LXColor.rgba(0,0,0, 255);
     }
 
+    float fadeLevel = maxValue.getValuef();
+    if (bangIsRunning())
+      fadeLevel = bangFadeLevel();
+    
     for (int i = 0; i < numBlobs.getValuei(); i++) {
-      blobs[i].renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), maxValue.getValuef(),
+      blobs[i].renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), fadeLevel,
           waveKnob.getValuei(), nextBarKnob.getValuei(), false, fxKnob.getValuei(), fxDepth.getValuef(),
           cosineFreq.getValuef());
     }

@@ -43,7 +43,7 @@ public class RandomFace extends ColorPattern {
       float maxValue = 1.0f;
       // If a bang is running, allow for a fade out over the number of bang frames.
       if (bangIsRunning()) {
-        maxValue = 1f - ((float)currentBangFrames/(float)(bangFrames.getValuei()-1f) * bangFade.getValuef());
+        maxValue = bangFadeLevel();
       }
       LightBarRender1D.renderColor(colors, lb, getNewRGB(), maxValue);
     }
