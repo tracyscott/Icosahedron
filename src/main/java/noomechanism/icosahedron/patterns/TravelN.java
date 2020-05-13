@@ -29,6 +29,10 @@ public class TravelN extends ColorPattern {
     super(lx);
     addParameter(fpsKnob);
     addParameter(fbang);
+    addParameter(bangOn);
+    addParameter(bangFrames);
+    addParameter(bangClear);
+    addParameter(bangFade);
     addParameter(paletteKnob);
     addParameter(randomPaletteKnob);
     addParameter(hue);

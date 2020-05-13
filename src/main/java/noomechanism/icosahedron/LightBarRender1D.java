@@ -228,8 +228,13 @@ public class LightBarRender1D {
   }
 
   static public void renderColor(int[] colors, LightBar lb, int color) {
+    renderColor(colors, lb, color, 1.0f);
+  }
+
+  static public void renderColor(int[] colors, LightBar lb, int color, float maxValue) {
     for (LXPoint point: lb.points) {
-      colors[point.index] = color;
+      colors[point.index] = LXColor.rgba(
+          (int)(Colors.red(color) * maxValue), (int)(Colors.green(color) * maxValue), (int)(Colors.blue(color) * maxValue), 255);
     }
   }
 }

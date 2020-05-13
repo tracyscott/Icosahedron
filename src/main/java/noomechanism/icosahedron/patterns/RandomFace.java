@@ -1,7 +1,6 @@
 package noomechanism.icosahedron.patterns;
 
 import heronarts.lx.LX;
-import heronarts.lx.LXPattern;
 import heronarts.lx.color.LXColor;
 import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.LightBar;
@@ -16,6 +15,10 @@ public class RandomFace extends ColorPattern {
   public RandomFace(LX lx) {
     super(lx);
     addParameter(fpsKnob);
+    addParameter(bangOn);
+    addParameter(bangFrames);
+    addParameter(bangFade);
+    addParameter(bangClear);
     addParameter(fbang);
     addParameter(paletteKnob);
     addParameter(randomPaletteKnob);
@@ -37,7 +40,12 @@ public class RandomFace extends ColorPattern {
 
     IcosahedronModel.Face f = IcosahedronModel.faces[whichFace];
     for (LightBar lb : f.getLightBars()) {
-      LightBarRender1D.renderColor(colors, lb, getNewRGB());
+      float maxValue = 1.0f;
+      // If a bang is running, allow for a fade out over the number of bang frames.
+      if (bangIsRunning()) {
+        maxValue = 1f - ((float)currentBangFrames/(float)(bangFrames.getValuei()-1f) * bangFade.getValuef());
+      }
+      LightBarRender1D.renderColor(colors, lb, getNewRGB(), maxValue);
     }
     previousFace = whichFace;
   }
