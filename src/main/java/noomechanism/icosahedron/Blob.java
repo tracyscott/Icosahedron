@@ -11,6 +11,7 @@ public class Blob {
   public float speed = 1f;
   public List<DirectionalLightBar> prevBars = new ArrayList<DirectionalLightBar>();
   public List<DirectionalLightBar> nextBars = new ArrayList<DirectionalLightBar>();
+  public int color;
 
   // When rendering position parametrically from 0 to 1, we need a pre-computed set of lightbars
   // that we intend to render on.  See TopBottomT for an example of setting this up.
@@ -204,11 +205,11 @@ public class Blob {
   public float[] renderWaveform(int[] colors, DirectionalLightBar targetDlb, float position, float width, float slope,
                                 float maxValue, int waveform, LXColor.Blend blend) {
     if (waveform == 0)
-      return LightBarRender1D.renderTriangle(colors, targetDlb.lb, position, slope, maxValue, blend);
+      return LightBarRender1D.renderTriangle(colors, targetDlb.lb, position, slope, maxValue, blend, color);
     else if (waveform == 1)
-      return LightBarRender1D.renderSquare(colors, targetDlb.lb, position, width, maxValue, blend);
+      return LightBarRender1D.renderSquare(colors, targetDlb.lb, position, width, maxValue, blend, color);
     else
       return LightBarRender1D.renderStepDecay(colors, targetDlb.lb, position, width, slope,
-          maxValue, targetDlb.forward, LXColor.Blend.ADD);
+          maxValue, targetDlb.forward, LXColor.Blend.ADD, color);
   }
 }

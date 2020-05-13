@@ -4,12 +4,11 @@ import heronarts.lx.LX;
 import heronarts.lx.LXPattern;
 import heronarts.lx.color.LXColor;
 import heronarts.lx.model.LXPoint;
-import heronarts.lx.parameter.BooleanParameter;
 import heronarts.lx.parameter.CompoundParameter;
 import heronarts.lx.parameter.DiscreteParameter;
 import noomechanism.icosahedron.*;
 
-public class TravelN extends LXPattern {
+public class TravelN extends ColorPattern {
   public static final int MAX_BLOBS = 100;
 
   public CompoundParameter slope = new CompoundParameter("slope", 1.0, 0.001, 5.0);
@@ -28,6 +27,13 @@ public class TravelN extends LXPattern {
 
   public TravelN(LX lx) {
     super(lx);
+    addParameter(fpsKnob);
+    addParameter(fbang);
+    addParameter(paletteKnob);
+    addParameter(randomPaletteKnob);
+    addParameter(hue);
+    addParameter(saturation);
+    addParameter(bright);
     addParameter(slope);
     addParameter(maxValue);
     addParameter(speed);
@@ -46,6 +52,7 @@ public class TravelN extends LXPattern {
     for (int i = 0; i < MAX_BLOBS; i++) {
       blobs[i] = new Blob();
       blobs[i].reset(i%30, 0.0f, randSpeed.getValuef(), true);
+      blobs[i].color = getNewRGB();
     }
   }
 
@@ -58,7 +65,8 @@ public class TravelN extends LXPattern {
     resetBlobs();
   }
 
-  public void run(double deltaMs) {
+  @Override
+  public void renderFrame(double deltaMs) {
     for (LXPoint pt : lx.getModel().points) {
       colors[pt.index] = LXColor.rgba(0,0,0, 255);
     }

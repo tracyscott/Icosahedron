@@ -55,11 +55,9 @@ public class LightBarRender1D {
     }
   }
 
-
   /**
    * Render a triangle gradient in gray.  t is the 0 to 1 normalized x position.  Slope
    * is the slope of the gradient.
-   * TODO(tracy): This should probably be additive on the color so that they can be combined.
    * TODO(tracy): Slope normalization needs to account for led density? i.e. Max slope should include
    * only one led.  Minimum slope should include all leds.
    * @param colors LED colors array.
@@ -71,25 +69,42 @@ public class LightBarRender1D {
    * @return A float array containing the minimum x intercept and maximum x intercept in that order.
    */
   static public float[] renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend) {
+    return renderTriangle(colors, lightBar, t, slope, maxValue, blend, LXColor.rgba(255, 255, 255, 255));
+  }
+
+  static public float[] renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend,
+                                       int color) {
     double peakPos = t * lightBar.length;
     float[] minMax = new float[2];
     minMax[0] = (float)zeroCrossingTriangleWave(t, slope);
     minMax[1] = (float)zeroCrossingTriangleWave(t, -slope);
     for (LBPoint pt : lightBar.points) {
-      int gray = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
-      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+      //float val = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
+      float val = (int)(triangleWave(peakPos, slope, pt.lbx)*maxValue);
+      //colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(
+          (int)(Colors.red(color) * val), (int)(Colors.green(color) * val), (int)(Colors.blue(color) * val), 255),
+          blend);
     }
     return minMax;
   }
 
   static public float[] renderSquare(int colors[], LightBar lightBar, float t, float width, float maxValue, LXColor.Blend blend) {
+    return renderSquare(colors, lightBar, t, width, maxValue, blend, LXColor.rgba(255, 255, 255, 255));
+  }
+
+  static public float[] renderSquare(int colors[], LightBar lightBar, float t, float width, float maxValue, LXColor.Blend blend,
+                                     int color) {
     double barPos = t * lightBar.length;
     float[] minMax = new float[2];
     minMax[0] = t - width/2.0f;
     minMax[1] = t + width/2.0f;
     for (LBPoint pt: lightBar.points) {
-      int gray = (int) ((((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f)*255.0f);
-      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+      //int gray = (int) ((((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f)*255.0f);
+      float val = (((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(
+          (int)(Colors.red(color) * val), (int)(Colors.green(color) * val), (int)(Colors.blue(color) * val), 255),
+          blend);
     }
     return minMax;
   }
@@ -105,12 +120,20 @@ public class LightBarRender1D {
    * @param blend Blend mode for writing into the colors array.
    */
   static public float[] renderStepDecay(int colors[], LightBar lightBar, float t, float width, float slope,
-                                     float maxValue, boolean forward, LXColor.Blend blend) {
-    float stepPos = t * lightBar.length;
+                                        float maxValue, boolean forward, LXColor.Blend blend) {
+    return renderStepDecay(colors, lightBar, t, width, slope, maxValue, forward, blend, LXColor.rgba(255, 255, 255, 255));
+  }
+
+  static public float[] renderStepDecay(int colors[], LightBar lightBar, float t, float width, float slope,
+                                     float maxValue, boolean forward, LXColor.Blend blend, int color) {
     float[] minMax = stepDecayZeroCrossing(t, width, slope, forward);
     for (LBPoint pt : lightBar.points) {
-      int gray = (int) (stepDecayWave(t, width, slope, pt.lbx/lightBar.length, forward)*255.0*maxValue);
-      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+      //int gray = (int) (stepDecayWave(t, width, slope, pt.lbx/lightBar.length, forward)*255.0*maxValue);
+      float val = stepDecayWave(t, width, slope, pt.lbx/lightBar.length, forward)*maxValue;
+      //colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
+      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(
+          (int)(Colors.red(color) * val), (int)(Colors.green(color) * val), (int)(Colors.blue(color) * val), 255),
+          blend);
     }
 
     return minMax;
