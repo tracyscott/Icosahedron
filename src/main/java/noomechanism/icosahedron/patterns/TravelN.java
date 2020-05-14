@@ -11,7 +11,7 @@ import noomechanism.icosahedron.*;
 public class TravelN extends ColorPattern {
   public static final int MAX_BLOBS = 100;
 
-  public CompoundParameter slope = new CompoundParameter("slope", 1.0, 0.001, 5.0);
+  public CompoundParameter slope = new CompoundParameter("slope", 1.0, 0.001, 30.0);
   public CompoundParameter maxValue = new CompoundParameter("maxv", 1.0, 0.0, 1.0);
   public CompoundParameter speed = new CompoundParameter("speed", 1.0, 0.0, 10.0);
   public CompoundParameter randSpeed = new CompoundParameter("randspd", 1.0, 0.0, 5.0);
@@ -78,7 +78,7 @@ public class TravelN extends ColorPattern {
     float fadeLevel = maxValue.getValuef();
     if (bangIsRunning())
       fadeLevel = bangFadeLevel();
-    
+
     for (int i = 0; i < numBlobs.getValuei(); i++) {
       blobs[i].renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), fadeLevel,
           waveKnob.getValuei(), nextBarKnob.getValuei(), false, fxKnob.getValuei(), fxDepth.getValuef(),

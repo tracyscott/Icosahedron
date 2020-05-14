@@ -74,13 +74,11 @@ public class LightBarRender1D {
 
   static public float[] renderTriangle(int colors[], LightBar lightBar, float t, float slope, float maxValue, LXColor.Blend blend,
                                        int color) {
-    double peakPos = t * lightBar.length;
     float[] minMax = new float[2];
     minMax[0] = (float)zeroCrossingTriangleWave(t, slope);
     minMax[1] = (float)zeroCrossingTriangleWave(t, -slope);
     for (LBPoint pt : lightBar.points) {
-      //float val = (int)(triangleWave(peakPos, slope, pt.lbx)*255.0*maxValue);
-      float val = (int)(triangleWave(peakPos, slope, pt.lbx)*maxValue);
+      float val = (float)triangleWave(t, slope, pt.lbx/lightBar.length)*maxValue;
       //colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(gray, gray, gray, 255), blend);
       colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(
           (int)(Colors.red(color) * val), (int)(Colors.green(color) * val), (int)(Colors.blue(color) * val), 255),

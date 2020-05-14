@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1589398964575,
+  "timestamp": 1589426890625,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -49920,
+    "modulationColor": -7340288,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -291,7 +291,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 5,
+        "patternIndex": 9,
         "patterns": [
           {
             "id": 95,
@@ -516,7 +516,7 @@
               "label": "TravelN",
               "Fps": 61.0,
               "fbang": false,
-              "bngOn": true,
+              "bngOn": false,
               "bngFrms": 23,
               "bngClr": true,
               "bngFade": 1.0,
@@ -525,17 +525,17 @@
               "hue": 0.19999999552965164,
               "sat": 1.0,
               "bright": 1.0,
-              "slope": 0.3509301039148119,
+              "slope": 30.0,
               "maxv": 1.0,
               "speed": 0.6999999843537807,
-              "blobs": 51,
+              "blobs": 4,
               "randspd": 0.0,
               "nxtBar": 2,
-              "fx": 2,
+              "fx": 1,
               "fxDepth": 0.6400000086426735,
-              "wave": 3,
+              "wave": 0,
               "width": 0.09999999776482582,
-              "cfreq": 44.89000793732703
+              "cfreq": 400.0
             },
             "children": {
               "modulation": {
@@ -757,11 +757,12 @@
             },
             "parameters": {
               "label": "CollT",
-              "t": 1.0,
+              "t": 0.0,
               "Move": 1.0,
               "Explode": 1.0,
               "maxv": 1.0,
-              "slope": 2.6048000534296034
+              "slope": 20.0,
+              "wave": 0
             },
             "children": {
               "modulation": {
@@ -1524,9 +1525,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 15.574501906124958,
-          "theta": 625.1412614362747,
-          "phi": 0.34883277796836293,
+          "radius": 12.434027462691937,
+          "theta": 626.0459605745232,
+          "phi": 0.32894930087315977,
           "x": 0.19749708520248532,
           "y": -0.038795230910182,
           "z": -0.2125862780958414
@@ -1534,9 +1535,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 15.574501906124958,
-            "theta": 625.1412614362747,
-            "phi": 0.34883277796836293,
+            "radius": 12.434027462691937,
+            "theta": 626.0459605745232,
+            "phi": 0.32894930087315977,
             "x": 0.19749708520248532,
             "y": -0.038795230910182,
             "z": -0.2125862780958414
