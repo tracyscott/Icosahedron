@@ -6,12 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Blob {
+  public static final int WAVEFORM_TRIANGLE = 0;
+  public static final int WAVEFORM_SQUARE = 1;
+  public static final int WAVEFORM_STEPDECAY = 2;
+
   public DirectionalLightBar dlb;
   public float pos = 0f;
   public float speed = 1f;
   public List<DirectionalLightBar> prevBars = new ArrayList<DirectionalLightBar>();
   public List<DirectionalLightBar> nextBars = new ArrayList<DirectionalLightBar>();
   public int color;
+  public boolean enabled = true;
+  public float intensity = 1.0f;
 
   // When rendering position parametrically from 0 to 1, we need a pre-computed set of lightbars
   // that we intend to render on.  See TopBottomT for an example of setting this up.
@@ -67,11 +73,12 @@ public class Blob {
   public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
                          float maxValue, int waveform, int whichJoint, boolean initialTail, LXColor.Blend blend,
                          int whichEffect, float fxDepth, float cosineFreq) {
+    if (!enabled) return;
     boolean needsCurrentBarUpdate = false;
     for (LightBar lb : IcosahedronModel.lightBars) {
       if (dlb.lb.barNum == lb.barNum) {
         // -- Render on our target light bar --
-        float minMax[] = renderWaveform(colors, dlb, pos, width, slope, maxValue, waveform, blend);
+        float minMax[] = renderWaveform(colors, dlb, pos, width, slope, intensity * maxValue, waveform, blend);
 
         if (whichEffect == 1) {
           LightBarRender1D.randomGrayBaseDepth(colors, dlb.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
@@ -125,7 +132,7 @@ public class Blob {
           // whether there are any intermediate lightbars.
           if (prevBar.forward) prevBarPos += j;
           else prevBarPos -= j; //
-          renderWaveform(colors, prevBar, prevBarPos, width, slope, maxValue, waveform, blend);
+          renderWaveform(colors, prevBar, prevBarPos, width, slope, intensity * maxValue, waveform, blend);
           if (whichEffect == 1) {
             LightBarRender1D.randomGrayBaseDepth(colors, prevBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
                 (int)(255*fxDepth));
@@ -141,7 +148,7 @@ public class Blob {
             nextBarPos -= j; // shift the position to the left by the number of bars away it is actually at.
           else
             nextBarPos += j;
-          renderWaveform(colors, nextBar, nextBarPos, width, slope, maxValue, waveform, blend);
+          renderWaveform(colors, nextBar, nextBarPos, width, slope, intensity * maxValue, waveform, blend);
           if (whichEffect == 1) {
             LightBarRender1D.randomGrayBaseDepth(colors, nextBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
                 (int)(255 *fxDepth));
@@ -183,8 +190,9 @@ public class Blob {
    * @param maxValue
    * @param waveform
    */
-    public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
     float maxValue, int waveform, float startMargin, float maxGlobalPos) {
+    if (!enabled) return;
     for (LightBar lb : IcosahedronModel.lightBars) {
       int dlbNum = 0;
       for (DirectionalLightBar currentDlb : pathBars) {
@@ -195,18 +203,31 @@ public class Blob {
           if (!currentDlb.forward)
             localDlbPos = 1.0f - localDlbPos;
 
-          renderWaveform(colors, currentDlb, localDlbPos, width, slope, maxValue, waveform, LXColor.Blend.ADD);
+          renderWaveform(colors, currentDlb, localDlbPos, width, slope, intensity * maxValue, waveform, LXColor.Blend.ADD);
         }
         dlbNum++;
       }
     }
   }
 
+  /**
+   * Render the specified waveform at the specified position.  maxValue already includes the blob intensity override multiplied
+   * into it by this point.
+   * @param colors
+   * @param targetDlb
+   * @param position
+   * @param width
+   * @param slope
+   * @param maxValue
+   * @param waveform
+   * @param blend
+   * @return
+   */
   public float[] renderWaveform(int[] colors, DirectionalLightBar targetDlb, float position, float width, float slope,
                                 float maxValue, int waveform, LXColor.Blend blend) {
-    if (waveform == 0)
+    if (waveform == WAVEFORM_TRIANGLE)
       return LightBarRender1D.renderTriangle(colors, targetDlb.lb, position, slope, maxValue, blend, color);
-    else if (waveform == 1)
+    else if (waveform == WAVEFORM_SQUARE)
       return LightBarRender1D.renderSquare(colors, targetDlb.lb, position, width, maxValue, blend, color);
     else
       return LightBarRender1D.renderStepDecay(colors, targetDlb.lb, position, width, slope,

@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1589426890625,
+  "timestamp": 1591404694268,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -7340288,
+    "modulationColor": -65305,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -170,7 +170,14 @@
           "computerKeyboardEnabled": false
         },
         "children": {},
-        "inputs": [],
+        "inputs": [
+          {
+            "name": "LXStudio",
+            "channel": true,
+            "control": false,
+            "sync": false
+          }
+        ],
         "surfaces": [],
         "mapping": []
       },
@@ -279,7 +286,7 @@
           "fader": 1.0,
           "crossfadeGroup": 0,
           "blendMode": 0,
-          "midiMonitor": false,
+          "midiMonitor": true,
           "midiChannel": 16,
           "autoCycleEnabled": false,
           "autoCycleMode": 0,
@@ -291,7 +298,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 9,
+        "patternIndex": 13,
         "patterns": [
           {
             "id": 95,
@@ -1002,7 +1009,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.4830000000635118
+                    "basis": 0.9250000000635149
                   }
                 ],
                 "modulations": [
@@ -1029,6 +1036,49 @@
                     "children": {}
                   }
                 ],
+                "triggers": []
+              }
+            }
+          },
+          {
+            "id": 2226,
+            "class": "noomechanism.icosahedron.patterns.DrumKit",
+            "modulationColor": -10158336,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false,
+              "autoCycleEligible": true
+            },
+            "parameters": {
+              "label": "DrumKit",
+              "Fps": 61.0,
+              "fbang": false,
+              "bngOn": false,
+              "bngFrms": 1,
+              "bngClr": true,
+              "bngFade": 0.0,
+              "palette": 1,
+              "RandomPlt": false,
+              "hue": 0.5199999883770943,
+              "sat": 0.0,
+              "bright": 1.0,
+              "slope": 1.0,
+              "speed": 5.599999897181988,
+              "nxtBar": -1,
+              "width": 0.5999999903142452
+            },
+            "children": {
+              "modulation": {
+                "id": 2227,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -12648193,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
                 "triggers": []
               }
             }
@@ -1525,9 +1575,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 12.434027462691937,
-          "theta": 626.0459605745232,
-          "phi": 0.32894930087315977,
+          "radius": 11.434131542718076,
+          "theta": 666.1708589942679,
+          "phi": 0.006959226013862051,
           "x": 0.19749708520248532,
           "y": -0.038795230910182,
           "z": -0.2125862780958414
@@ -1535,9 +1585,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 12.434027462691937,
-            "theta": 626.0459605745232,
-            "phi": 0.32894930087315977,
+            "radius": 11.434131542718076,
+            "theta": 666.1708589942679,
+            "phi": 0.006959226013862051,
             "x": 0.19749708520248532,
             "y": -0.038795230910182,
             "z": -0.2125862780958414
