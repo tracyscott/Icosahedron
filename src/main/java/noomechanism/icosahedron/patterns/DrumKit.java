@@ -57,6 +57,7 @@ public class DrumKit extends ColorPattern {
       blobs[i].reset(i%30, 0.0f, 0f, true);
       blobs[i].color = getNewRGB();
       blobs[i].enabled = false;
+      blobs[i].blobWidth = 2.0f;
     }
   }
 
@@ -77,7 +78,7 @@ public class DrumKit extends ColorPattern {
 
     for (int i = 0; i < numInstruments.getValuei(); i++) {
       blobs[i].renderBlob(colors, speed.getValuef(), widthKnob.getValuef(), slope.getValuef(), fadeLevel,
-          Blob.WAVEFORM_SQUARE, nextBarKnob.getValuei(), false, FX_SPARKLE, 0.5f,
+          Blob.WAVEFORM_STEPDECAY, nextBarKnob.getValuei(), false, FX_SPARKLE, 0.5f,
           1f);
     }
   }
@@ -86,6 +87,7 @@ public class DrumKit extends ColorPattern {
     int channelNum = note.getChannel();
     // Enable the corresponding blob
     //logger.info("noteOn: " + channelNum);
+    /*
     if (channelNum == 1) {
       for (Blob blob : blobs) {
         blob.enabled = true;
@@ -93,19 +95,22 @@ public class DrumKit extends ColorPattern {
         blob.intensity = intensity;
       }
     }
-    //blobs[channelNum].enabled = true;
+    */
+    blobs[channelNum].enabled = true;
   }
 
   public void noteOffReceived(MidiNote note) {
     int channelNum = note.getChannel();
     //logger.info("noteOff: " + channelNum);
-    //blobs[channelNum].enabled = false;
+    blobs[channelNum].enabled = false;
+    /*
     if (channelNum == 1) {
       for (Blob blob : blobs) {
         blob.enabled = false;
         blob.intensity = 1f;
       }
     }
+    */
   }
 
   public void afterTouchReceived(MidiAftertouch aftertouch) {

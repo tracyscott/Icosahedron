@@ -18,6 +18,7 @@ public class Blob {
   public int color;
   public boolean enabled = true;
   public float intensity = 1.0f;
+  public float blobWidth = -1.0f;
 
   // When rendering position parametrically from 0 to 1, we need a pre-computed set of lightbars
   // that we intend to render on.  See TopBottomT for an example of setting this up.
@@ -50,10 +51,10 @@ public class Blob {
     prevBars = new ArrayList<DirectionalLightBar>();
   }
 
-  public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
+  public void renderBlob(int[] colors, float baseSpeed, float defaultWidth, float slope,
                          float maxValue, int waveform, int whichJoint, boolean initialTail,
                          int whichEffect, float fxDepth, float cosineFreq) {
-    renderBlob(colors, baseSpeed, width, slope, maxValue, waveform, whichJoint, initialTail, LXColor.Blend.ADD,
+    renderBlob(colors, baseSpeed, defaultWidth, slope, maxValue, waveform, whichJoint, initialTail, LXColor.Blend.ADD,
         whichEffect, fxDepth, cosineFreq);
   }
 
@@ -64,21 +65,24 @@ public class Blob {
    * waveform can be rendered across multiple lightbars.
    * @param colors
    * @param baseSpeed
-   * @param width
+   * @param defaultWidth
    * @param slope
    * @param maxValue
    * @param waveform
    * @param whichJoint
    */
-  public void renderBlob(int[] colors, float baseSpeed, float width, float slope,
+  public void renderBlob(int[] colors, float baseSpeed, float defaultWidth, float slope,
                          float maxValue, int waveform, int whichJoint, boolean initialTail, LXColor.Blend blend,
                          int whichEffect, float fxDepth, float cosineFreq) {
     if (!enabled) return;
     boolean needsCurrentBarUpdate = false;
+    float resolvedWidth = defaultWidth;
+    if (blobWidth >= 0f)
+      resolvedWidth = blobWidth;
     for (LightBar lb : IcosahedronModel.lightBars) {
       if (dlb.lb.barNum == lb.barNum) {
         // -- Render on our target light bar --
-        float minMax[] = renderWaveform(colors, dlb, pos, width, slope, intensity * maxValue, waveform, blend);
+        float minMax[] = renderWaveform(colors, dlb, pos, resolvedWidth, slope, intensity * maxValue, waveform, blend);
 
         if (whichEffect == 1) {
           LightBarRender1D.randomGrayBaseDepth(colors, dlb.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
@@ -132,7 +136,7 @@ public class Blob {
           // whether there are any intermediate lightbars.
           if (prevBar.forward) prevBarPos += j;
           else prevBarPos -= j; //
-          renderWaveform(colors, prevBar, prevBarPos, width, slope, intensity * maxValue, waveform, blend);
+          renderWaveform(colors, prevBar, prevBarPos, resolvedWidth, slope, intensity * maxValue, waveform, blend);
           if (whichEffect == 1) {
             LightBarRender1D.randomGrayBaseDepth(colors, prevBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
                 (int)(255*fxDepth));
@@ -148,7 +152,7 @@ public class Blob {
             nextBarPos -= j; // shift the position to the left by the number of bars away it is actually at.
           else
             nextBarPos += j;
-          renderWaveform(colors, nextBar, nextBarPos, width, slope, intensity * maxValue, waveform, blend);
+          renderWaveform(colors, nextBar, nextBarPos, resolvedWidth, slope, intensity * maxValue, waveform, blend);
           if (whichEffect == 1) {
             LightBarRender1D.randomGrayBaseDepth(colors, nextBar.lb, LXColor.Blend.MULTIPLY, (int)(255*(1f - fxDepth)),
                 (int)(255 *fxDepth));
@@ -174,9 +178,9 @@ public class Blob {
       updateCurrentBar(whichJoint);
     }
   }
-  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+  public void renderBlobAtT(int[] colors, float paramT, float defaultWidth, float slope,
                             float maxValue, int waveform, float maxGlobalPos) {
-    renderBlobAtT(colors, paramT, width, slope, maxValue, waveform, 0f, maxGlobalPos);
+    renderBlobAtT(colors, paramT, defaultWidth, slope, maxValue, waveform, 0f, maxGlobalPos);
   }
 
   /**
@@ -185,14 +189,16 @@ public class Blob {
    * adjusts to number of lightbars.
    * @param colors
    * @param paramT
-   * @param width
+   * @param defaultWidth
    * @param slope
    * @param maxValue
    * @param waveform
    */
-  public void renderBlobAtT(int[] colors, float paramT, float width, float slope,
+  public void renderBlobAtT(int[] colors, float paramT, float defaultWidth, float slope,
     float maxValue, int waveform, float startMargin, float maxGlobalPos) {
     if (!enabled) return;
+    float resolvedWidth = defaultWidth;
+    if (blobWidth >= 0f) resolvedWidth = blobWidth;
     for (LightBar lb : IcosahedronModel.lightBars) {
       int dlbNum = 0;
       for (DirectionalLightBar currentDlb : pathBars) {
@@ -203,7 +209,7 @@ public class Blob {
           if (!currentDlb.forward)
             localDlbPos = 1.0f - localDlbPos;
 
-          renderWaveform(colors, currentDlb, localDlbPos, width, slope, intensity * maxValue, waveform, LXColor.Blend.ADD);
+          renderWaveform(colors, currentDlb, localDlbPos, resolvedWidth, slope, intensity * maxValue, waveform, LXColor.Blend.ADD);
         }
         dlbNum++;
       }
