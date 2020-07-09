@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1591659766573,
+  "timestamp": 1594265396586,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -11927808,
+    "modulationColor": -11665664,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -27,7 +27,7 @@
       "crossfader": 0.5,
       "crossfaderBlendMode": 0,
       "speed": 1.0,
-      "focusedChannel": 0,
+      "focusedChannel": 4,
       "cueA": false,
       "cueB": false,
       "multithreaded": true,
@@ -93,7 +93,7 @@
         "parameters": {
           "label": "Master",
           "arm": false,
-          "selected": false
+          "selected": true
         },
         "children": {},
         "effects": [
@@ -115,6 +115,68 @@
                 "id": 2010,
                 "class": "heronarts.lx.LXModulationEngine",
                 "modulationColor": -11271937,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
+          },
+          {
+            "id": 2445,
+            "class": "heronarts.lx.effect.DesaturationEffect",
+            "modulationColor": -15400705,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false
+            },
+            "parameters": {
+              "label": "Desaturation",
+              "enabled": false,
+              "amount": 1.0,
+              "attack": 0.0,
+              "decay": 0.0
+            },
+            "children": {
+              "modulation": {
+                "id": 2446,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -15104,
+                "internal": {},
+                "parameters": {
+                  "label": "Modulation"
+                },
+                "children": {},
+                "modulators": [],
+                "modulations": [],
+                "triggers": []
+              }
+            }
+          },
+          {
+            "id": 2667,
+            "class": "noomechanism.icosahedron.patterns.HueMultiplyEfx",
+            "modulationColor": -65368,
+            "internal": {
+              "expanded": true,
+              "modulationExpanded": false
+            },
+            "parameters": {
+              "label": "HueMultiplyEfx",
+              "enabled": true,
+              "hue": 0.5199999883770943,
+              "sat": 1.0,
+              "bright": 1.0
+            },
+            "children": {
+              "modulation": {
+                "id": 2668,
+                "class": "heronarts.lx.LXModulationEngine",
+                "modulationColor": -16733185,
                 "internal": {},
                 "parameters": {
                   "label": "Modulation"
@@ -280,7 +342,7 @@
         "parameters": {
           "label": "Channel-1",
           "arm": false,
-          "selected": true,
+          "selected": false,
           "enabled": true,
           "cue": false,
           "fader": 1.0,
@@ -298,7 +360,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 13,
+        "patternIndex": 5,
         "patterns": [
           {
             "id": 95,
@@ -532,16 +594,16 @@
               "hue": 0.19999999552965164,
               "sat": 1.0,
               "bright": 1.0,
-              "slope": 30.0,
+              "slope": 3.0009006034769117,
               "maxv": 1.0,
-              "speed": 0.6999999843537807,
-              "blobs": 4,
+              "speed": 5.199999883770943,
+              "blobs": 22,
               "randspd": 0.0,
               "nxtBar": 2,
               "fx": 1,
               "fxDepth": 0.6400000086426735,
               "wave": 0,
-              "width": 0.09999999776482582,
+              "width": 1.3999999687075615,
               "cfreq": 400.0
             },
             "children": {
@@ -1575,9 +1637,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 12.340489972173074,
-          "theta": 826.2081619761311,
-          "phi": 0.07062945280866359,
+          "radius": 13.302312337464587,
+          "theta": 868.6196628017946,
+          "phi": 0.3937362875052507,
           "x": 0.19749708520248532,
           "y": -0.038795230910182,
           "z": -0.2125862780958414
@@ -1585,9 +1647,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 12.340489972173074,
-            "theta": 826.2081619761311,
-            "phi": 0.07062945280866359,
+            "radius": 13.302312337464587,
+            "theta": 868.6196628017946,
+            "phi": 0.3937362875052507,
             "x": 0.19749708520248532,
             "y": -0.038795230910182,
             "z": -0.2125862780958414
