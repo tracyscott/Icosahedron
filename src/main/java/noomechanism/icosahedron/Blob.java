@@ -15,7 +15,7 @@ public class Blob {
   public float speed = 1f;
   public List<DirectionalLightBar> prevBars = new ArrayList<DirectionalLightBar>();
   public List<DirectionalLightBar> nextBars = new ArrayList<DirectionalLightBar>();
-  public int color;
+  public int color = LXColor.rgba(255, 255, 255, 255);
   public boolean enabled = true;
   public float intensity = 1.0f;
   public float blobWidth = -1.0f;

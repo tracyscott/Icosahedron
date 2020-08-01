@@ -100,9 +100,10 @@ public class LightBarRender1D {
     for (LBPoint pt: lightBar.points) {
       //int gray = (int) ((((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f)*255.0f);
       float val = (((pt.lbx > minMax[0]*lightBar.length) && (pt.lbx < minMax[1]*lightBar.length))?maxValue:0f);
-      colors[pt.index] = LXColor.blend(colors[pt.index], LXColor.rgba(
+      int newColor = LXColor.blend(colors[pt.index], LXColor.rgba(
           (int)(Colors.red(color) * val), (int)(Colors.green(color) * val), (int)(Colors.blue(color) * val), 255),
           blend);
+      colors[pt.index] = newColor;
     }
     return minMax;
   }
