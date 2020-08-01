@@ -24,7 +24,7 @@ public class GentleSpin extends SpinningPattern {
         float azimuth = this.azimuth.getValuef();
         int pixNum = 0;
 
-        for (LightBar lb : IcosahedronModel.lightBars) {
+        for (LightBar lb : IcosahedronModel.getAllLightBars()) {
             for (LXPoint p : lb.points) {
 
                 float az = (float) ((p.azimuth + azimuth + abs(p.yn - .5) * (PI/4)) % (2*PI));

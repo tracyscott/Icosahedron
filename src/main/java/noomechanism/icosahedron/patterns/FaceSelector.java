@@ -27,10 +27,10 @@ public class FaceSelector extends LXPattern {
       colors[point.index] = LXColor.rgba(0, 0, 0, 255);
     }
 
-    for (IcosahedronModel.Face f : IcosahedronModel.faces) {
+    for (IcosahedronModel.Face f : IcosahedronModel.smallIcosahedron.faces) {
       if (f == null) continue;
       if ((f.faceNum == faceNum.getValuei() && !adjacent.getValueb()) ||
-          (f.faceNum == faceNum.getValuei() || (adjacent.getValueb() && f.isFaceIdAdjacent(faceNum.getValuei()))))
+          (f.faceNum == faceNum.getValuei() || (adjacent.getValueb() && f.isFaceIdAdjacent(faceNum.getValuei(), IcosahedronModel.smallIcosahedron.faces))))
           {
         for (LightBar lb : f.getLightBars()) {
           for (LXPoint point : lb.points) {

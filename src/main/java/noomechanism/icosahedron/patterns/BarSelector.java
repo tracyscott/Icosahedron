@@ -30,12 +30,12 @@ public class BarSelector extends LXPattern {
 
   @Override
   public void run(double deltaMs) {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       for (LXPoint point : lb.points) {
         colors[point.index] = LXColor.rgba(0, 0, 0, 255);
       }
     }
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       if (lb.barNum == barNum.getValuei() || barNum.getValuei() == -1) {
         int ptNum = 0;
         for (LXPoint point: lb.points) {

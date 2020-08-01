@@ -30,7 +30,7 @@ public class Collision extends AnimPattern {
     for (LXPoint pt : model.points)
       colors[pt.index] = LXColor.rgba(0, 0, 0, 255);
 
-    for (LightBar lightBar : IcosahedronModel.lightBars) {
+    for (LightBar lightBar : IcosahedronModel.getAllLightBars()) {
       if (phaseNum == 0) {
         blobPos1 = (time / curPhaseDuration) / 2f - 0.01f;
         blobPos2 = 1f - (time / curPhaseDuration) / 2f + 0.01f;

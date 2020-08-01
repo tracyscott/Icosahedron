@@ -56,7 +56,7 @@ public class BarSets {
     Set<Integer> set = new HashSet<Integer>();
     for (int i = 0; i < ids.length; i++)
       set.add(new Integer(ids[i]));
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       if (set.contains(lb.barNum))
         lightBars.add(lb);
     }

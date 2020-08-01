@@ -34,7 +34,7 @@ public class CollT extends AnimT {
     for (LXPoint pt : model.points)
       colors[pt.index] = LXColor.rgba(0, 0, 0, 255);
 
-    for (LightBar lightBar : IcosahedronModel.lightBars) {
+    for (LightBar lightBar : IcosahedronModel.getAllLightBars()) {
       if (phaseNum == 0) {
         blobPos1 = phaseLocalT / 2f;
         blobPos2 = 1f - phaseLocalT / 2f;

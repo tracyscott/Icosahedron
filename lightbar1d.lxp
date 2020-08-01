@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1594265396586,
+  "timestamp": 1596306010600,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -11665664,
+    "modulationColor": -4980481,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -27,7 +27,7 @@
       "crossfader": 0.5,
       "crossfaderBlendMode": 0,
       "speed": 1.0,
-      "focusedChannel": 4,
+      "focusedChannel": 0,
       "cueA": false,
       "cueB": false,
       "multithreaded": true,
@@ -93,7 +93,7 @@
         "parameters": {
           "label": "Master",
           "arm": false,
-          "selected": true
+          "selected": false
         },
         "children": {},
         "effects": [
@@ -342,7 +342,7 @@
         "parameters": {
           "label": "Channel-1",
           "arm": false,
-          "selected": false,
+          "selected": true,
           "enabled": true,
           "cue": false,
           "fader": 1.0,
@@ -360,7 +360,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 5,
+        "patternIndex": 10,
         "patterns": [
           {
             "id": 95,
@@ -439,7 +439,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.9610252539885875
+                    "basis": 0.3154664598964393
                   }
                 ],
                 "modulations": [
@@ -550,7 +550,7 @@
             },
             "parameters": {
               "label": "BarSelector",
-              "BarNum": -1,
+              "BarNum": 10,
               "caps": false,
               "dircaps": true,
               "joint": false,
@@ -682,7 +682,7 @@
             },
             "parameters": {
               "label": "Step",
-              "pos": 0.18000001460313797,
+              "pos": 0.09000001847743988,
               "slope": 35.79912922217883,
               "maxv": 0.880000002682209,
               "fwd": false
@@ -752,7 +752,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.5386495914746529
+                    "basis": 0.7532326539531736
                   }
                 ],
                 "modulations": [
@@ -794,10 +794,10 @@
             },
             "parameters": {
               "label": "TopBottom",
-              "slope": 5.0,
-              "speed": 10.0,
-              "wave": 2,
-              "width": 0.10000000149011612
+              "slope": 1.750649988826364,
+              "speed": 2.100000139325857,
+              "wave": 1,
+              "width": 1.8999999612569807
             },
             "children": {
               "modulation": {
@@ -826,7 +826,7 @@
             },
             "parameters": {
               "label": "CollT",
-              "t": 0.0,
+              "t": 0.34000000916421413,
               "Move": 1.0,
               "Explode": 1.0,
               "maxv": 1.0,
@@ -860,11 +860,11 @@
             },
             "parameters": {
               "label": "TopBottomT",
-              "slope": 0.7008600960932672,
+              "slope": 0.3009401050321758,
               "t": 0.0,
-              "wave": 2,
-              "width": 0.0,
-              "extra": 2.099999964237213
+              "wave": 1,
+              "width": 7.799999862909317,
+              "extra": 2.9999999441206455
             },
             "children": {
               "modulation": {
@@ -900,7 +900,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.7470000000987359
+                    "basis": 0.031000000098796873
                   }
                 ],
                 "modulations": [
@@ -983,7 +983,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.671367009603872
+                    "basis": 0.2230555267247305
                   }
                 ],
                 "modulations": [
@@ -1026,7 +1026,7 @@
             "parameters": {
               "label": "RandomFace",
               "Fps": 65.95999944210052,
-              "bngOn": true,
+              "bngOn": false,
               "bngFrms": 25,
               "bngFade": 0.4300000127404928,
               "bngClr": true,
@@ -1071,7 +1071,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.22300000006352005
+                    "basis": 0.1440000000635514
                   }
                 ],
                 "modulations": [
@@ -1238,7 +1238,7 @@
             ]
           }
         ],
-        "patternIndex": 4,
+        "patternIndex": 0,
         "patterns": [
           {
             "id": 207,
@@ -1637,9 +1637,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 13.302312337464587,
-          "theta": 868.6196628017946,
-          "phi": 0.3937362875052507,
+          "radius": 15.399089319657442,
+          "theta": 868.2418763814969,
+          "phi": 0.02589156077017366,
           "x": 0.19749708520248532,
           "y": -0.038795230910182,
           "z": -0.2125862780958414
@@ -1647,9 +1647,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 13.302312337464587,
-            "theta": 868.6196628017946,
-            "phi": 0.3937362875052507,
+            "radius": 15.399089319657442,
+            "theta": 868.2418763814969,
+            "phi": 0.02589156077017366,
             "x": 0.19749708520248532,
             "y": -0.038795230910182,
             "z": -0.2125862780958414

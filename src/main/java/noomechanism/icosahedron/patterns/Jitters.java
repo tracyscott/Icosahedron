@@ -53,7 +53,7 @@ public class Jitters extends LXPattern {
     float sizeInv = 1 / size;
     float contrast = this.contrast.getValuef();
     boolean inv = false;
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       inv = !inv;
       float pv = inv ? pos : (1-pos);
       int i = 0;

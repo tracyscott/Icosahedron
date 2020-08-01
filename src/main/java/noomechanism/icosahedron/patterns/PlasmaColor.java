@@ -77,7 +77,7 @@ public class PlasmaColor extends LXPattern {
   }
 
   public void run(double deltaMs) {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
 
       //GET A UNIQUE SHADE FOR THIS PIXEL
 

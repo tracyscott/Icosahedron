@@ -77,7 +77,7 @@ public class PlasmaY extends LXPattern {
   //main method
   public void run(double deltaMs) {
     //System.out.println("frame rate: " + Math.round(1000/deltaMs));
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       //GET A UNIQUE SHADE FOR THIS PIXEL
 
       //convert this point to vector so we can use the dist method in the plasma generator

@@ -29,16 +29,16 @@ public class RandomFace extends ColorPattern {
 
   @Override
   public void renderFrame(double deltaMs) {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       LightBarRender1D.renderColor(colors, lb, LXColor.BLACK);
     }
 
     int whichFace;
     do {
-      whichFace = ThreadLocalRandom.current().nextInt(0, IcosahedronModel.faces.length - 1);
+      whichFace = ThreadLocalRandom.current().nextInt(0, IcosahedronModel.smallIcosahedron.faces.length - 1);
     } while (whichFace == previousFace);
 
-    IcosahedronModel.Face f = IcosahedronModel.faces[whichFace];
+    IcosahedronModel.Face f = IcosahedronModel.smallIcosahedron.faces[whichFace];
     for (LightBar lb : f.getLightBars()) {
       float maxValue = 1.0f;
       // If a bang is running, allow for a fade out over the number of bang frames.

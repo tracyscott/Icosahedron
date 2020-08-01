@@ -79,7 +79,7 @@ public class Blob {
     float resolvedWidth = defaultWidth;
     if (blobWidth >= 0f)
       resolvedWidth = blobWidth;
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       if (dlb.lb.barNum == lb.barNum) {
         // -- Render on our target light bar --
         float minMax[] = renderWaveform(colors, dlb, pos, resolvedWidth, slope, intensity * maxValue, waveform, blend);
@@ -199,7 +199,7 @@ public class Blob {
     if (!enabled) return;
     float resolvedWidth = defaultWidth;
     if (blobWidth >= 0f) resolvedWidth = blobWidth;
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       int dlbNum = 0;
       for (DirectionalLightBar currentDlb : pathBars) {
         if (currentDlb.lb.barNum == lb.barNum && !currentDlb.disableRender) {

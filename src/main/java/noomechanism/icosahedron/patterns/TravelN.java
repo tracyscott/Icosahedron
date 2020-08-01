@@ -55,6 +55,7 @@ public class TravelN extends ColorPattern {
   public void resetBlobs() {
     for (int i = 0; i < MAX_BLOBS; i++) {
       blobs[i] = new Blob();
+      // TODO(tracy): Pick an initial random lightBarNum such that we are restricted to a specific fixture.
       blobs[i].reset(i%30, 0.0f, randSpeed.getValuef(), true);
       blobs[i].color = getNewRGB();
     }

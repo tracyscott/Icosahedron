@@ -109,7 +109,7 @@ public class Output {
         String[] ids = lightBarLeds.split(",");
         for (int i = 0; i < ids.length; i++) {
           int lightBarId = Integer.parseInt(ids[i]);
-          LightBar lightBar = IcosahedronModel.lightBars.get(lightBarId);
+          LightBar lightBar = IcosahedronModel.getAllLightBars().get(lightBarId);
           pointsWireOrder.addAll(lightBar.pointsInWireOrder());
         }
         
@@ -182,7 +182,7 @@ public class Output {
     logger.log(Level.INFO, "Using ArtNet: " + artNetIpAddress + ":" + artNetIpPort);
 
     int lightBarNum = 0;
-    for (LightBar lightBar : IcosahedronModel.model.lightBars) {
+    for (LightBar lightBar : IcosahedronModel.getAllLightBars()) {
       List<LBPoint> pointsWireOrder = lightBar.pointsInWireOrder();
       int[] thisUniverseIndices = new int[150];  // 170f
       int numUniversesThisWire = (int)Math.ceil((float)pointsWireOrder.size() / 170f);

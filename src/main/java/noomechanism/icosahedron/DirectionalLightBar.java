@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DirectionalLightBar {
   public DirectionalLightBar(int lbNum, boolean forward) {
-    lb = IcosahedronModel.lightBars.get(lbNum);
+    lb = IcosahedronModel.getAllLightBars().get(lbNum);
     this.forward = forward;
     disableRender = false;
   }

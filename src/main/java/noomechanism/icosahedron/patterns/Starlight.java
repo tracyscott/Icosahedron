@@ -49,7 +49,7 @@ public class Starlight extends LXPattern {
 
     int i = 0;
     int starNum = 0;
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       for (LXPoint pt : lb.points) {
         starNum = i / starWidth;
         float brt = this.brt[this.map1[starNum]].getValuef() + this.brt[this.map2[starNum]].getValuef();

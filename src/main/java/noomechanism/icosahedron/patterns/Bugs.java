@@ -28,7 +28,7 @@ public class Bugs extends LXPattern {
 
   public Bugs(LX lx) {
     super(lx);
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       for (int i = 0; i < 10; ++i) {
         addLayer(new Layer(lx, lb));
       }

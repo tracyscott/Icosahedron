@@ -33,7 +33,7 @@ public class Tumbler extends LXPattern {
         int pixnum = 0;
         int strandnum = 0;
         int final_num = 0;
-        for (LightBar lb : IcosahedronModel.lightBars) {
+        for (LightBar lb : IcosahedronModel.getAllLightBars()) {
             for (LXPoint p : lb.points) {
                 float tri1 = LXUtils.trif(azimuthRotation + p.azimuth / PI);
                 float tri2 = LXUtils.trif(thetaRotation + (PI + p.theta) / PI);

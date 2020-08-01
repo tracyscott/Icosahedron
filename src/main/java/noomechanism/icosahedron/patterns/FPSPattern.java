@@ -80,7 +80,7 @@ abstract public class FPSPattern extends LXPattern {
   }
 
   public void clearLightBarsToBlack() {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       LightBarRender1D.renderColor(colors, lb, LXColor.BLACK);
     }
   }

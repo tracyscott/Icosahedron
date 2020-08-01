@@ -98,7 +98,7 @@ public class BigWillSnow extends LXPattern {
       flakeMap.put(bucket(f.x, f.yMod.getValuef(), f.z), f);
     }
 
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       for (LXPoint p : lb.points) {
         int c = 0x000000;
 

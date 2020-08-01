@@ -24,7 +24,7 @@ public class PixelSelector extends LXPattern {
 
   @Override
   public void run(double deltaMs) {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       if (lb.barNum == barNum.getValuei()) {
         int ptNum = 0;
         for (LXPoint point: lb.points) {

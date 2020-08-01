@@ -53,7 +53,7 @@ public class SplitColor extends LXPattern {
 
 
     if (mode == 1) {
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         pixCnt = 0;
         for (LXPoint p : lb.points) {
           if (pixCnt < cntVal1) {
@@ -65,7 +65,7 @@ public class SplitColor extends LXPattern {
         }
       }
     } else if (mode == 2){
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         pixCnt = 0;
         for (LXPoint p : lb.points) {
           if (pixCnt % cntVal1 >= cntVal2) {
@@ -77,7 +77,7 @@ public class SplitColor extends LXPattern {
         }
       }
     }  else if (mode == 3){
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         pixCnt = 0;
         for (LXPoint p : lb.points) {
           if (pixCnt % cntVal2 >= cntVal3) {
@@ -89,7 +89,7 @@ public class SplitColor extends LXPattern {
         }
       }
     } else if (mode == 4){
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         pixCnt = 0;
         for (LXPoint p : lb.points) {
           if (pixCnt % cntVal3 >= cntVal4) {
@@ -101,7 +101,7 @@ public class SplitColor extends LXPattern {
         }
       }
     } else if (mode == 5){
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         pixCnt = 0;
         for (LXPoint p : lb.points) {
           if (pixCnt % cntVal4 >= cntVal5) {

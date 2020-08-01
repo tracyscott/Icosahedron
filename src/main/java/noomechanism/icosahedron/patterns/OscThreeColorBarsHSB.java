@@ -110,7 +110,7 @@ public class OscThreeColorBarsHSB extends LXPattern {
 
   //main method
   public void run(double deltaMs) {
-    for (LightBar lb : IcosahedronModel.lightBars) {
+    for (LightBar lb : IcosahedronModel.getAllLightBars()) {
       //GET A UNIQUE SHADE FOR THIS PIXEL
       //convert this point to vector so we can use the dist method in the plasma generator
       float _size = size.getValuef();

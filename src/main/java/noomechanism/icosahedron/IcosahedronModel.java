@@ -29,11 +29,20 @@ public class IcosahedronModel extends LXModel {
   public static final int NUM_LIGHT_BARS = 30;
   public static Point3D[] unitIcosahedron;
   public static IcosahedronModel model;
-  public static Point3D[] vertices;
-  public static Edge[] edges;
-  public static Face[] faces;
+  //public static Point3D[] vertices;
+  //public static Edge[] edges;
+  //public static Face[] faces;
 
-  static public List<LightBar> lightBars;
+  //static public List<LightBar> lightBars;
+
+  static public IcosahedronFixture smallIcosahedron;
+
+  public static class IcosahedronFixture {
+    static public Point3D[] vertices;
+    static public Edge[] edges;
+    static public Face[] faces;
+    static public List<LightBar> lightBars;
+  }
 
   public static class SphericalCoord {
     public float r;
@@ -300,7 +309,7 @@ public class IcosahedronModel extends LXModel {
      * edges by the negative of the angle to align our reference edge with the X axis. Next, we compute the polar
      * coordinate angles of the adjacent edges and then reverse sort them for left to right orientation.
      */
-    static public void sortEdges() {
+    static public void sortEdges(Edge[] edges) {
       for (Edge edge : edges) {
         edge.sortAdjacentEdges();
       }
@@ -417,12 +426,12 @@ public class IcosahedronModel extends LXModel {
       return false;
     }
 
-    public boolean isFaceIdAdjacent(int faceId) {
+    public boolean isFaceIdAdjacent(int faceId, Face[] faces) {
       Face f = faces[faceId];
       return isAdjacent(f);
     }
 
-    public void findAdjacentFaces() {
+    public void findAdjacentFaces(Face[] faces) {
       for (int i = 0; i < 20; i++) {
         Face f = faces[i];
         if (f.faceNum == faceNum) continue;
@@ -446,6 +455,7 @@ public class IcosahedronModel extends LXModel {
    * longitudes (36° apart), alternating between north and south latitudes.
    * @return
    */
+  /*
   public static Point3D[] createIcosahedronVerticesEdges(float radius) {
     vertices = new Point3D[12];
     edges = new Edge[30];
@@ -616,12 +626,187 @@ public class IcosahedronModel extends LXModel {
 
     return vertices;
   }
+  */
+
+  static public IcosahedronFixture createIcosahedronFixture(float radius) {
+    IcosahedronFixture fixture = new IcosahedronFixture();
+    fixture.vertices = new Point3D[12];
+    fixture.edges = new Edge[30];
+    fixture.faces = new Face[20];
+    fixture.lightBars = new ArrayList<LightBar>();
+
+    fixture.vertices[0] = new Point3D(0f, radius, 0f);
+    // top band of 5 points
+    double latitudeDegrees = 26.57;
+    double latitude = Math.toRadians(latitudeDegrees);
+    double longitudeIncr = 36.0;
+    double ninetyRadians = Math.toRadians(90f);
+
+    // https://en.wikipedia.org/wiki/Spherical_coordinate_system
+    // 3D graphics converted to Mathematical spherical coordinates (Physics model on the page).
+    // X is is -Z, Y is X, Z is Y.
+    // our construction latitude is 90 degrees - theta degrees from theta on wikipedia page.
+    for (int i = 0; i < 5; i++) {
+      double polarAngle = Math.toRadians(i * longitudeIncr * 2.0);  // ISO azimuth
+      fixture.vertices[i+1] = new Point3D(
+          (float)(radius * Math.sin(ninetyRadians - latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.cos(ninetyRadians - latitude)),
+          -(float)(radius * Math.sin(ninetyRadians - latitude) * Math.cos(polarAngle)));
+    }
+    // Lower hemisphere points.
+    latitude = Math.toRadians(-latitudeDegrees);
+    for (int i = 0; i < 5; i++) {
+      double polarAngle = Math.toRadians(i * longitudeIncr * 2.0 + longitudeIncr);  // ISO azimuth
+      fixture.vertices[i+6] = new Point3D(
+          (float)(radius * Math.sin(ninetyRadians - latitude) * Math.sin(polarAngle)),
+          (float)(radius * Math.cos(ninetyRadians - latitude)),
+          -(float)(radius * Math.sin(ninetyRadians - latitude) * Math.cos(polarAngle)));
+    }
+    fixture.vertices[11] = new Point3D(0f, -radius, 0f);
+
+    // rotate 100.8 degrees around X
+    // y' = y*cos q - z*sin q
+    // z' = y*sin q + z*cos q
+    // x' = x
+    // TODO(tracy): Properly compute this, heh.
+    float xAxisRotate = 100.8f;
+    for (Point3D p : fixture.vertices) {
+      float yOrig = p.y;
+      p.y = (float)(-p.z * Math.sin(Math.toRadians(xAxisRotate)) + p.y * Math.cos(Math.toRadians(xAxisRotate)));
+      p.z = (float)(yOrig * Math.sin(Math.toRadians(xAxisRotate)) + p.z * Math.cos(Math.toRadians(xAxisRotate)));
+    }
+
+    // Edges
+    // One edge from top to first row. 5 total
+    int edgeNum = 0;
+    //for (int i = 1; i < 6; i++) {
+    //  edges[edgeNum++] = new Edge(vertices[0], vertices[i]);
+    //}
+    //hard-coded for ease of reversing directions
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[1], fixture.vertices[0]); //0
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[0], fixture.vertices[2]); //1
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3], fixture.vertices[0]); //2
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[4], fixture.vertices[0]); //3
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[0], fixture.vertices[5]); //4
+
+    // One edge between all vertices in top row
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[2], fixture.vertices[1]); //5
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3], fixture.vertices[2]); //6
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3], fixture.vertices[4]); //7
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[5], fixture.vertices[4]); //8
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[5], fixture.vertices[1]); //9
+
+    int offset = 5;
+    // Edges from top row to bottom row alternate vertices.
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[1], fixture.vertices[1+offset]); //10
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[offset+1], fixture.vertices[2]); //11
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[2], fixture.vertices[2+offset]); //12
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3], fixture.vertices[2+offset]); //13
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3], fixture.vertices[3+offset]); //14
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[3+offset], fixture.vertices[4]); //15
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[4], fixture.vertices[4+offset]); //16
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[4+offset], fixture.vertices[5]); //17
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[5+offset], fixture.vertices[5]); //18
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[5+offset], fixture.vertices[1]); //19
+
+    // One edge between all fixture.vertices bottom row
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[7], fixture.vertices[6]); //20
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[7], fixture.vertices[8]); //21
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[9], fixture.vertices[8]); //22
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[10], fixture.vertices[9]); //23
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[10], fixture.vertices[6]); //24
+
+    // One edge from bottom to bottom row points
+    //for (int i = 0; i < 5; i++) {
+    //  fixture.edges[edgeNum++] = new Edge(fixture.vertices[i+6], fixture.vertices[11]);
+    //}
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[6], fixture.vertices[11]); //25
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[11], fixture.vertices[7]); //26
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[8], fixture.vertices[11]); //27
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[11], fixture.vertices[9]); //28
+    fixture.edges[edgeNum++] = new Edge(fixture.vertices[10], fixture.vertices[11]); //29
+
+    Edge.computeAdjacentEdges(fixture.edges);
+    Edge.sortEdges(fixture.edges);
+
+    int faceNum = 0;
+    // Top cone
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[0], fixture.edges[5], fixture.edges[1]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[1], fixture.edges[6], fixture.edges[2]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[2], fixture.edges[7], fixture.edges[3]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[3], fixture.edges[8], fixture.edges[4]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[4], fixture.edges[9], fixture.edges[0]);
+    faceNum++;
+
+    // Body is 10 fixture.faces.  For top row points, we take the edge between
+    // the top row and the 36degree shifted point on the bottom row.
+    // The edge between that bottom row point and the adjacent top row point, and
+    // finally another edge from the new top row point back to the original point.
+    // Next, starting at the bottom row point, we take the edge to the adjacent
+    // bottom row point, and then the edge to the previous top row point, and finally
+    // the edge from that top row point back down to the original bottom row point.
+    //
+    // i.e. in the diagram below the first face is AB,BC,CA and the second face is
+    // BD, DC, CB.  We use the standard counter-clockwise vertex order winding.
+    //
+    //  A --------  C     C  /\
+    //     \    /           /  \
+    //      \  /           /    \
+    //    B  \/         B -------- D
+    //
+    //int firstTopRingPt =
+
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[10], fixture.edges[11], fixture.edges[5]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[20], fixture.edges[12], fixture.edges[11]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[12], fixture.edges[13], fixture.edges[6]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[21], fixture.edges[14], fixture.edges[13]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[14], fixture.edges[15], fixture.edges[7]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[22], fixture.edges[15], fixture.edges[16]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[16], fixture.edges[17], fixture.edges[8]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[23], fixture.edges[17], fixture.edges[18]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[18], fixture.edges[19], fixture.edges[9]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[24], fixture.edges[10], fixture.edges[19]);
+    faceNum++;
+
+    // bottom cone
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[20], fixture.edges[25], fixture.edges[26]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[21], fixture.edges[26], fixture.edges[27]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[22], fixture.edges[27], fixture.edges[28]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[23], fixture.edges[28], fixture.edges[29]);
+    faceNum++;
+    fixture.faces[faceNum] = new Face(faceNum, fixture.edges[24], fixture.edges[29], fixture.edges[25]);
+    faceNum++;
+
+    // Populate our adjacent faces list.
+    for (int i = 0; i < faceNum; i++) {
+      fixture.faces[i].findAdjacentFaces(fixture.faces);
+    }
+
+    return fixture;
+  }
 
   public static IcosahedronModel createModel() {
     // TODO(tracy): 4.75f radius should be computed from Icosahedron.lightBarParamsLength.
-    unitIcosahedron = createIcosahedronVerticesEdges(4.75f);
+    //unitIcosahedron = createIcosahedronVerticesEdges(4.75f);
+    smallIcosahedron = createIcosahedronFixture(4.75f);
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
-    List<LightBar> lightBars = new ArrayList<LightBar>();
+    //List<LightBar> lightBars = new ArrayList<LightBar>();
     for (int i = 0; i < NUM_LIGHT_BARS; i++) {
       LightBar lb = new LightBar(i,
           Icosahedron.lightBarParamsLength,
@@ -629,18 +814,20 @@ public class IcosahedronModel extends LXModel {
           Icosahedron.lightBarParamsEndMargin,
           Icosahedron.lightBarParamsLeds,
           false,
-          edges[i]);
-      lb.interpolate(edges[i]);
-      lightBars.add(lb);
+          smallIcosahedron.edges[i]);
+      lb.interpolate(smallIcosahedron.edges[i]);
+      //lightBars.add(lb);
+      smallIcosahedron.lightBars.add(lb);
       allPoints.addAll(lb.points);
     }
 
-    model = new IcosahedronModel(allPoints, lightBars);
-    Connector.computeConnectors(edges);
+    model = new IcosahedronModel(allPoints);
+    Connector.computeConnectors(smallIcosahedron.edges);
 
     return model;
   }
 
+  /*
   public static IcosahedronModel createArchModel() {
     List<LXPoint> allPoints = new ArrayList<LXPoint>();
     List<LightBar> lightBars = new ArrayList<LightBar>();
@@ -660,8 +847,9 @@ public class IcosahedronModel extends LXModel {
     model = new IcosahedronModel(allPoints, lightBars);
     return model;
   }
+  */
 
-  public IcosahedronModel(List<LXPoint> points, List<LightBar> lightBars) {
+  public IcosahedronModel(List<LXPoint> points) {
     super(points);
     // Compute some stats on our points.
     int pointCount = 0;
@@ -677,9 +865,17 @@ public class IcosahedronModel extends LXModel {
 
     computedWidth = maxX - minX;
     computedHeight = maxY - minY;
-    this.lightBars = lightBars;
+    //this.lightBars = lightBars;
 
     exportPLY(points);
+  }
+
+  /**
+   * Return all lightbars across all fixtures.
+   * @return
+   */
+  static public List<LightBar> getAllLightBars() {
+    return smallIcosahedron.lightBars;
   }
 
   public static void exportPLY(List<LXPoint> points) {

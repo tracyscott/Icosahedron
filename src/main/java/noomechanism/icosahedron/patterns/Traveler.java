@@ -74,7 +74,7 @@ public class Traveler extends LXPattern {
     for (int i = 0; i < MAX_BLOBS; i++) {
       blobs[i] = new Blob();
       blobs[i].pos = (float)Math.random();
-      blobs[i].currentBarNum = (i * 4) % IcosahedronModel.lightBars.size();
+      blobs[i].currentBarNum = (i * 4) % IcosahedronModel.getAllLightBars().size();
       float randSpeedOffset = randSpeed.getValuef() * (float)Math.random();
       blobs[i].speed = randSpeedOffset;
     }
@@ -99,7 +99,7 @@ public class Traveler extends LXPattern {
       Blob blob = blobs[i];
       int newCurrentLightBarNum = -1;
       boolean needsCurrentBarUpdate = false;
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         if (blob.currentBarNum == lb.barNum) {
           float minMax[] = LightBarRender1D.renderTriangle(colors, lb, blob.pos, slope.getValuef(),
               maxValue.getValuef(), LXColor.Blend.ADD);
@@ -113,13 +113,13 @@ public class Traveler extends LXPattern {
               chooseNextBar(blob, nextBarKnob.getValuei());
             }
             float nextBarPos = computeNextBarPos(blob);
-            LightBar nextBar = IcosahedronModel.lightBars.get(blob.nextBarNum);
+            LightBar nextBar = IcosahedronModel.getAllLightBars().get(blob.nextBarNum);
             LightBarRender1D.renderTriangle(colors, nextBar, nextBarPos, slope.getValuef(), maxValue.getValuef(),
                 LXColor.Blend.ADD);
           }
           // Render on the previous bar if necessary
           if (blob.prevBarNum != -1) {
-            LightBar prevBar = IcosahedronModel.lightBars.get(blob.prevBarNum);
+            LightBar prevBar = IcosahedronModel.getAllLightBars().get(blob.prevBarNum);
             float prevBarPos = computePrevBarPos(blob);
             LightBarRender1D.renderTriangle(colors, prevBar, prevBarPos, slope.getValuef(), maxValue.getValuef(),
                 LXColor.Blend.ADD);
@@ -151,7 +151,7 @@ public class Traveler extends LXPattern {
       }
     }
     if (sparkle.getValueb()) {
-      for (LightBar lb : IcosahedronModel.lightBars) {
+      for (LightBar lb : IcosahedronModel.getAllLightBars()) {
         LightBarRender1D.randomGrayBaseDepth(colors, lb, LXColor.Blend.MULTIPLY, (int)sparkleMin.getValuef(),
             (int)sparkleDepth.getValuef());
       }
@@ -166,9 +166,9 @@ public class Traveler extends LXPattern {
    */
   static public void chooseNextBar(Blob blob, int nextBarSelector) {
     if (blob.forward) {
-      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myEndPointJoints, nextBarSelector);
+      chooseRandomBarFromJoints(blob, IcosahedronModel.smallIcosahedron.edges[blob.currentBarNum].myEndPointJoints, nextBarSelector);
     } else {
-      chooseRandomBarFromJoints(blob, IcosahedronModel.edges[blob.currentBarNum].myStartPointJoints, nextBarSelector);
+      chooseRandomBarFromJoints(blob, IcosahedronModel.smallIcosahedron.edges[blob.currentBarNum].myStartPointJoints, nextBarSelector);
     }
   }
 
@@ -223,7 +223,7 @@ public class Traveler extends LXPattern {
         return 0.0f - blob.pos;
       }
     } else {
-      // If not forward, and we are at 0.8 then if prev bar was forward, we are at -0.2.
+      // If not forward, and we are at 0.2 then if prev bar was forward, we are at -0.2.
       // Of - 1.0f - position
       // If prev bar was not forward, then we are at 1.2 which is 1.0 - pos + 1.0f
       if (blob.prevBarForward) {
