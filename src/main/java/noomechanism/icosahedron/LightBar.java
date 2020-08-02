@@ -16,10 +16,10 @@ public class LightBar {
   public boolean arch;
   public int barNum;
   public List<LBPoint> points;
-  public IcosahedronModel.Edge edge;
+  public IcosahedronFixture.Edge edge;
 
   public LightBar(int barNum, float length, float startMargin, float endMargin, int numPoints, boolean arch,
-                  IcosahedronModel.Edge edge) {
+                  IcosahedronFixture.Edge edge) {
     this.barNum = barNum;
     this.length = length;
     this.numPoints = numPoints;
@@ -57,7 +57,7 @@ public class LightBar {
    * Interpolates the points along the given edge, based on the number of points.
    * @param edge An edge in 3D space.
    */
-  public void interpolate(IcosahedronModel.Edge edge) {
+  public void interpolate(IcosahedronFixture.Edge edge) {
     float startX = edge.a.x;
     float startY = edge.a.y;
     float startZ = edge.a.z;

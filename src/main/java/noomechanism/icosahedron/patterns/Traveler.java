@@ -7,6 +7,7 @@ import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.BooleanParameter;
 import heronarts.lx.parameter.CompoundParameter;
 import heronarts.lx.parameter.DiscreteParameter;
+import noomechanism.icosahedron.IcosahedronFixture;
 import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.LightBar;
 import noomechanism.icosahedron.LightBarRender1D;
@@ -178,11 +179,11 @@ public class Traveler extends LXPattern {
    * @param blob
    * @param joints
    */
-  static public void chooseRandomBarFromJoints(Blob blob, IcosahedronModel.Joint[] joints, int nextBarSelector) {
+  static public void chooseRandomBarFromJoints(Blob blob, IcosahedronFixture.Joint[] joints, int nextBarSelector) {
     int jointNum = nextBarSelector;
     if (jointNum == -1)
       jointNum = ThreadLocalRandom.current().nextInt(4);
-    IcosahedronModel.Edge nextEdge = joints[jointNum].edge;
+    IcosahedronFixture.Edge nextEdge = joints[jointNum].edge;
     blob.nextBarForward = joints[jointNum].isAdjacentEdgeAStartPoint;
     blob.nextBarNum = nextEdge.lightBar.barNum;
   }

@@ -34,11 +34,11 @@ public class DirectionalLightBar {
    * @param joints Array of joints to select from.
    * @param jointSelector Which joint to select the next bar from.  If -1, then choose a random joint.
    */
-  static public DirectionalLightBar chooseBarFromJoints(IcosahedronModel.Joint[] joints, int jointSelector) {
+  static public DirectionalLightBar chooseBarFromJoints(IcosahedronFixture.Joint[] joints, int jointSelector) {
     int jointNum = jointSelector;
     if (jointNum == -1)
       jointNum = ThreadLocalRandom.current().nextInt(4);
-    IcosahedronModel.Edge nextEdge = joints[jointNum].edge;
+    IcosahedronFixture.Edge nextEdge = joints[jointNum].edge;
     DirectionalLightBar dlb = new DirectionalLightBar(nextEdge.lightBar.barNum,
         joints[jointNum].isAdjacentEdgeAStartPoint);
     return dlb;

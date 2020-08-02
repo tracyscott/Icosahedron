@@ -18,12 +18,12 @@ public class Connector {
    * @param joints
    * @return
    */
-  static public Connector createFromEdge(IcosahedronModel.Edge edge, boolean startJoint, IcosahedronModel.Joint[] joints) {
+  static public Connector createFromEdge(IcosahedronFixture.Edge edge, boolean startJoint, IcosahedronFixture.Joint[] joints) {
     Connector connector = new Connector();
     DirectionalLightBar dlb = new DirectionalLightBar(edge.lightBar.barNum, startJoint);
     connector.directionalLightBars[0] = dlb;
     int i = 1;
-    for (IcosahedronModel.Joint j : joints) {
+    for (IcosahedronFixture.Joint j : joints) {
       dlb = new DirectionalLightBar(j.edge.lightBar.barNum, j.isAdjacentEdgeAStartPoint);
       connector.directionalLightBars[i] = dlb;
       i++;
@@ -35,11 +35,11 @@ public class Connector {
    * Iterate through our edges to build unique connectors.  For each edge joint, we generate a key
    * representing the connected lightbar IDs.
    */
- static public void computeConnectors(IcosahedronModel.Edge[] edges) {
+ static public void computeConnectors(IcosahedronFixture.Edge[] edges) {
     Map<String, Connector> connectorMap = new HashMap<String, Connector>();
 
     int connectorNum = 0;
-    for (IcosahedronModel.Edge e: edges) {
+    for (IcosahedronFixture.Edge e: edges) {
       String startBarNumKey = e.getStartConnectorKey();
       if (!connectorMap.containsKey(startBarNumKey)) {
         Connector startBarConnector = Connector.createFromEdge(e, true, e.myStartPointJoints);

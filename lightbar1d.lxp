@@ -1,10 +1,10 @@
 {
   "version": "0.1.1",
-  "timestamp": 1596308643809,
+  "timestamp": 1596389712674,
   "model": {
     "id": 2,
     "class": "heronarts.lx.structure.LXStructure",
-    "modulationColor": -65528,
+    "modulationColor": -65504,
     "internal": {},
     "parameters": {
       "label": "LX",
@@ -167,7 +167,7 @@
             },
             "parameters": {
               "label": "HueMultiplyEfx",
-              "enabled": true,
+              "enabled": false,
               "hue": 0.5199999883770943,
               "sat": 1.0,
               "bright": 1.0
@@ -360,7 +360,7 @@
         "children": {},
         "effects": [],
         "clips": [],
-        "patternIndex": 11,
+        "patternIndex": 12,
         "patterns": [
           {
             "id": 95,
@@ -439,7 +439,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.3154664598964393
+                    "basis": 0.42021678445582533
                   }
                 ],
                 "modulations": [
@@ -550,7 +550,7 @@
             },
             "parameters": {
               "label": "BarSelector",
-              "BarNum": 10,
+              "BarNum": 29,
               "caps": false,
               "dircaps": true,
               "joint": false,
@@ -597,7 +597,7 @@
               "slope": 3.0009006034769117,
               "maxv": 1.0,
               "speed": 5.199999883770943,
-              "blobs": 22,
+              "blobs": 45,
               "randspd": 0.0,
               "nxtBar": 2,
               "fx": 1,
@@ -752,7 +752,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.7532326539531736
+                    "basis": 0.10543824106759161
                   }
                 ],
                 "modulations": [
@@ -826,7 +826,7 @@
             },
             "parameters": {
               "label": "CollT",
-              "t": 0.34000000916421413,
+              "t": 0.380000002682209,
               "Move": 1.0,
               "Explode": 1.0,
               "maxv": 1.0,
@@ -900,7 +900,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.6600000000988211
+                    "basis": 0.510000000098824
                   }
                 ],
                 "modulations": [
@@ -983,7 +983,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.39265850684764214
+                    "basis": 0.8741603045981837
                   }
                 ],
                 "modulations": [
@@ -1025,7 +1025,7 @@
             },
             "parameters": {
               "label": "RandomFace",
-              "Fps": 65.95999944210052,
+              "Fps": 13.420000616461037,
               "bngOn": false,
               "bngFrms": 25,
               "bngFade": 0.4300000127404928,
@@ -1035,7 +1035,8 @@
               "RandomPlt": false,
               "hue": 0.0,
               "sat": 1.0,
-              "bright": 1.0
+              "bright": 1.0,
+              "fixture": 0
             },
             "children": {
               "modulation": {
@@ -1071,7 +1072,7 @@
                       "exp": 0.0
                     },
                     "children": {},
-                    "basis": 0.1440000000635514
+                    "basis": 0.5250000000636941
                   }
                 ],
                 "modulations": [
@@ -1251,7 +1252,7 @@
             },
             "parameters": {
               "label": "BarSelector",
-              "BarNum": -1,
+              "BarNum": 28,
               "caps": true,
               "dircaps": true,
               "joint": false,
@@ -1495,7 +1496,7 @@
             },
             "parameters": {
               "label": "BarSelector",
-              "BarNum": -1,
+              "BarNum": 28,
               "caps": false,
               "dircaps": true,
               "joint": false,
@@ -1637,9 +1638,9 @@
         "centerPoint": false,
         "camera": {
           "active": false,
-          "radius": 15.399089319657442,
-          "theta": 869.0620706757098,
-          "phi": 0.28437703072181914,
+          "radius": 19.48627446739022,
+          "theta": 908.1033186117685,
+          "phi": 0.3052116589334225,
           "x": 0.19749708520248532,
           "y": -0.038795230910182,
           "z": -0.2125862780958414
@@ -1647,9 +1648,9 @@
         "cue": [
           {
             "active": false,
-            "radius": 15.399089319657442,
-            "theta": 869.0620706757098,
-            "phi": 0.28437703072181914,
+            "radius": 19.48627446739022,
+            "theta": 908.1033186117685,
+            "phi": 0.3052116589334225,
             "x": 0.19749708520248532,
             "y": -0.038795230910182,
             "z": -0.2125862780958414

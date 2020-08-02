@@ -6,7 +6,7 @@ import heronarts.lx.color.LXColor;
 import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.BooleanParameter;
 import heronarts.lx.parameter.DiscreteParameter;
-import noomechanism.icosahedron.Icosahedron;
+import noomechanism.icosahedron.IcosahedronFixture;
 import noomechanism.icosahedron.IcosahedronModel;
 import noomechanism.icosahedron.LightBar;
 
@@ -27,7 +27,7 @@ public class FaceSelector extends LXPattern {
       colors[point.index] = LXColor.rgba(0, 0, 0, 255);
     }
 
-    for (IcosahedronModel.Face f : IcosahedronModel.smallIcosahedron.faces) {
+    for (IcosahedronFixture.Face f : IcosahedronModel.smallIcosahedron.faces) {
       if (f == null) continue;
       if ((f.faceNum == faceNum.getValuei() && !adjacent.getValueb()) ||
           (f.faceNum == faceNum.getValuei() || (adjacent.getValueb() && f.isFaceIdAdjacent(faceNum.getValuei(), IcosahedronModel.smallIcosahedron.faces))))

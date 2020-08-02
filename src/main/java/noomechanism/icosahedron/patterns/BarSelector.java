@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BarSelector extends LXPattern {
 
-  DiscreteParameter barNum = new DiscreteParameter("BarNum", 0, -1, IcosahedronModel.NUM_LIGHT_BARS);
+  DiscreteParameter barNum = new DiscreteParameter("BarNum", 0, -1, IcosahedronModel.NUM_LIGHT_BARS_PER_FIXTURE);
   BooleanParameter caps = new BooleanParameter("caps", false).setDescription("Debugging caps");
   BooleanParameter directionCaps = new BooleanParameter("dircaps", false).setDescription("Direction caps");
   BooleanParameter joint = new BooleanParameter("joint", false).setDescription("Color code the joint");
@@ -26,6 +26,11 @@ public class BarSelector extends LXPattern {
     addParameter(directionCaps);
     addParameter(joint);
     addParameter(showNum);
+  }
+
+  @Override
+  public void onActive() {
+    barNum.setRange(0, IcosahedronModel.getAllLightBars().size());
   }
 
   @Override
@@ -85,7 +90,7 @@ public class BarSelector extends LXPattern {
     for (int i = 0; i < numFiveBlobs; i++) {
       Blob blob = new Blob();
       blob.dlb = new DirectionalLightBar(lb.barNum, true);
-      blob.pos = (20.0f + i * 15.0f)/(float)lb.numPoints;
+      blob.pos = (10.0f + i * 10.0f)/(float)lb.numPoints;
       fiveBlobs.add(blob);
     }
 
@@ -93,17 +98,17 @@ public class BarSelector extends LXPattern {
     for (int i = 0; i < numOneBlobs; i++) {
       Blob blob = new Blob();
       blob.dlb = new DirectionalLightBar(lb.barNum, true);
-      blob.pos = (20.0f + 15.0f * numFiveBlobs + 8.0f * i)/(float)lb.numPoints;
+      blob.pos = (10.0f + 10.0f * numFiveBlobs + 4.0f * i)/(float)lb.numPoints;
       oneBlobs.add(blob);
     }
 
     for (Blob b : fiveBlobs) {
-      b.renderBlob(colors, 0f, 10.f/(float)lb.numPoints, 50.0f, 1.0f, 1,
+      b.renderBlob(colors, 0f, 4.f/(float)lb.numPoints, 50.0f, 1.0f, 1,
           0, false, LXColor.Blend.SUBTRACT, 0, 0f, 0f);
     }
 
     for (Blob b : oneBlobs) {
-      b.renderBlob(colors, 0f, 4f/(float)lb.numPoints, 50.0f, 1.0f, 1,
+      b.renderBlob(colors, 0f, 2f/(float)lb.numPoints, 50.0f, 1.0f, 1,
           0, false, LXColor.Blend.SUBTRACT, 0, 0f, 0f);
     }
   }
