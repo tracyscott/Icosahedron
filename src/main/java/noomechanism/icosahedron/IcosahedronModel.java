@@ -59,6 +59,7 @@ public class IcosahedronModel extends LXModel {
       smallIcosahedron.lightBars.add(lb);
       allPoints.addAll(lb.points);
     }
+    Connector.computeConnectors(smallIcosahedron.edges);
     fixtures.add(smallIcosahedron);
 
     if (NUM_FIXTURES > 1) {
@@ -73,7 +74,7 @@ public class IcosahedronModel extends LXModel {
             Icosahedron.lightBarParamsLength,
             Icosahedron.lightBarParamsStartMargin,
             Icosahedron.lightBarParamsEndMargin,
-            Icosahedron.lightBarParamsLeds,
+            Icosahedron.lightBarParamsLeds*2,
             false,
             largeIcosahedron.edges[i]);
         lb.interpolate(largeIcosahedron.edges[i]);
@@ -81,6 +82,7 @@ public class IcosahedronModel extends LXModel {
         largeIcosahedron.lightBars.add(lb);
         allPoints.addAll(lb.points);
       }
+      Connector.computeConnectors(largeIcosahedron.edges);
       fixtures.add(largeIcosahedron);
     }
 

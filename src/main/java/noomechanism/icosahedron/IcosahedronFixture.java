@@ -175,8 +175,6 @@ public class IcosahedronFixture {
     for (int i = 0; i < faceNum; i++) {
       fixture.faces[i].findAdjacentFaces(fixture.faces);
     }
-
-    Connector.computeConnectors(fixture.edges);
     return fixture;
   }
 
